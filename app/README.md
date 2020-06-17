@@ -1,4 +1,4 @@
-# app
+# foodplan
 
 A new Flutter project.
 
