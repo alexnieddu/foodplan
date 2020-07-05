@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'model/recipe.dart';
 
 final String appName = "FoodPlan";
+RecipeProvider provider;
 
 void main() {
+  provider.open("foodplan");
   runApp(FoodPlan());
 }
 
@@ -79,80 +81,7 @@ class PlanView extends StatefulWidget {
 }
 
 class PlanViewState extends State<PlanView> {
-  List<Recipe> recipes = [
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-    Recipe("Pizza", ["Mehl", "Wasser", "Hefe", "Käse", "Tomaten"], ["FastFood", "Italy"], "https://img.chefkoch-cdn.de/rezepte/1002961205505361/bilder/1051045/crop-960x720/pizza-margherita-nach-italienischer-art.jpg"),
-    Recipe("Bolognese", ["Hackfleisch", "Tomaten", "Zwiebeln"], ["Italy", "Fleisch"], "https://www.kuechengoetter.de/uploads/media/960x960/02/36362-spaghetti-bolognese.jpg?v=2-17"),
-    Recipe("Rotes Curry", ["Kokosmilch", "Rote Currypaste", "Reis", "Hühnchen"], ["Scharf", "Östlich", "Fleisch"], "https://cdn.asiastreetfood.com/wp-content/uploads/2015/03/Rotes-Thai-Curry-Rezept.jpg?strip=all&lossy=1&quality=80&fit=1920%2C1280&ssl=1"),
-  ];
+  List<Recipe> recipes = [Recipe.recipe("Pizza")];
 
   @override
   Widget build(BuildContext context) {
@@ -163,19 +92,6 @@ class PlanViewState extends State<PlanView> {
           var recipe = recipes[i];
           return ListTile(
             title: Text(recipe.name),
-            subtitle: Row(
-              children: <Widget>[
-                for(var cat in recipe.categories) Text("$cat ")
-              ],
-            ),
-            leading: Container(
-              child: Image.network(recipe.imageURL, fit: BoxFit.cover,),
-              width: 50,
-              height: 50,
-              padding: EdgeInsets.all(0),
-              decoration: BoxDecoration(shape: BoxShape.circle,),
-              clipBehavior: Clip.hardEdge,
-            ),
             trailing: Icon(Icons.refresh),
             onLongPress: () {
               print("Long pressed on item ${recipe.name}");
@@ -199,25 +115,31 @@ class RecipeView extends StatefulWidget {
 class RecipeViewState extends State<RecipeView> {
   int numberOfRecipesInPlan = 5;
 
+  Recipe testRecipe = Recipe.recipe("Test-Bolognese");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: numberOfRecipesInPlan,
-        itemBuilder: (context, i) {
-          return ListTile(
-            title:
-                Text("Bolognese"),
-            subtitle: Text("Fleisch"),
-            onLongPress: () {
-              print("Long pressed on item Bolognese");
+      body: FutureBuilder(
+        builder: (context, snapshot) {
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, i) {
+              return ListTile(
+                title: Text("{snapshot.data[i].name}"),
+                subtitle: Text("Fleisch"),
+                onLongPress: () {
+                  print("Long pressed on item Bolognese");
+                },
+              );
             },
           );
         },
+        future: provider.getAllRecipe(),
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            print("FAB was pressed.");
+            provider.insert(testRecipe);
           },
           child: Icon(Icons.add)),
     );
