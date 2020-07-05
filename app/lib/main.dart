@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:foodplan/data/RecipeDatabase.dart';
+import 'package:sqflite/sqflite.dart';
 import 'model/recipe.dart';
+import 'package:path/path.dart';
 
 final String appName = "FoodPlan";
-RecipeProvider provider;
 
 void main() {
-  provider.open("foodplan");
   runApp(FoodPlan());
 }
 
@@ -122,24 +123,29 @@ class RecipeViewState extends State<RecipeView> {
     return Scaffold(
       body: FutureBuilder(
         builder: (context, snapshot) {
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, i) {
-              return ListTile(
-                title: Text("{snapshot.data[i].name}"),
-                subtitle: Text("Fleisch"),
-                onLongPress: () {
-                  print("Long pressed on item Bolognese");
-                },
-              );
-            },
-          );
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, i) {
+                return ListTile(
+                  title: Text("${snapshot.data[i].name}"),
+                  subtitle: Text("Fleisch"),
+                  onLongPress: () {
+                    RecipeDatabase.db.deleteRecipe(snapshot.data[i].id);
+                    print("${snapshot.data[i].name} was deleted from database recipe");
+                  },
+                );
+              },
+            );
+          }
         },
-        future: provider.getAllRecipe(),
+        future: RecipeDatabase.db.getAllRecipes(),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            provider.insert(testRecipe);
+          onPressed: () async {
+            RecipeDatabase.db.newRecipe(testRecipe);
           },
           child: Icon(Icons.add)),
     );
