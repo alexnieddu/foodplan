@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
-import 'package:foodplan/model/recipe.dart';
+import 'package:foodplan/model/Recipe.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -19,25 +19,25 @@ class RecipeDatabase {
     return _db;
   }
 
-  initDB() async {
+  Future<Database> initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "foodplan_recipe.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE recipe ("
-          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-          "name TEXT"
-          ")");
-    });
+          await db.execute("CREATE TABLE recipe ("
+              "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+              "name TEXT"
+              ")");
+        });
   }
 
-  newRecipe(Recipe newRecipe) async {
+  Future<int> newRecipe(Recipe newRecipe) async {
     final db = await database;
     var res = await db.insert("recipe", newRecipe.toMap());
     return res;
   }
 
-  getAllRecipes() async {
+  Future<List<dynamic>> getAllRecipes() async {
     final db = await database;
     var res = await db.query("recipe");
     List<Recipe> list =
@@ -45,7 +45,15 @@ class RecipeDatabase {
     return list;
   }
 
-  deleteRecipe(int id) async {
+  Future<List<dynamic>> getRnd() async {
+    final db = await database;
+    var res = await db.rawQuery("SELECT name FROM recipe ORDER BY RANDOM() LIMIT 1");
+    List<Recipe> list =
+        res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
+    return list;
+  }
+
+  Future<int> deleteRecipe(int id) async {
     final db = await database;
     return db.delete("recipe", where: "id = ?", whereArgs: [id]);
   }

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:foodplan/data/RecipeDatabase.dart';
-import 'package:sqflite/sqflite.dart';
-import 'model/recipe.dart';
-import 'package:path/path.dart';
+import 'package:foodplan/view/RecipeView.dart';
+import 'model/Recipe.dart';
 
 final String appName = "FoodPlan";
 
-void main() {
-  runApp(FoodPlan());
-}
+void main() => runApp(FoodPlan());
 
 class FoodPlan extends StatelessWidget {
   // This widget is the root of your application.
@@ -87,40 +84,6 @@ class PlanViewState extends State<PlanView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: recipes.length,
-        itemBuilder: (context, i) {
-          var recipe = recipes[i];
-          return ListTile(
-            title: Text(recipe.name),
-            trailing: Icon(Icons.refresh),
-            onLongPress: () {
-              print("Long pressed on item ${recipe.name}");
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            print("FAB was pressed.");
-          },
-          child: Icon(Icons.refresh)),
-    );
-  }
-}
-
-class RecipeView extends StatefulWidget {
-  RecipeViewState createState() => RecipeViewState();
-}
-
-class RecipeViewState extends State<RecipeView> {
-  int numberOfRecipesInPlan = 5;
-
-  Recipe testRecipe = Recipe.recipe("Test-Bolognese");
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
       body: FutureBuilder(
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -131,23 +94,22 @@ class RecipeViewState extends State<RecipeView> {
               itemBuilder: (context, i) {
                 return ListTile(
                   title: Text("${snapshot.data[i].name}"),
-                  subtitle: Text("Fleisch"),
+                  trailing: Icon(Icons.refresh),
                   onLongPress: () {
-                    RecipeDatabase.db.deleteRecipe(snapshot.data[i].id);
-                    print("${snapshot.data[i].name} was deleted from database recipe");
+                    print("Long pressed on item ${snapshot.data[i].name}");
                   },
                 );
               },
             );
           }
         },
-        future: RecipeDatabase.db.getAllRecipes(),
+        future: RecipeDatabase.db.getRnd(),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            RecipeDatabase.db.newRecipe(testRecipe);
+          onPressed: () {
+            print("FAB was pressed.");
           },
-          child: Icon(Icons.add)),
+          child: Icon(Icons.refresh)),
     );
   }
 }
