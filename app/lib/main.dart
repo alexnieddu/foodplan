@@ -12,7 +12,6 @@ class FoodPlan extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: appName,
-      darkTheme: ThemeData.dark(),
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
