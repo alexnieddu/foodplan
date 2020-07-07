@@ -30,44 +30,52 @@ class PlanViewState extends State<PlanView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-          for (var i = 0; i < week.length; i++)
-            ListTile(
-                title: Text(recipes[i].name),
-                subtitle: Text(week[i]),
-                trailing: Column(
-                  children: <Widget>[
-                    IconButton(
-                        onPressed: () {
-                          RecipeDatabase.db
-                              .getRnd(recipes[i].id)
-                              .then((rndRecipe) {
-                            print(rndRecipe.first.name);
-                            recipes[i] = rndRecipe.first;
-                            setState(() {});
-                          });
-                        },
-                        icon: Icon(Icons.refresh)),
-                  ],
-                ))
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _reloadAllSlots(recipeID: recipes[0].id, slotID: 0);
-        },
-        child: Icon(Icons.refresh),
-      ),
-    );
+        body: FutureBuilder(
+          builder: (context, slots) {
+            if (!slots.hasData) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              return ListView.builder(
+                itemCount: slots.data.length,
+                itemBuilder: (context, i) {
+                  return ListTile(
+                      title: Text(slots.data[i].name),
+                      subtitle: Text(slots.data[i].recipe),
+                      trailing: Column(
+                        children: <Widget>[
+                          IconButton(
+                              onPressed: () {
+                                RecipeDatabase.db.getRnd(0).then((rndRecipe) {
+                                  RecipeDatabase.db.updateSlot(
+                                      rndRecipe.first.name, slots.data[i].id);
+                                  setState(() {});
+                                });
+                              },
+                              icon: Icon(Icons.refresh)),
+                        ],
+                      ));
+                },
+              );
+            }
+          },
+          future: RecipeDatabase.db.getAllSlots(),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            RecipeDatabase.db.getAllSlots().then((value) {
+              value.forEach((element) {
+                _reloadAllSlots(recipeID: 0, slotID: element.id);
+              });
+            });
+          },
+          child: Icon(Icons.refresh),
+        ));
   }
 
   _reloadAllSlots({int recipeID, int slotID}) {
-    for (var i = 0; i < week.length; i++) {
-      RecipeDatabase.db.getRnd(recipes[i].id).then((rndRecipe) {
-        recipes[i] = rndRecipe.first;
-        setState(() {});
-      });
-    }
+    RecipeDatabase.db.getRnd(recipeID).then((rndRecipe) {
+      RecipeDatabase.db.updateSlot(rndRecipe.first.name, slotID);
+      setState(() {});
+    });
   }
 }
