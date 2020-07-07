@@ -45,10 +45,14 @@ class _MyHomePageState extends State<MyHomePage> {
             tabs: [
               Tab(
                 text: "Plan",
+                icon: Icon(Icons.calendar_today),
               ),
-              Tab(text: "Recipes"),
+              Tab(
+                text: "Recipes",
+                icon: Icon(Icons.fastfood),
+              )
             ],
-            labelStyle: TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
+            labelStyle: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
             indicatorWeight: 4.0,
           ),
           title: Text(appName),
