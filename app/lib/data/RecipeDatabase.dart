@@ -39,15 +39,15 @@ class RecipeDatabase {
 
   Future<List<dynamic>> getAllRecipes() async {
     final db = await database;
-    var res = await db.query("recipe");
+    var res = await db.rawQuery("SELECT id, name FROM recipe ORDER BY name ASC");
     List<Recipe> list =
         res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
     return list;
   }
 
-  Future<List<dynamic>> getRnd() async {
+  Future<List<dynamic>> getRnd(int recipeID) async {
     final db = await database;
-    var res = await db.rawQuery("SELECT name FROM recipe ORDER BY RANDOM() LIMIT 1");
+    var res = await db.rawQuery("SELECT name FROM recipe WHERE id != ? ORDER BY RANDOM() LIMIT 1", [recipeID.toString()]);
     List<Recipe> list =
         res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
     return list;

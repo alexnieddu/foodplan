@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodplan/data/RecipeDatabase.dart';
 import 'package:foodplan/view/RecipeView.dart';
-import 'model/Recipe.dart';
+import 'package:foodplan/view/PlanView.dart';
 
 final String appName = "FoodPlan";
 
@@ -13,8 +12,9 @@ class FoodPlan extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: appName,
+      darkTheme: ThemeData.dark(),
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.blueGrey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(),
@@ -49,9 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Tab(text: "Recipes"),
             ],
-            labelStyle: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
-            indicatorColor: Colors.white,
-            indicatorWeight: 3.0,
+            labelStyle: TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
+            indicatorWeight: 4.0,
           ),
           title: Text(appName),
           actions: <Widget>[
@@ -70,46 +69,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class PlanView extends StatefulWidget {
-  PlanViewState createState() => PlanViewState();
-}
-
-class PlanViewState extends State<PlanView> {
-  List<Recipe> recipes = [Recipe.recipe("Pizza")];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          } else {
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, i) {
-                return ListTile(
-                  title: Text("${snapshot.data[i].name}"),
-                  trailing: Icon(Icons.refresh),
-                  onLongPress: () {
-                    print("Long pressed on item ${snapshot.data[i].name}");
-                  },
-                );
-              },
-            );
-          }
-        },
-        future: RecipeDatabase.db.getRnd(),
-      ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            print("FAB was pressed.");
-          },
-          child: Icon(Icons.refresh)),
     );
   }
 }

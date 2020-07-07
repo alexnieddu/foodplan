@@ -18,6 +18,7 @@ class AddRecipeView extends StatelessWidget {
               MaterialButton(
                 onPressed: () {
                   _saveRecipe(recipeNameController.text);
+                  Navigator.pop(context);
                 },
                 child: Text("Save"),
               )

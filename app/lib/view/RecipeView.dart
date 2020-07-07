@@ -21,11 +21,12 @@ class RecipeViewState extends State<RecipeView> {
               itemBuilder: (context, i) {
                 return ListTile(
                   title: Text("${snapshot.data[i].name}"),
-                  subtitle: Text("Fleisch"),
+                  subtitle: Text("#${i + 1}"),
                   onLongPress: () {
                     RecipeDatabase.db.deleteRecipe(snapshot.data[i].id);
                     print(
                         "${snapshot.data[i].name} was deleted from database recipe");
+                    setState(() {});
                   },
                 );
               },
@@ -39,7 +40,9 @@ class RecipeViewState extends State<RecipeView> {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => AddRecipeView()),
-            );
+            ).then((value) {
+              setState(() {});
+            });
           },
           child: Icon(Icons.add)),
     );
