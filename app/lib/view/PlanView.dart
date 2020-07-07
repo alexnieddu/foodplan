@@ -39,9 +39,12 @@ class PlanViewState extends State<PlanView> {
                 itemCount: slots.data.length,
                 itemBuilder: (context, i) {
                   return ListTile(
+                      leading: Icon(Icons.fastfood),
                       title: Text(slots.data[i].name),
                       subtitle: Text(slots.data[i].recipe),
-                      trailing: Column(
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           IconButton(
                               onPressed: () {
@@ -52,6 +55,7 @@ class PlanViewState extends State<PlanView> {
                                 });
                               },
                               icon: Icon(Icons.refresh)),
+                          IconButton(icon: Icon(Icons.more_vert), onPressed: null)
                         ],
                       ));
                 },

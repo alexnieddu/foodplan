@@ -20,6 +20,7 @@ class RecipeViewState extends State<RecipeView> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, i) {
                 return ListTile(
+                  leading: Icon(Icons.fastfood),
                   title: Text("${snapshot.data[i].name}"),
                   subtitle: Text("#${i + 1}"),
                   onLongPress: () {
