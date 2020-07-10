@@ -7,6 +7,111 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
+List<String> baseRecipes = [
+  "Pfannkuchen",
+  "Schinkennudeln",
+  "Zucchini-Karotten-Nudeln",
+  "Gurkensuppe",
+  "Schnitzel",
+  "Gulasch",
+  "Fleischpflanzerl",
+  "Pierogi",
+  "Ofenkartoffeln",
+  "Germknödel",
+  "Käsespätzle",
+  "Pizzabrötchen",
+  "Nudelauflauf",
+  "Sauerkrautsuppe",
+  "Frischkäse Putenfilet",
+  "Kaiserschmarrn",
+  "Chili-Sahne-Schnitzel",
+  "Bruschetta",
+  "Eierflockensuppe",
+  "Geschnetzeltes",
+  "Cordon Blue",
+  "Grießbrei",
+  "Steak",
+  "Grillen",
+  "Strammer Max",
+  "Nudelsalat",
+  "Tarte",
+  "Risotto",
+  "Brezenknödel",
+  "Tom Kha Gai Suppe",
+  "Rouladen",
+  "Spaghetti Aglio e Olio",
+  "Bolognese",
+  "Ofengemüse",
+  "Käsesuppe",
+  "Rohrnudeln",
+  "Gyros",
+  "Grillhähnchen",
+  "Gemüsesuppe",
+  "Lasagne",
+  "Gemüselasagne",
+  "Lachs-Spinat-Pasta",
+  "Lasanki",
+  "Pizza",
+  "Gefüllte Paprika",
+  "Krautwickerl",
+  "Salat mit Putenstreifen",
+  "Brotzeit",
+  "Schweinebraten",
+  "Spiegelei",
+  "Blätterteig",
+  "Dampfnudeln",
+  "Weißwürste",
+  "Kartoffelsalat",
+  "Zucchinisuppe",
+  "Fisch in Tomaten-Limette",
+  "Strudel",
+  "Paprikasuppe",
+  "Bratkartoffeln",
+  "Schweinefilet",
+  "Penne al Forno",
+  "Reissuppe",
+  "Nudelsuppe",
+  "gefüllte Pilze",
+  "Gemüse-Wok",
+  "Kartoffelsuppe",
+  "Fischstäbchen",
+  "Kartoffelecken",
+  "Kartoffelgratin",
+  "Gratin",
+  "Currywurst",
+  "Pfannkuchensuppe",
+  "Kartoffelpuffer",
+  "Chicken Wings",
+  "überbackene Zucchini",
+  "Leberkäse",
+  "Milchreis",
+  "Spaghetti Carbonara",
+  "Zwiebelsuppe",
+  "Taccos",
+  "Wraps",
+  "Chili con Carne",
+  "Gnocchi Gorgonzola",
+  "Gnocchi Tomaten Sahne",
+  "Tomatensuppe",
+  "Omlette",
+  "gegrillter Fisch",
+  "Wiener",
+  "Tortellini",
+  "Flammkuchen",
+  "Thai Curry",
+  "Indisches Hähnchen",
+  "Backerbsensuppe"
+];
+List<String> baseSlots = [
+  "Montag",
+  "Dienstag",
+  "Mittwoch",
+  "Donnerstag",
+  "Freitag",
+  "Samstag",
+  "Sonntag"
+];
+
 class RecipeDatabase {
   static final RecipeDatabase db = RecipeDatabase._init();
   static Database _db;
@@ -26,28 +131,32 @@ class RecipeDatabase {
     String path = join(documentsDirectory.path, "foodplan_recipe.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-          // Enable FOREIGN KEYs in SQLite
-          // Create recipe table
-          await db.execute("CREATE TABLE recipe ("
-              "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-              "name TEXT"
-              ")");
-          // Create slot table
-          await db.execute("CREATE TABLE slot ("
-              "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-              "name TEXT,"
-              "recipe TEXT"
-              ")");
-          // Insert dummies
-          // slots
-          await db.rawInsert("INSERT INTO slot (name, recipe)"
-              "VALUES ('Montag', 'Lade zuerst ein Rezept')");
-          await db.rawInsert("INSERT INTO slot (name, recipe)"
-              "VALUES ('Dienstag', 'Lade zuerst ein Rezept')");
-          await db.rawInsert("INSERT INTO slot (name, recipe)"
-              "VALUES ('Mittwoch', 'Lade zuerst ein Rezept')");
-          // TODO: recipes and ingredients
-        });
+      // Enable FOREIGN KEYs in SQLite
+      await db.execute("PRAGMA foreign_keys = ON;");
+      // Create recipe table
+      await db.execute("CREATE TABLE recipe ("
+          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+          "name TEXT"
+          ")");
+      // Create slot table
+      await db.execute("CREATE TABLE slot ("
+          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+          "name TEXT,"
+          "recipe TEXT"
+          ")");
+      // Insert dummies
+      // recipes
+      for (String recipe in baseRecipes) {
+        await db.rawInsert("INSERT INTO recipe (name)"
+            " VALUES (?)", [recipe]);
+      }
+      // slots
+      for (String slot in baseSlots) {
+        await db.rawInsert("INSERT INTO slot (name, recipe)"
+            " VALUES (?, 'Lade zuerst ein Rezept')", [slot]);
+      }
+      // TODO: ingredients and categories
+    });
   }
 
   Future<int> newRecipe(Recipe newRecipe) async {
@@ -58,7 +167,8 @@ class RecipeDatabase {
 
   Future<List<dynamic>> getAllRecipes() async {
     final db = await database;
-    var res = await db.rawQuery("SELECT id, name FROM recipe ORDER BY name ASC");
+    var res =
+        await db.rawQuery("SELECT id, name FROM recipe ORDER BY name ASC");
     List<Recipe> list =
         res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
     return list;
@@ -66,7 +176,9 @@ class RecipeDatabase {
 
   Future<List<dynamic>> getRnd(int recipeID) async {
     final db = await database;
-    var res = await db.rawQuery("SELECT name FROM recipe WHERE id != ? ORDER BY RANDOM() LIMIT 1", [recipeID.toString()]);
+    var res = await db.rawQuery(
+        "SELECT name FROM recipe WHERE id != ? ORDER BY RANDOM() LIMIT 1",
+        [recipeID.toString()]);
     List<Recipe> list =
         res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
     return list;
@@ -76,8 +188,6 @@ class RecipeDatabase {
     final db = await database;
     return db.delete("recipe", where: "id = ?", whereArgs: [id]);
   }
-
-
 
   Future<int> newSlot(Slot newSlot) async {
     final db = await database;
@@ -95,6 +205,7 @@ class RecipeDatabase {
 
   Future<int> updateSlot(String recipe, int slotID) async {
     Database db = await database;
-    return await db.rawUpdate("UPDATE slot SET recipe = ? WHERE id = ?", [recipe, slotID]);
+    return await db
+        .rawUpdate("UPDATE slot SET recipe = ? WHERE id = ?", [recipe, slotID]);
   }
 }
