@@ -26,21 +26,27 @@ class RecipeDatabase {
     String path = join(documentsDirectory.path, "foodplan_recipe.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
+          // Enable FOREIGN KEYs in SQLite
+          // Create recipe table
           await db.execute("CREATE TABLE recipe ("
               "id INTEGER PRIMARY KEY AUTOINCREMENT,"
               "name TEXT"
               ")");
+          // Create slot table
           await db.execute("CREATE TABLE slot ("
               "id INTEGER PRIMARY KEY AUTOINCREMENT,"
               "name TEXT,"
               "recipe TEXT"
               ")");
+          // Insert dummies
+          // slots
           await db.rawInsert("INSERT INTO slot (name, recipe)"
               "VALUES ('Montag', 'Lade zuerst ein Rezept')");
           await db.rawInsert("INSERT INTO slot (name, recipe)"
               "VALUES ('Dienstag', 'Lade zuerst ein Rezept')");
           await db.rawInsert("INSERT INTO slot (name, recipe)"
               "VALUES ('Mittwoch', 'Lade zuerst ein Rezept')");
+          // TODO: recipes and ingredients
         });
   }
 
