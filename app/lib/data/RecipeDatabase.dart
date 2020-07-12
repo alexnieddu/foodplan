@@ -111,6 +111,14 @@ List<String> baseSlots = [
   "Samstag",
   "Sonntag"
 ];
+List<String> baseCategories = [
+  "Alles",
+  "Fleisch",
+  "Suppe",
+  "Vegetarisch",
+  "Deftig",
+  "Low Carb"
+];
 
 class RecipeDatabase {
   static final RecipeDatabase db = RecipeDatabase._init();
@@ -133,19 +141,25 @@ class RecipeDatabase {
         onCreate: (Database db, int version) async {
       // Enable FOREIGN KEYs in SQLite
       await db.execute("PRAGMA foreign_keys = ON;");
-      // Create recipe table
+      // Create tables
+      // recipe table
       await db.execute("CREATE TABLE recipe ("
           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
           "name TEXT"
           ")");
-      // Create slot table
+      // slot table
       await db.execute("CREATE TABLE slot ("
           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
           "name TEXT,"
           "recipeId INTEGER,"
           "FOREIGN KEY (recipeId) REFERENCES recipe(id)"
           ")");
-      // TODO: create tables for category and ingredient
+      // category table
+      await db.execute("CREATE TABLE category ("
+          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+          "name TEXT,"
+          ")");
+      // TODO: create tables for ingredient
       // Insert dummies
       // recipes
       for (String recipe in baseRecipes) {
@@ -161,7 +175,14 @@ class RecipeDatabase {
             " VALUES (?, (SELECT id FROM recipe ORDER BY RANDOM() LIMIT 1))",
             [slot]);
       }
-      // TODO: ingredients and categories
+      // categories
+      for (String category in baseCategories) {
+        await db.rawInsert(
+            "INSERT INTO category (name)"
+            " VALUES (?)",
+            [category]);
+      }
+      // TODO: ingredients
     });
   }
 
