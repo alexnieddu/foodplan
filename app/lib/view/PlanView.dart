@@ -7,16 +7,6 @@ class PlanView extends StatefulWidget {
 }
 
 class PlanViewState extends State<PlanView> {
-  List<Recipe> recipes = [
-    Recipe.recipe("Lade zuerst Rezepte"),
-    Recipe.recipe("Lade zuerst Rezepte"),
-    Recipe.recipe("Lade zuerst Rezepte"),
-    Recipe.recipe("Lade zuerst Rezepte"),
-    Recipe.recipe("Lade zuerst Rezepte"),
-    Recipe.recipe("Lade zuerst Rezepte"),
-    Recipe.recipe("Lade zuerst Rezepte")
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
