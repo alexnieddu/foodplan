@@ -142,18 +142,24 @@ class RecipeDatabase {
       await db.execute("CREATE TABLE slot ("
           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
           "name TEXT,"
-          "recipe TEXT"
+          "recipeId INTEGER,"
+          "FOREIGN KEY (recipeId) REFERENCES recipe(id)"
           ")");
+      // TODO: create tables for category and ingredient
       // Insert dummies
       // recipes
       for (String recipe in baseRecipes) {
-        await db.rawInsert("INSERT INTO recipe (name)"
-            " VALUES (?)", [recipe]);
+        await db.rawInsert(
+            "INSERT INTO recipe (name)"
+            " VALUES (?)",
+            [recipe]);
       }
       // slots
       for (String slot in baseSlots) {
-        await db.rawInsert("INSERT INTO slot (name, recipe)"
-            " VALUES (?, 'Lade zuerst ein Rezept')", [slot]);
+        await db.rawInsert(
+            "INSERT INTO slot (name, recipeId)"
+            " VALUES (?, (SELECT id FROM recipe ORDER BY RANDOM() LIMIT 1))",
+            [slot]);
       }
       // TODO: ingredients and categories
     });
@@ -163,6 +169,20 @@ class RecipeDatabase {
     final db = await database;
     var res = await db.insert("recipe", newRecipe.toMap());
     return res;
+  }
+
+  Future<List<dynamic>> getRecipesForSearch(String searchPhrase) async {
+    final db = await database;
+    var res =
+        await db.rawQuery("SELECT id, name FROM recipe ORDER BY name ASC");
+    if (searchPhrase.isNotEmpty) {
+      res = await db.rawQuery(
+          "SELECT id, name FROM recipe WHERE name LIKE ? ORDER BY name ASC",
+          ["$searchPhrase%"]);
+    }
+    List<Recipe> list =
+        res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
+    return list;
   }
 
   Future<List<dynamic>> getAllRecipes() async {
@@ -177,7 +197,7 @@ class RecipeDatabase {
   Future<List<dynamic>> getRnd(int recipeID) async {
     final db = await database;
     var res = await db.rawQuery(
-        "SELECT name FROM recipe WHERE id != ? ORDER BY RANDOM() LIMIT 1",
+        "SELECT id FROM recipe WHERE id != ? ORDER BY RANDOM() LIMIT 1",
         [recipeID.toString()]);
     List<Recipe> list =
         res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
@@ -197,15 +217,16 @@ class RecipeDatabase {
 
   Future<List<dynamic>> getAllSlots() async {
     final db = await database;
-    var res = await db.rawQuery("SELECT id, name, recipe FROM slot");
+    var res = await db.rawQuery(
+        "SELECT slot.id, slot.name, recipe.id AS recipeId, recipe.name AS recipeName FROM slot INNER JOIN recipe ON slot.recipeId = recipe.id");
     List<Slot> list =
         res.isNotEmpty ? res.map((c) => Slot.fromMap(c)).toList() : [];
     return list;
   }
 
-  Future<int> updateSlot(String recipe, int slotID) async {
+  Future<int> updateSlot(int recipeId, int slotID) async {
     Database db = await database;
-    return await db
-        .rawUpdate("UPDATE slot SET recipe = ? WHERE id = ?", [recipe, slotID]);
+    return await db.rawUpdate(
+        "UPDATE slot SET recipeId = ? WHERE id = ?", [recipeId, slotID]);
   }
 }

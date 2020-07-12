@@ -2,16 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:foodplan/model/Recipe.dart';
 import 'package:foodplan/data/RecipeDatabase.dart';
 
-final List<String> week = [
-  "Montag",
-  "Dienstag",
-  "Mittwoch",
-  "Donnerstag",
-  "Freitag",
-  "Samstag",
-  "Sonntag"
-];
-
 class PlanView extends StatefulWidget {
   PlanViewState createState() => PlanViewState();
 }
@@ -39,7 +29,7 @@ class PlanViewState extends State<PlanView> {
                 itemCount: slots.data.length,
                 itemBuilder: (context, i) {
                   return ListTile(
-                      leading: Icon(Icons.fastfood),
+                      leading: Icon(Icons.calendar_today),
                       title: Text(slots.data[i].name),
                       subtitle: Text(slots.data[i].recipe),
                       trailing: Row(
@@ -48,9 +38,11 @@ class PlanViewState extends State<PlanView> {
                         children: <Widget>[
                           IconButton(
                               onPressed: () {
-                                RecipeDatabase.db.getRnd(0).then((rndRecipe) {
+                                RecipeDatabase.db
+                                    .getRnd(slots.data[i].recipeId)
+                                    .then((rndRecipe) {
                                   RecipeDatabase.db.updateSlot(
-                                      rndRecipe.first.name, slots.data[i].id);
+                                      rndRecipe.first.id, slots.data[i].id);
                                   setState(() {});
                                 });
                               },
@@ -79,7 +71,7 @@ class PlanViewState extends State<PlanView> {
 
   _reloadAllSlots({int recipeID, int slotID}) {
     RecipeDatabase.db.getRnd(recipeID).then((rndRecipe) {
-      RecipeDatabase.db.updateSlot(rndRecipe.first.name, slotID);
+      RecipeDatabase.db.updateSlot(rndRecipe.first.id, slotID);
       setState(() {});
     });
   }
