@@ -12,6 +12,7 @@ class RecipeViewState extends State<RecipeView> {
   final searchPhraseController = TextEditingController();
   String searchPhrase = "";
   List cats = ["Alles", "Fleisch", "Suppe", "Vegetarisch", "Frühstück"];
+  List selectedCats = ["Alles"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +53,22 @@ class RecipeViewState extends State<RecipeView> {
                     itemBuilder: (context, index) {
                       return Container(
                         padding: EdgeInsets.symmetric(horizontal: 5),
-                        child: Chip(label: Text(cats[index])),
+                        child: FilterChip(
+                          label: Text(cats[index]),
+                          labelStyle: TextStyle(color: selectedCats.contains(cats[index]) ? Colors.black : Colors.white),
+                          selectedColor: Colors.white,
+                          backgroundColor: mainColor,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          selected: selectedCats.contains(cats[index]),
+                          onSelected: (bool value) {
+                            setState(() {
+                              if(value)
+                                selectedCats.add(cats[index]);
+                              else
+                                selectedCats.remove(cats[index]);
+                            });
+                          },
+                        ),
                       );
                     },
                   ),
