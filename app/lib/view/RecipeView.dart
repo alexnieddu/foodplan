@@ -12,7 +12,8 @@ class RecipeViewState extends State<RecipeView> {
   final searchPhraseController = TextEditingController();
   String searchPhrase = "";
   List cats = ["Alles", "Fleisch", "Suppe", "Vegetarisch", "Frühstück"];
-  List selectedCats = ["Alles"];
+  List selectedCats = [];
+  List<int> selectedCatsIds = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,32 +47,51 @@ class RecipeViewState extends State<RecipeView> {
                 Container(
                   height: 70,
                   margin: EdgeInsets.all(0),
-                  child: ListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: cats.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        child: FilterChip(
-                          label: Text(cats[index]),
-                          labelStyle: TextStyle(color: selectedCats.contains(cats[index]) ? Colors.black : Colors.white),
-                          selectedColor: Colors.white,
-                          backgroundColor: mainColor,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          selected: selectedCats.contains(cats[index]),
-                          onSelected: (bool value) {
-                            setState(() {
-                              if(value)
-                                selectedCats.add(cats[index]);
-                              else
-                                selectedCats.remove(cats[index]);
-                            });
-                          },
-                        ),
-                      );
-                    },
-                  ),
+                  child: FutureBuilder(
+                      future: RecipeDatabase.db.getAllCategories(),
+                      builder: (context, snapshot) {
+                        if(snapshot.hasData) {
+                          return ListView.builder(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                child: FilterChip(
+                                  label: Text(snapshot.data[index].name),
+                                  labelStyle: TextStyle(
+                                      color: selectedCats
+                                              .contains(snapshot.data[index].name)
+                                          ? Colors.black
+                                          : Colors.white),
+                                  selectedColor: Colors.white,
+                                  backgroundColor: mainColor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  selected:
+                                      selectedCats.contains(snapshot.data[index].name),
+                                  onSelected: (bool value) {
+                                    setState(() {
+                                      if (value) {
+                                        selectedCatsIds.add(snapshot.data[index].id);
+                                        selectedCats.add(snapshot.data[index].name);
+                                      }
+                                      else {
+                                        selectedCatsIds.remove(snapshot.data[index].id);
+                                        selectedCats.remove(snapshot.data[index].name);
+                                      }
+                                    });
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        }
+                        else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }),
                 ),
               ],
             ),
