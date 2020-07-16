@@ -37,8 +37,8 @@ class PlanViewState extends State<PlanView> {
                                 });
                               },
                               icon: Icon(Icons.refresh)),
-                          IconButton(
-                              icon: Icon(Icons.more_vert), onPressed: null)
+                          /* IconButton(
+                              icon: Icon(Icons.more_vert), onPressed: null) */
                         ],
                       ));
                 },

@@ -1,3 +1,4 @@
+import 'package:foodplan/model/Category.dart';
 import 'package:foodplan/model/Slot.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -112,7 +113,6 @@ List<String> baseSlots = [
   "Sonntag"
 ];
 List<String> baseCategories = [
-  "Alles",
   "Fleisch",
   "Suppe",
   "Vegetarisch",
@@ -140,7 +140,7 @@ class RecipeDatabase {
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       // Enable FOREIGN KEYs in SQLite
-      await db.execute("PRAGMA foreign_keys = ON;");
+      await db.execute("PRAGMA foreign_keys = ON");
       // Create tables
       // recipe table
       await db.execute("CREATE TABLE recipe ("
@@ -157,9 +157,26 @@ class RecipeDatabase {
       // category table
       await db.execute("CREATE TABLE category ("
           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-          "name TEXT,"
+          "name TEXT"
           ")");
-      // TODO: create tables for ingredient
+      await db.execute("CREATE TABLE recipe_category ("
+          "recipeId INTEGER,"
+          "categoryId INTEGER,"
+          "FOREIGN KEY (recipeId) REFERENCES recipe(id),"
+          "FOREIGN KEY (categoryId) REFERENCES category(id)"
+          ")");
+      // ingredient table
+      await db.execute("CREATE TABLE ingredient ("
+          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+          "name TEXT"
+          ")");
+      await db.execute("CREATE TABLE recipe_ingredient ("
+          "recipeId INTEGER,"
+          "ingredientId INTEGER,"
+          "FOREIGN KEY (recipeId) REFERENCES recipe(id),"
+          "FOREIGN KEY (ingredientId) REFERENCES ingredient(id)"
+          ")");
+
       // Insert dummies
       // recipes
       for (String recipe in baseRecipes) {
@@ -249,5 +266,15 @@ class RecipeDatabase {
     Database db = await database;
     return await db.rawUpdate(
         "UPDATE slot SET recipeId = ? WHERE id = ?", [recipeId, slotID]);
+  }
+
+  // Category
+  Future<List<dynamic>> getAllCategories() async {
+    final db = await database;
+    var res =
+        await db.rawQuery("SELECT id, name FROM category ORDER BY name ASC");
+    List<Category> list =
+        res.isNotEmpty ? res.map((c) => Category.fromMap(c)).toList() : [];
+    return list;
   }
 }
