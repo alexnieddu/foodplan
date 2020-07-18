@@ -15,6 +15,8 @@ class FoodPlan extends StatelessWidget {
       title: appName,
       theme: ThemeData(
         primarySwatch: Colors.teal,
+        primaryTextTheme: TextTheme(headline6: TextStyle(color: Colors.teal)),
+        appBarTheme: AppBarTheme(color: Colors.white, elevation: 0),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(),
@@ -23,9 +25,7 @@ class FoodPlan extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  MyHomePage({Key key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -41,7 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text("FoodPlan"),
         centerTitle: true,
-        elevation: 0,
       ),
       body: screenStates.elementAt(currentScreenIndex),
       bottomNavigationBar: Container(

@@ -22,5 +22,13 @@ BoxShadow constShadow = BoxShadow(
 BoxShadow constShadowDark = BoxShadow(
   color: Colors.black.withOpacity(.2),
   blurRadius: 10,
-  offset: Offset(0, 5),
+  offset: Offset(0, 0),
 );
+BoxShadow constShadowDarkLight = BoxShadow(
+  color: Colors.black.withOpacity(.05),
+  blurRadius: 10,
+  offset: Offset(0, 0),
+);
+const double borderradius = 15.0;
+
+List rndColors = [];

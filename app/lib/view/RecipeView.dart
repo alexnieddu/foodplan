@@ -1,8 +1,23 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:foodplan/constants.dart';
 import 'package:foodplan/data/RecipeDatabase.dart';
 import 'package:foodplan/model/Recipe.dart';
 import 'package:foodplan/view/AddRecipeView.dart';
+import 'package:path/path.dart';
+
+List rndPix = [
+  "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&w=1000&q=80",
+  "https://i2.wp.com/harrysding.ch/wp-content/uploads/2020/03/Food-Delivery-und-Takeaway-zuerich-2-scaled.jpg?fit=2560%2C1913&ssl=1",
+  "https://images.happycow.net/venues/1024/10/58/hcmp105847_838346.jpeg",
+  "https://worldfoodtrip.de/wp-content/uploads/2019/06/IMG_4134-1140x620.jpg",
+  "https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg",
+  "https://x5w3j9u7.stackpathcdn.com/wp-content/uploads/2020/06/tuerkischer-bulgur-salat-rezept-kisir-680x900.jpg",
+  "https://www.coolibri.de/wp-content/uploads/2019/08/toa-heftiba-MrmWoU9QDjs-unsplash-e1565696964443.jpg",
+  "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/slideshows/great_food_combos_for_losing_weight_slideshow/650x350_great_food_combos_for_losing_weight_slideshow.jpg",
+  "https://cdn.hellofresh.com/au/cms/pdp-slider/veggie-3.jpg"
+];
 
 class RecipeView extends StatefulWidget {
   RecipeViewState createState() => RecipeViewState();
@@ -21,8 +36,9 @@ class RecipeViewState extends State<RecipeView> {
         children: <Widget>[
           // Menubar
           Container(
-            decoration:
-                BoxDecoration(color: mainColor, boxShadow: [constShadowDark]),
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
             child: Column(
               children: <Widget>[
                 // Searchbar
@@ -30,14 +46,14 @@ class RecipeViewState extends State<RecipeView> {
                     height: 50,
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(borderradius),
                         boxShadow: [constShadowDark]),
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
                       decoration: InputDecoration(
                           icon: Icon(Icons.search, color: mainColor),
-                          hintText: "Suche",
+                          hintText: "Rezepte, Zutaten, ...",
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none),
                       onChanged: _searchInput,
@@ -50,9 +66,9 @@ class RecipeViewState extends State<RecipeView> {
                   child: FutureBuilder(
                       future: RecipeDatabase.db.getAllCategories(),
                       builder: (context, snapshot) {
-                        if(snapshot.hasData) {
+                        if (snapshot.hasData) {
                           return ListView.builder(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            padding: EdgeInsets.symmetric(horizontal: 20),
                             scrollDirection: Axis.horizontal,
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
@@ -61,34 +77,38 @@ class RecipeViewState extends State<RecipeView> {
                                 child: FilterChip(
                                   label: Text(snapshot.data[index].name),
                                   labelStyle: TextStyle(
-                                      color: selectedCats
-                                              .contains(snapshot.data[index].name)
-                                          ? Colors.black
-                                          : Colors.white),
-                                  selectedColor: Colors.white,
-                                  backgroundColor: mainColor,
+                                      color: selectedCats.contains(
+                                              snapshot.data[index].name)
+                                          ? Colors.white
+                                          : Colors.black),
+                                  selectedColor: mainColor,
+                                  backgroundColor: Colors.white,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  selected:
-                                      selectedCats.contains(snapshot.data[index].name),
+                                      borderRadius:
+                                          BorderRadius.circular(borderradius)),
+                                  selected: selectedCats
+                                      .contains(snapshot.data[index].name),
                                   onSelected: (bool value) {
                                     setState(() {
                                       if (value) {
-                                        selectedCatsIds.add(snapshot.data[index].id);
-                                        selectedCats.add(snapshot.data[index].name);
+                                        selectedCatsIds
+                                            .add(snapshot.data[index].id);
+                                        selectedCats
+                                            .add(snapshot.data[index].name);
+                                      } else {
+                                        selectedCatsIds
+                                            .remove(snapshot.data[index].id);
+                                        selectedCats
+                                            .remove(snapshot.data[index].name);
                                       }
-                                      else {
-                                        selectedCatsIds.remove(snapshot.data[index].id);
-                                        selectedCats.remove(snapshot.data[index].name);
-                                      }
+                                      _searchInput("dummy");
                                     });
                                   },
                                 ),
                               );
                             },
                           );
-                        }
-                        else {
+                        } else {
                           return Center(child: CircularProgressIndicator());
                         }
                       }),
@@ -100,10 +120,9 @@ class RecipeViewState extends State<RecipeView> {
           Expanded(
             flex: 1,
             child: Container(
-              height: 450,
               child: FutureBuilder(
                 future: RecipeDatabase.db
-                    .getRecipesForSearch(searchPhraseController.text),
+                    .getRecipesForSearch(searchPhraseController.text, selectedCatsIds),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());
@@ -112,17 +131,74 @@ class RecipeViewState extends State<RecipeView> {
                       child: ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, i) {
-                          return ListTile(
-                            leading: Icon(Icons.fastfood),
-                            title: Text("${snapshot.data[i].name}"),
-                            subtitle: Text("#${i + 1}"),
-                            onLongPress: () {
-                              RecipeDatabase.db
-                                  .deleteRecipe(snapshot.data[i].id);
-                              print(
-                                  "${snapshot.data[i].name} was deleted from database recipe");
-                              setState(() {});
-                            },
+                          int rndIndex = Random().nextInt(rndPix.length);
+                          // ListItem
+                          return Container(
+                            // height: 100,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                                color: Color(snapshot.data[i].backgroundColor)
+                                    .withOpacity(.4),
+                                borderRadius:
+                                    BorderRadius.circular(borderradius),
+                                boxShadow: [constShadowDarkLight]),
+                            child: FlatButton(
+                              onPressed: _pushRevipeView(context, snapshot.data[i].id),
+                              onLongPress: () {
+                                RecipeDatabase.db
+                                    .deleteRecipe(snapshot.data[i].id);
+                                setState(() {});
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  // Image
+                                  Container(
+                                      margin: EdgeInsets.only(
+                                          right: 15, top: 15, bottom: 15),
+                                      child: ClipRRect(
+                                        child: Image.network(rndPix[rndIndex],
+                                            width: 60,
+                                            height: 60,
+                                            fit: BoxFit.cover),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                      )),
+                                  // Description
+                                  ConstrainedBox(
+                                    constraints: BoxConstraints(maxWidth: 165),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        // Title
+                                        RichText(
+                                          text: TextSpan(
+                                              text: "${snapshot.data[i].name}",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                              )),
+                                        ),
+                                        // Info
+                                        Text("Zutaten, Liste, ...")
+                                      ],
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  // Icon
+                                  IconButton(
+                                      icon: Icon(Icons.more_vert),
+                                      onPressed: () {
+                                        print("h");
+                                      })
+                                ],
+                              ),
+                            ),
                           );
                         },
                       ),
@@ -149,5 +225,12 @@ class RecipeViewState extends State<RecipeView> {
 
   void _searchInput(String search) {
     setState(() {});
+  }
+
+  _pushRevipeView(BuildContext context, int recipeId) {
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => DetailRecipeView(recipeId))
+    // );
   }
 }

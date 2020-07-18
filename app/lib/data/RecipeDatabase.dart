@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:foodplan/model/Category.dart';
 import 'package:foodplan/model/Slot.dart';
 import 'package:sqflite/sqflite.dart';
@@ -117,7 +119,20 @@ List<String> baseCategories = [
   "Suppe",
   "Vegetarisch",
   "Deftig",
-  "Low Carb"
+  "Low Carb",
+  "Sonntagsessen",
+  "Traditionell"
+];
+List<String> baseIngredients = [
+  "Reis",
+  "Zwiebeln",
+  "Olivenöl",
+  "Knoblauch",
+  "Reis",
+  "Hackfleisch",
+  "Putenfleisch",
+  "Mehl",
+  "Milch"
 ];
 
 class RecipeDatabase {
@@ -141,11 +156,13 @@ class RecipeDatabase {
         onCreate: (Database db, int version) async {
       // Enable FOREIGN KEYs in SQLite
       await db.execute("PRAGMA foreign_keys = ON");
+
       // Create tables
       // recipe table
       await db.execute("CREATE TABLE recipe ("
           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-          "name TEXT"
+          "name TEXT,"
+          "backgroundColor INTEGER"
           ")");
       // slot table
       await db.execute("CREATE TABLE slot ("
@@ -176,14 +193,26 @@ class RecipeDatabase {
           "FOREIGN KEY (recipeId) REFERENCES recipe(id),"
           "FOREIGN KEY (ingredientId) REFERENCES ingredient(id)"
           ")");
+      // image table
+      await db.execute("CREATE TABLE image ("
+          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+          "path TEXT"
+          ")");
+      await db.execute("CREATE TABLE recipe_image ("
+          "recipeId INTEGER,"
+          "imageId INTEGER,"
+          "FOREIGN KEY (recipeId) REFERENCES recipe(id),"
+          "FOREIGN KEY (imageId) REFERENCES image(id)"
+          ")");
 
       // Insert dummies
       // recipes
       for (String recipe in baseRecipes) {
+        int rndColorInt = (Random().nextDouble() * 0xFFFFFF).toInt();
         await db.rawInsert(
-            "INSERT INTO recipe (name)"
-            " VALUES (?)",
-            [recipe]);
+            "INSERT INTO recipe (name, backgroundColor)"
+            " VALUES (?, ?)",
+            [recipe, rndColorInt]);
       }
       // slots
       for (String slot in baseSlots) {
@@ -199,24 +228,51 @@ class RecipeDatabase {
             " VALUES (?)",
             [category]);
       }
-      // TODO: ingredients
+      // categories
+      for (String ingredient in baseIngredients) {
+        await db.rawInsert(
+            "INSERT INTO ingredient (name)"
+            " VALUES (?)",
+            [ingredient]);
+      }
     });
   }
 
-  Future<int> newRecipe(Recipe newRecipe) async {
+  Future<int> newRecipe(Recipe newRecipe, List<int> categoryIds) async {
+    int rndColorInt = (Random().nextDouble() * 0xFFFFFF).toInt();
     final db = await database;
-    var res = await db.insert("recipe", newRecipe.toMap());
+    var res = await db.rawInsert(
+        "INSERT INTO recipe (name, backgroundColor)"
+        "VALUES (?, ?)",
+        [newRecipe.name, rndColorInt]);
+    categoryIds.forEach((categoryId) async {
+      res = await db.rawInsert(
+          "INSERT INTO recipe_category (recipeId, categoryId)"
+          // Doesnt work
+          "VALUES ((SELECT last_insert_rowid()), ?)",
+          [categoryId]);
+    });
     return res;
   }
 
-  Future<List<dynamic>> getRecipesForSearch(String searchPhrase) async {
+  Future<List<dynamic>> getRecipesForSearch(
+      String searchPhrase, List<int> categoryIds) async {
     final db = await database;
-    var res =
-        await db.rawQuery("SELECT id, name FROM recipe ORDER BY name ASC");
+    var res = await db.rawQuery(
+        "SELECT id, name, backgroundColor FROM recipe ORDER BY name ASC");
     if (searchPhrase.isNotEmpty) {
       res = await db.rawQuery(
-          "SELECT id, name FROM recipe WHERE name LIKE ? ORDER BY name ASC",
+          "SELECT id, name, backgroundColor FROM recipe WHERE name LIKE ? ORDER BY name ASC",
           ["$searchPhrase%"]);
+    }
+    if (categoryIds.isNotEmpty) {
+      String catQuery = categoryIds.join("");
+      print(catQuery);
+      res = await db.rawQuery(
+          "SELECT id, name, backgroundColor "
+          "FROM recipe INNER JOIN recipe_category ON recipe.id = recipe_category.recipeId "
+          "WHERE recipe_category.categoryId = ? ORDER BY name ASC",
+          [catQuery]);
     }
     List<Recipe> list =
         res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
