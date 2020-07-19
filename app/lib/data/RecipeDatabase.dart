@@ -245,12 +245,14 @@ class RecipeDatabase {
         "INSERT INTO recipe (name, backgroundColor)"
         "VALUES (?, ?)",
         [newRecipe.name, rndColorInt]);
+    var lastInsertedRecipeIdQuery =
+        await db.rawQuery("SELECT last_insert_rowid()");
+    var lastInsertedRecipeId = lastInsertedRecipeIdQuery.first.values.first;
     categoryIds.forEach((categoryId) async {
       res = await db.rawInsert(
           "INSERT INTO recipe_category (recipeId, categoryId)"
-          // Doesnt work
-          "VALUES ((SELECT last_insert_rowid()), ?)",
-          [categoryId]);
+          "VALUES (?, ?)",
+          [lastInsertedRecipeId, categoryId]);
     });
     return res;
   }
@@ -266,16 +268,20 @@ class RecipeDatabase {
           ["$searchPhrase%"]);
     }
     if (categoryIds.isNotEmpty) {
-      String catQuery = categoryIds.join("");
-      print(catQuery);
-      res = await db.rawQuery(
-          "SELECT id, name, backgroundColor "
-          "FROM recipe INNER JOIN recipe_category ON recipe.id = recipe_category.recipeId "
-          "WHERE recipe_category.categoryId = ? ORDER BY name ASC",
-          [catQuery]);
+      // String query = "SELECT DISTINCT id, name, backgroundColor "
+      //     "FROM recipe INNER JOIN recipe_category ON recipe.id = recipe_category.recipeId "
+      //     "WHERE " + _generateQueryConditionIn(categoryIds) + " ORDER BY name ASC";
+      String query = _generateQueryConditionIntersection(categoryIds);
+      res = await db.rawQuery(query);
+    }
+    if(searchPhrase.isNotEmpty && categoryIds.isNotEmpty) {
+      String query = "SELECT DISTINCT recipeId, name, backgroundColor FROM (" + _generateQueryConditionIntersection(categoryIds) + ") AS intersecTable WHERE name LIKE ? ORDER BY name ASC";
+      print(query);
+      res = await db.rawQuery(query, ["$searchPhrase%"]);
     }
     List<Recipe> list =
         res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
+    list.forEach((element) {print(element.name);});
     return list;
   }
 
@@ -333,4 +339,60 @@ class RecipeDatabase {
         res.isNotEmpty ? res.map((c) => Category.fromMap(c)).toList() : [];
     return list;
   }
+}
+
+String _generateQueryConditionIntersection(List<int> categoryIds) {
+  String catQuery = "";
+  if (categoryIds.isNotEmpty) {
+    int n = 1;
+    categoryIds.forEach((element) {
+      catQuery += "SELECT DISTINCT recipeId, recipe.name, recipe.backgroundColor FROM recipe_category, recipe WHERE categoryId = ";
+      catQuery += element.toString();
+      catQuery += " AND recipe.id = recipe_category.recipeId";
+      if (n < categoryIds.length) {
+        catQuery += " INTERSECT ";
+      }
+      n++;
+    });
+  } else {
+    catQuery = "";
+  }
+  return catQuery;
+}
+
+String _generateQueryCondition(List<int> categoryIds) {
+  String catQuery;
+  if (categoryIds.isNotEmpty) {
+    catQuery = " recipe_category.categoryId = ";
+    int n = 1;
+    categoryIds.forEach((element) {
+      catQuery += element.toString();
+      if (n < categoryIds.length) {
+        catQuery += " AND recipe_category.categoryId = ";
+      }
+      n++;
+    });
+  } else {
+    catQuery = "";
+  }
+  return catQuery;
+}
+
+String _generateQueryConditionIn(List<int> categoryIds) {
+  String catQuery;
+  if (categoryIds.isNotEmpty) {
+    catQuery = "recipe_category.categoryId IN (";
+    int n = 1;
+    categoryIds.forEach((element) {
+      catQuery += element.toString();
+      if (n < categoryIds.length) {
+        catQuery += ", ";
+      }
+      n++;
+    });
+    catQuery += ")";
+  } else {
+    catQuery = "";
+  }
+  return catQuery;
 }
