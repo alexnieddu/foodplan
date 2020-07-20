@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -158,7 +159,11 @@ class RecipeViewState extends State<RecipeView> {
                                       margin: EdgeInsets.only(
                                           right: 15, top: 15, bottom: 15),
                                       child: ClipRRect(
-                                        child: Image.network(rndPix[rndIndex],
+                                        child: snapshot.data[i].image == null ? Image.network(rndPix[rndIndex],
+                                            width: 60,
+                                            height: 60,
+                                            fit: BoxFit.cover) :
+                                            Image.file(File(snapshot.data[i].image),
                                             width: 60,
                                             height: 60,
                                             fit: BoxFit.cover),

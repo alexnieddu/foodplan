@@ -162,7 +162,8 @@ class RecipeDatabase {
       await db.execute("CREATE TABLE recipe ("
           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
           "name TEXT,"
-          "backgroundColor INTEGER"
+          "backgroundColor INTEGER,"
+          "image TEXT"
           ")");
       // slot table
       await db.execute("CREATE TABLE slot ("
@@ -238,13 +239,15 @@ class RecipeDatabase {
     });
   }
 
-  Future<int> newRecipe(Recipe newRecipe, List<int> categoryIds) async {
+  Future<int> newRecipe(
+      Recipe newRecipe, List<int> categoryIds, String imagePath) async {
+    print(imagePath);
     int rndColorInt = (Random().nextDouble() * 0xFFFFFF).toInt();
     final db = await database;
     var res = await db.rawInsert(
-        "INSERT INTO recipe (name, backgroundColor)"
-        "VALUES (?, ?)",
-        [newRecipe.name, rndColorInt]);
+        "INSERT INTO recipe (name, backgroundColor, image)"
+        "VALUES (?, ?, ?)",
+        [newRecipe.name, rndColorInt, imagePath]);
     var lastInsertedRecipeIdQuery =
         await db.rawQuery("SELECT last_insert_rowid()");
     var lastInsertedRecipeId = lastInsertedRecipeIdQuery.first.values.first;
@@ -261,10 +264,10 @@ class RecipeDatabase {
       String searchPhrase, List<int> categoryIds) async {
     final db = await database;
     var res = await db.rawQuery(
-        "SELECT id, name, backgroundColor FROM recipe ORDER BY name ASC");
+        "SELECT id, name, backgroundColor, image FROM recipe ORDER BY name ASC");
     if (searchPhrase.isNotEmpty) {
       res = await db.rawQuery(
-          "SELECT id, name, backgroundColor FROM recipe WHERE name LIKE ? ORDER BY name ASC",
+          "SELECT id, name, backgroundColor, image FROM recipe WHERE name LIKE ? ORDER BY name ASC",
           ["$searchPhrase%"]);
     }
     if (categoryIds.isNotEmpty) {
@@ -274,14 +277,18 @@ class RecipeDatabase {
       String query = _generateQueryConditionIntersection(categoryIds);
       res = await db.rawQuery(query);
     }
-    if(searchPhrase.isNotEmpty && categoryIds.isNotEmpty) {
-      String query = "SELECT DISTINCT recipeId, name, backgroundColor FROM (" + _generateQueryConditionIntersection(categoryIds) + ") AS intersecTable WHERE name LIKE ? ORDER BY name ASC";
+    if (searchPhrase.isNotEmpty && categoryIds.isNotEmpty) {
+      String query = "SELECT DISTINCT recipeId, name, backgroundColor, image FROM (" +
+          _generateQueryConditionIntersection(categoryIds) +
+          ") AS intersecTable WHERE name LIKE ? ORDER BY name ASC";
       print(query);
       res = await db.rawQuery(query, ["$searchPhrase%"]);
     }
     List<Recipe> list =
         res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
-    list.forEach((element) {print(element.name);});
+    list.forEach((element) {
+      print(element.name);
+    });
     return list;
   }
 
@@ -346,7 +353,8 @@ String _generateQueryConditionIntersection(List<int> categoryIds) {
   if (categoryIds.isNotEmpty) {
     int n = 1;
     categoryIds.forEach((element) {
-      catQuery += "SELECT DISTINCT recipeId, recipe.name, recipe.backgroundColor FROM recipe_category, recipe WHERE categoryId = ";
+      catQuery +=
+          "SELECT DISTINCT recipeId, recipe.name, recipe.backgroundColor, recipe.image FROM recipe_category, recipe WHERE categoryId = ";
       catQuery += element.toString();
       catQuery += " AND recipe.id = recipe_category.recipeId";
       if (n < categoryIds.length) {

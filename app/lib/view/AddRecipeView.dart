@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:foodplan/constants.dart';
 import 'package:foodplan/data/RecipeDatabase.dart';
 import 'package:foodplan/model/Recipe.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddRecipeView extends StatefulWidget {
   AddRecipeViewState createState() => AddRecipeViewState();
@@ -11,6 +14,7 @@ class AddRecipeViewState extends State<AddRecipeView> {
   final recipeNameController = TextEditingController();
   List<int> categoryIds = [];
   List<int> ingredientIds = [];
+  File _image;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +33,7 @@ class AddRecipeViewState extends State<AddRecipeView> {
                   decoration: InputDecoration(
                     hintText: "Rezepte",
                   ),
-                  controller: recipeNameController
-              ),
+                  controller: recipeNameController),
               Container(
                 height: 70,
                 child: FutureBuilder(
@@ -84,20 +87,36 @@ class AddRecipeViewState extends State<AddRecipeView> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(borderradius)),
                 onPressed: () {
-                  _saveRecipe(recipeNameController.text, categoryIds);
+                  _saveRecipe(recipeNameController.text, categoryIds, _image.path);
                   Navigator.pop(context);
                 },
                 child: Text("Rezept hinzufügen"),
+              ),
+              _image == null ? Text("Kein Bild") : Image.file(_image),
+              MaterialButton(
+                color: mainColor,
+                textColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(borderradius)),
+                onPressed: _getImage,
+                child: Text("Foto hinzufügen"),
               ),
             ],
           ),
         ));
   }
 
-  void _saveRecipe(String text, List<int> categoryIds) {
-    if(text.isNotEmpty) {
+  void _saveRecipe(String text, List<int> categoryIds, String imagePath) {
+    if (text.isNotEmpty) {
       Recipe newRecipe = Recipe.recipe(text);
-      RecipeDatabase.db.newRecipe(newRecipe, categoryIds);
+      RecipeDatabase.db.newRecipe(newRecipe, categoryIds, imagePath);
     }
+  }
+
+  void _getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
   }
 }
