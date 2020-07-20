@@ -5,6 +5,7 @@ import 'package:foodplan/constants.dart';
 import 'package:foodplan/data/RecipeDatabase.dart';
 import 'package:foodplan/model/Recipe.dart';
 import 'package:foodplan/view/AddRecipeView.dart';
+import 'package:foodplan/view/DetailRecipeView.dart';
 import 'package:path/path.dart';
 
 List rndPix = [
@@ -37,7 +38,7 @@ class RecipeViewState extends State<RecipeView> {
           // Menubar
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.white.withOpacity(0),
             ),
             child: Column(
               children: <Widget>[
@@ -121,8 +122,8 @@ class RecipeViewState extends State<RecipeView> {
             flex: 1,
             child: Container(
               child: FutureBuilder(
-                future: RecipeDatabase.db
-                    .getRecipesForSearch(searchPhraseController.text, selectedCatsIds),
+                future: RecipeDatabase.db.getRecipesForSearch(
+                    searchPhraseController.text, selectedCatsIds),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());
@@ -144,7 +145,16 @@ class RecipeViewState extends State<RecipeView> {
                                     BorderRadius.circular(borderradius),
                                 boxShadow: [constShadowDarkLight]),
                             child: FlatButton(
-                              onPressed: _pushRevipeView(context, snapshot.data[i].id),
+                              onPressed: () async {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DetailRecipeView(
+                                          recipeId: snapshot.data[i].id)),
+                                ).then((value) {
+                                  setState(() {});
+                                });
+                              },
                               onLongPress: () {
                                 RecipeDatabase.db
                                     .deleteRecipe(snapshot.data[i].id);
@@ -227,10 +237,13 @@ class RecipeViewState extends State<RecipeView> {
     setState(() {});
   }
 
-  _pushRevipeView(BuildContext context, int recipeId) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => DetailRecipeView(recipeId))
-    // );
+  _pushDetailRevipeView(BuildContext context, int recipeId) {
+    Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailRecipeView(recipeId: recipeId)))
+        .then((value) {
+      setState(() {});
+    });
   }
 }

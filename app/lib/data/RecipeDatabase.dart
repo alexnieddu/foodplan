@@ -257,6 +257,18 @@ class RecipeDatabase {
     return res;
   }
 
+  Future<List<dynamic>> getRecipe(int id) async {
+    final db = await database;
+    var res = await db.rawQuery(
+        "SELECT id, name, backgroundColor FROM recipe WHERE id = ?", [id]);
+    List<Recipe> list =
+        res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
+    list.forEach((element) {
+      print(element.name);
+    });
+    return list;
+  }
+
   Future<List<dynamic>> getRecipesForSearch(
       String searchPhrase, List<int> categoryIds) async {
     final db = await database;
@@ -274,14 +286,19 @@ class RecipeDatabase {
       String query = _generateQueryConditionIntersection(categoryIds);
       res = await db.rawQuery(query);
     }
-    if(searchPhrase.isNotEmpty && categoryIds.isNotEmpty) {
-      String query = "SELECT DISTINCT recipeId, name, backgroundColor FROM (" + _generateQueryConditionIntersection(categoryIds) + ") AS intersecTable WHERE name LIKE ? ORDER BY name ASC";
+    if (searchPhrase.isNotEmpty && categoryIds.isNotEmpty) {
+      String query =
+          "SELECT DISTINCT id, name, backgroundColor FROM (" +
+              _generateQueryConditionIntersection(categoryIds) +
+              ") AS intersecTable WHERE name LIKE ? ORDER BY name ASC";
       print(query);
       res = await db.rawQuery(query, ["$searchPhrase%"]);
     }
     List<Recipe> list =
         res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
-    list.forEach((element) {print(element.name);});
+    list.forEach((element) {
+      print(element.name);
+    });
     return list;
   }
 
@@ -346,7 +363,8 @@ String _generateQueryConditionIntersection(List<int> categoryIds) {
   if (categoryIds.isNotEmpty) {
     int n = 1;
     categoryIds.forEach((element) {
-      catQuery += "SELECT DISTINCT recipeId, recipe.name, recipe.backgroundColor FROM recipe_category, recipe WHERE categoryId = ";
+      catQuery +=
+          "SELECT DISTINCT recipeId AS id, recipe.name, recipe.backgroundColor FROM recipe_category, recipe WHERE categoryId = ";
       catQuery += element.toString();
       catQuery += " AND recipe.id = recipe_category.recipeId";
       if (n < categoryIds.length) {
