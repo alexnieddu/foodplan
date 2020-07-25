@@ -128,91 +128,97 @@ class RecipeViewState extends State<RecipeView> {
                   if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());
                   } else {
-                    return Scrollbar(
-                      child: ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (context, i) {
-                          int rndIndex = Random().nextInt(rndPix.length);
-                          // ListItem
-                          return Container(
-                            // height: 100,
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            decoration: BoxDecoration(
-                                color: Color(snapshot.data[i].backgroundColor)
-                                    .withOpacity(.4),
-                                borderRadius:
-                                    BorderRadius.circular(borderradius),
-                                boxShadow: [constShadowDarkLight]),
-                            child: FlatButton(
-                              onPressed: () async {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DetailRecipeView(
-                                          recipeId: snapshot.data[i].id)),
-                                ).then((value) {
+                    if (snapshot.data.length == 0) {
+                      return Center(child: Text("Keine Rezepte gefunden."));
+                    } else {
+                      return Scrollbar(
+                        child: ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, i) {
+                            int rndIndex = Random().nextInt(rndPix.length);
+                            // ListItem
+                            return Container(
+                              // height: 100,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              decoration: BoxDecoration(
+                                  color: Color(snapshot.data[i].backgroundColor)
+                                      .withOpacity(.4),
+                                  borderRadius:
+                                      BorderRadius.circular(borderradius),
+                                  boxShadow: [constShadowDarkLight]),
+                              child: FlatButton(
+                                onPressed: () async {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DetailRecipeView(
+                                            recipeId: snapshot.data[i].id)),
+                                  ).then((value) {
+                                    setState(() {});
+                                  });
+                                },
+                                onLongPress: () {
+                                  RecipeDatabase.db
+                                      .deleteRecipe(snapshot.data[i].id);
                                   setState(() {});
-                                });
-                              },
-                              onLongPress: () {
-                                RecipeDatabase.db
-                                    .deleteRecipe(snapshot.data[i].id);
-                                setState(() {});
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  // Image
-                                  Container(
-                                      margin: EdgeInsets.only(
-                                          right: 15, top: 15, bottom: 15),
-                                      child: ClipRRect(
-                                        child: Image.network(rndPix[rndIndex],
-                                            width: 60,
-                                            height: 60,
-                                            fit: BoxFit.cover),
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                      )),
-                                  // Description
-                                  ConstrainedBox(
-                                    constraints: BoxConstraints(maxWidth: 165),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        // Title
-                                        RichText(
-                                          text: TextSpan(
-                                              text: "${snapshot.data[i].name}",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                              )),
-                                        ),
-                                        // Info
-                                        Text("Zutaten, Liste, ...")
-                                      ],
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    // Image
+                                    Container(
+                                        margin: EdgeInsets.only(
+                                            right: 15, top: 15, bottom: 15),
+                                        child: ClipRRect(
+                                          child: Image.network(rndPix[rndIndex],
+                                              width: 60,
+                                              height: 60,
+                                              fit: BoxFit.cover),
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        )),
+                                    // Description
+                                    ConstrainedBox(
+                                      constraints:
+                                          BoxConstraints(maxWidth: 165),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          // Title
+                                          RichText(
+                                            text: TextSpan(
+                                                text:
+                                                    "${snapshot.data[i].name}",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                )),
+                                          ),
+                                          // Info
+                                          Text("Zutaten, Liste, ...")
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Spacer(),
-                                  // Icon
-                                  IconButton(
-                                      icon: Icon(Icons.more_vert),
-                                      onPressed: () {
-                                        print("h");
-                                      })
-                                ],
+                                    Spacer(),
+                                    // Icon
+                                    IconButton(
+                                        icon: Icon(Icons.more_vert),
+                                        onPressed: () {
+                                          print("h");
+                                        })
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
+                            );
+                          },
+                        ),
+                      );
+                    }
                   }
                 },
               ),
