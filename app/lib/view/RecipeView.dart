@@ -30,6 +30,22 @@ class RecipeViewState extends State<RecipeView> {
   List cats = ["Alles", "Fleisch", "Suppe", "Vegetarisch", "Frühstück"];
   List selectedCats = [];
   List<int> selectedCatsIds = [];
+
+  var _searchBoxShadow = constShadowDarkLight;
+  var _focusSearchTextField = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusSearchTextField.addListener(_onFocusSearchTextfield);
+  }
+
+  @override
+  void dispose() {
+    _focusSearchTextField.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,15 +59,19 @@ class RecipeViewState extends State<RecipeView> {
             child: Column(
               children: <Widget>[
                 // Searchbar
-                Container(
+                AnimatedContainer(
                     height: 50,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(borderradius),
-                        boxShadow: [constShadowDark]),
+                        boxShadow: [_searchBoxShadow]),
                     margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     padding: EdgeInsets.symmetric(horizontal: 20),
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeInExpo,
                     child: TextField(
+                      autofocus: false,
+                      focusNode: _focusSearchTextField,
                       decoration: InputDecoration(
                           icon: Icon(Icons.search, color: mainColor),
                           hintText: "Rezepte, Zutaten, ...",
@@ -251,5 +271,13 @@ class RecipeViewState extends State<RecipeView> {
         .then((value) {
       setState(() {});
     });
+  }
+
+  void _onFocusSearchTextfield() {
+    // Set box shadow
+    _focusSearchTextField.hasFocus
+        ? _searchBoxShadow = constShadow
+        : _searchBoxShadow = constShadowDarkLight;
+    setState(() {});
   }
 }
