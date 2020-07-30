@@ -31,6 +31,7 @@ class AddRecipeViewState extends State<AddRecipeView> {
                   ),
                   controller: recipeNameController
               ),
+              // Categories
               Container(
                 height: 70,
                 child: FutureBuilder(
@@ -78,6 +79,54 @@ class AddRecipeViewState extends State<AddRecipeView> {
                       }
                     }),
               ),
+              // Ingredients
+              Container(
+                height: 70,
+                child: FutureBuilder(
+                    future: RecipeDatabase.db.getAllIngredients(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child: FilterChip(
+                                label: Text(snapshot.data[index].name),
+                                labelStyle: TextStyle(
+                                    color: ingredientIds
+                                            .contains(snapshot.data[index].id)
+                                        ? Colors.white
+                                        : Colors.black),
+                                selectedColor: mainColor,
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(borderradius)),
+                                selected: ingredientIds
+                                    .contains(snapshot.data[index].id),
+                                onSelected: (bool value) {
+                                  setState(() {
+                                    if (value) {
+                                      ingredientIds.add(snapshot.data[index].id);
+                                    } else {
+                                      ingredientIds
+                                          .remove(snapshot.data[index].id);
+                                    }
+                                    print(ingredientIds);
+                                  });
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    }),
+              ),
               MaterialButton(
                 color: mainColor,
                 textColor: Colors.white,
@@ -97,7 +146,7 @@ class AddRecipeViewState extends State<AddRecipeView> {
   void _saveRecipe(String text, List<int> categoryIds) {
     if(text.isNotEmpty) {
       Recipe newRecipe = Recipe.recipe(text);
-      RecipeDatabase.db.newRecipe(newRecipe, categoryIds);
+      RecipeDatabase.db.newRecipe(newRecipe, categoryIds, ingredientIds);
     }
   }
 }

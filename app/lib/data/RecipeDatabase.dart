@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:foodplan/model/Category.dart';
+import 'package:foodplan/model/Ingredient.dart';
 import 'package:foodplan/model/Slot.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -124,7 +125,6 @@ List<String> baseCategories = [
   "Traditionell"
 ];
 List<String> baseIngredients = [
-  "Reis",
   "Zwiebeln",
   "Olivenöl",
   "Knoblauch",
@@ -238,7 +238,7 @@ class RecipeDatabase {
     });
   }
 
-  Future<int> newRecipe(Recipe newRecipe, List<int> categoryIds) async {
+  Future<int> newRecipe(Recipe newRecipe, List<int> categoryIds, List<int> ingredientIds) async {
     int rndColorInt = (Random().nextDouble() * 0xFFFFFF).toInt();
     final db = await database;
     var res = await db.rawInsert(
@@ -253,6 +253,12 @@ class RecipeDatabase {
           "INSERT INTO recipe_category (recipeId, categoryId)"
           "VALUES (?, ?)",
           [lastInsertedRecipeId, categoryId]);
+    });
+    ingredientIds.forEach((ingredientId) async {
+      res = await db.rawInsert(
+          "INSERT INTO recipe_ingredient (recipeId, ingredientId)"
+          "VALUES (?, ?)",
+          [lastInsertedRecipeId, ingredientId]);
     });
     return res;
   }
@@ -276,8 +282,12 @@ class RecipeDatabase {
         "SELECT id, name, backgroundColor FROM recipe ORDER BY name ASC");
     if (searchPhrase.isNotEmpty) {
       res = await db.rawQuery(
-          "SELECT id, name, backgroundColor FROM recipe WHERE name LIKE ? ORDER BY name ASC",
-          ["$searchPhrase%"]);
+          "SELECT id, name, backgroundColor FROM recipe WHERE name LIKE ? "
+          "UNION "
+          "SELECT recipe.id, recipe.name, recipe.backgroundColor FROM recipe, recipe_ingredient, ingredient WHERE "
+          "recipe.id = recipe_ingredient.recipeId AND recipe_ingredient.ingredientId = ingredient.id AND "
+          "ingredient.name LIKE ? ORDER BY recipe.name ASC",
+          ["$searchPhrase%", "$searchPhrase%"]);
     }
     if (categoryIds.isNotEmpty) {
       // String query = "SELECT DISTINCT id, name, backgroundColor "
@@ -354,6 +364,25 @@ class RecipeDatabase {
         await db.rawQuery("SELECT id, name FROM category ORDER BY name ASC");
     List<Category> list =
         res.isNotEmpty ? res.map((c) => Category.fromMap(c)).toList() : [];
+    return list;
+  }
+
+  // Ingredients
+  Future<List<dynamic>> getAllIngredients() async {
+    final db = await database;
+    var res =
+        await db.rawQuery("SELECT id, name FROM ingredient ORDER BY name ASC");
+    List<Ingredient> list =
+        res.isNotEmpty ? res.map((c) => Ingredient.fromMap(c)).toList() : [];
+    return list;
+  }
+
+  Future<List<dynamic>> getIngredientsOfRecipe(int recipeId) async {
+    final db = await database;
+    var res =
+        await db.rawQuery("SELECT id, name FROM ingredient INNER JOIN recipe_ingredient ON recipe_ingredient.ingredientId = ingredient.id WHERE recipe_ingredient.recipeId = ? ORDER BY name ASC", [recipeId]);
+    List<Ingredient> list =
+        res.isNotEmpty ? res.map((c) => Ingredient.fromMap(c)).toList() : [];
     return list;
   }
 }

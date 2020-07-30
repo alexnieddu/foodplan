@@ -27,7 +27,6 @@ class RecipeView extends StatefulWidget {
 class RecipeViewState extends State<RecipeView> {
   final searchPhraseController = TextEditingController();
   String searchPhrase = "";
-  List cats = ["Alles", "Fleisch", "Suppe", "Vegetarisch", "Frühstück"];
   List selectedCats = [];
   List<int> selectedCatsIds = [];
 
@@ -220,7 +219,7 @@ class RecipeViewState extends State<RecipeView> {
                                                 )),
                                           ),
                                           // Info
-                                          Text("Zutaten, Liste, ...")
+                                          Text("Keine Zutaten zugeordnet.")
                                         ],
                                       ),
                                     ),
