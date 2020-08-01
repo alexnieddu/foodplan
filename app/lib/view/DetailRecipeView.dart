@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:foodplan/constants.dart';
 import 'package:foodplan/data/RecipeDatabase.dart';
+import 'package:path/path.dart';
 
 List rndPix = [
   "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&w=1000&q=80",
@@ -81,6 +82,35 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                             ),
                           ],
                         ),
+                      ),
+                    ),
+                    // Body
+                    Container(
+                      child: FutureBuilder(
+                        future: RecipeDatabase.db
+                            .getIngredientsOfRecipe(snapshot.data.first.id),
+                        builder: (context, ingredients) {
+                          if (ingredients.hasData) {
+                            if (ingredients.data.length > 0) {
+                              var ingredientsListString = "";
+                              for (var i = 0;
+                                  i < ingredients.data.length;
+                                  i++) {
+                                (i + 1) < ingredients.data.length
+                                    ? ingredientsListString +=
+                                        ingredients.data[i].name + ", "
+                                    : ingredientsListString +=
+                                        ingredients.data[i].name + ", ...";
+                              }
+                              return Text(ingredientsListString);
+                            } else {
+                              return Text("Bisher keine Zutaten.");
+                            }
+                          } else {
+                            return Text(
+                                "Zutatenliste konnte nicht gelesen werden.");
+                          }
+                        },
                       ),
                     )
                   ],
