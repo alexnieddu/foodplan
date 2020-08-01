@@ -380,7 +380,7 @@ class RecipeDatabase {
   Future<List<dynamic>> getIngredientsOfRecipe(int recipeId) async {
     final db = await database;
     var res =
-        await db.rawQuery("SELECT id, name FROM ingredient INNER JOIN recipe_ingredient ON recipe_ingredient.ingredientId = ingredient.id WHERE recipe_ingredient.recipeId = ? ORDER BY name ASC", [recipeId]);
+        await db.rawQuery("SELECT id, name FROM ingredient INNER JOIN recipe_ingredient ON recipe_ingredient.ingredientId = ingredient.id WHERE recipe_ingredient.recipeId = ? ORDER BY name ASC LIMIT 3", [recipeId]);
     List<Ingredient> list =
         res.isNotEmpty ? res.map((c) => Ingredient.fromMap(c)).toList() : [];
     return list;

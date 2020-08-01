@@ -218,8 +218,30 @@ class RecipeViewState extends State<RecipeView> {
                                                   fontSize: 16,
                                                 )),
                                           ),
-                                          // Info
-                                          Text("Keine Zutaten zugeordnet.")
+                                          // Ingredients
+                                          FutureBuilder(
+                                            future: RecipeDatabase.db
+                                                .getIngredientsOfRecipe(
+                                                    snapshot.data[i].id),
+                                            builder: (context, ingredients) {
+                                              if(ingredients.hasData) {
+                                                if(ingredients.data.length > 0) {
+                                                  var ingredientsListString = "";
+                                                  for(var i = 0; i < ingredients.data.length; i++) {
+                                                    (i+1) < ingredients.data.length ? ingredientsListString += ingredients.data[i].name + ", "
+                                                    : ingredientsListString += ingredients.data[i].name + ", ...";
+                                                  }
+                                                  return Text(ingredientsListString);
+                                                }
+                                                else {
+                                                  return Text("Bisher keine Zutaten.");
+                                                }
+                                              }
+                                              else {
+                                                return Text("Zutatenliste konnte nicht gelesen werden.");
+                                              }
+                                            }
+                                          )
                                         ],
                                       ),
                                     ),
