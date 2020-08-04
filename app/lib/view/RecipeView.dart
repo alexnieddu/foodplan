@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -194,6 +195,29 @@ class RecipeViewState extends State<RecipeView> {
                                               width: 60,
                                               height: 60,
                                               fit: BoxFit.cover),
+
+                                          // snapshot.data[i].imageId == null
+                                          //     ? Image.network(rndPix[rndIndex],
+                                          //         width: 60,
+                                          //         height: 60,
+                                          //         fit: BoxFit.cover)
+                                          //     // TODO: problems width search cat AND text
+                                          //     : FutureBuilder(
+                                          //       future: RecipeDatabase.db.getImagePathOfRecipe(snapshot.data[i].id),
+                                          //       builder: (context, imagePath) {
+                                          //         if(imagePath.hasData) {
+                                          //           return Image.file(
+                                          //             File(imagePath.data.first.path),
+                                          //             width: 60,
+                                          //             height: 60,
+                                          //             fit: BoxFit.cover);
+                                          //         }
+                                          //         else {
+                                          //           print("Error in loading RecipeImage.");
+                                          //           return null;
+                                          //         }
+                                          //       },
+                                          //     ),
                                           borderRadius:
                                               BorderRadius.circular(100),
                                         )),
@@ -220,28 +244,45 @@ class RecipeViewState extends State<RecipeView> {
                                           ),
                                           // Ingredients
                                           FutureBuilder(
-                                            future: RecipeDatabase.db
-                                                .getIngredientsOfRecipe(
-                                                    snapshot.data[i].id),
-                                            builder: (context, ingredients) {
-                                              if(ingredients.hasData) {
-                                                if(ingredients.data.length > 0) {
-                                                  var ingredientsListString = "";
-                                                  for(var i = 0; i < ingredients.data.length; i++) {
-                                                    (i+1) < ingredients.data.length ? ingredientsListString += ingredients.data[i].name + ", "
-                                                    : ingredientsListString += ingredients.data[i].name + ", ...";
+                                              future: RecipeDatabase.db
+                                                  .getIngredientsOfRecipe(
+                                                      snapshot.data[i].id),
+                                              builder: (context, ingredients) {
+                                                if (ingredients.hasData) {
+                                                  if (ingredients.data.length >
+                                                      0) {
+                                                    var ingredientsListString =
+                                                        "";
+                                                    for (var i = 0;
+                                                        i <
+                                                            ingredients
+                                                                .data.length;
+                                                        i++) {
+                                                      (i + 1) <
+                                                              ingredients
+                                                                  .data.length
+                                                          ? ingredientsListString +=
+                                                              ingredients
+                                                                      .data[i]
+                                                                      .name +
+                                                                  ", "
+                                                          : ingredientsListString +=
+                                                              ingredients
+                                                                      .data[i]
+                                                                      .name +
+                                                                  ", ...";
+                                                    }
+                                                    return Text(
+                                                        ingredientsListString);
+                                                  } else {
+                                                    return Text(
+                                                        "Bisher keine Zutaten.");
                                                   }
-                                                  return Text(ingredientsListString);
+                                                } else {
+                                                  return Text(
+                                                      "Zutatenliste konnte nicht gelesen werden.");
                                                 }
-                                                else {
-                                                  return Text("Bisher keine Zutaten.");
-                                                }
-                                              }
-                                              else {
-                                                return Text("Zutatenliste konnte nicht gelesen werden.");
-                                              }
-                                            }
-                                          )
+                                              })
                                         ],
                                       ),
                                     ),

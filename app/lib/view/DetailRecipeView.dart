@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
           future: RecipeDatabase.db.getRecipe(widget.recipeId),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              int rndIndex = Random().nextInt(rndPix.length);
               return Container(
                 child: Column(
                   children: <Widget>[
@@ -64,11 +66,30 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                                 margin: EdgeInsets.only(
                                     right: 15, top: 15, bottom: 15),
                                 child: ClipRRect(
-                                  child: Image.network(
-                                      rndPix[Random().nextInt(rndPix.length)],
+                                  child: Image.network(rndPix[rndIndex],
                                       width: 160,
                                       height: 160,
                                       fit: BoxFit.cover),
+                                  // FutureBuilder(
+                                  //     future: RecipeDatabase.db
+                                  //         .getImagePathOfRecipe(
+                                  //             snapshot.data.first.id),
+                                  //     builder: (context, imagePath) {
+                                  //       if (imagePath.hasData) {
+                                  //         if (imagePath.data != null) {
+                                  //           return Image.file(
+                                  //               File(imagePath.data.first.path),
+                                  //               width: 160,
+                                  //               height: 160,
+                                  //               fit: BoxFit.cover);
+                                  //         } else {
+                                  //           return Image.network(rndPix[rndIndex],
+                                  //               width: 160,
+                                  //               height: 160,
+                                  //               fit: BoxFit.cover);
+                                  //         }
+                                  //       }
+                                  //     }),
                                   borderRadius: BorderRadius.circular(100),
                                 )),
                             RichText(

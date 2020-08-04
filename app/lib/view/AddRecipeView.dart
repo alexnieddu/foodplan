@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:foodplan/constants.dart';
 import 'package:foodplan/data/RecipeDatabase.dart';
@@ -11,6 +13,7 @@ class AddRecipeViewState extends State<AddRecipeView> {
   final recipeNameController = TextEditingController();
   List<int> categoryIds = [];
   List<int> ingredientIds = [];
+  File _image;
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +28,23 @@ class AddRecipeViewState extends State<AddRecipeView> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              _image == null
+                  ? Text("Kein Bild")
+                  : Container(
+                      decoration: BoxDecoration(
+                          boxShadow: [],
+                          borderRadius: BorderRadius.circular(100)),
+                      margin: EdgeInsets.only(right: 15, top: 15, bottom: 15),
+                      child: ClipRRect(
+                        child: Image.file(_image,
+                            width: 160, height: 160, fit: BoxFit.cover),
+                        borderRadius: BorderRadius.circular(100),
+                      )),
               TextField(
                   decoration: InputDecoration(
                     hintText: "Rezepte",
                   ),
-                  controller: recipeNameController
-              ),
+                  controller: recipeNameController),
               // Categories
               Container(
                 height: 70,
@@ -110,7 +124,8 @@ class AddRecipeViewState extends State<AddRecipeView> {
                                 onSelected: (bool value) {
                                   setState(() {
                                     if (value) {
-                                      ingredientIds.add(snapshot.data[index].id);
+                                      ingredientIds
+                                          .add(snapshot.data[index].id);
                                     } else {
                                       ingredientIds
                                           .remove(snapshot.data[index].id);
@@ -132,8 +147,17 @@ class AddRecipeViewState extends State<AddRecipeView> {
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(borderradius)),
+                onPressed: _getImage,
+                child: Text("Foto hinzufügen"),
+              ),
+              MaterialButton(
+                color: mainColor,
+                textColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(borderradius)),
                 onPressed: () {
-                  _saveRecipe(recipeNameController.text, categoryIds);
+                  _saveRecipe(
+                      recipeNameController.text, categoryIds, _image.path);
                   Navigator.pop(context);
                 },
                 child: Text("Rezept hinzufügen"),
@@ -143,10 +167,22 @@ class AddRecipeViewState extends State<AddRecipeView> {
         ));
   }
 
-  void _saveRecipe(String text, List<int> categoryIds) {
-    if(text.isNotEmpty) {
+  void _saveRecipe(String text, List<int> categoryIds, String imagePath) {
+    if (text.isNotEmpty) {
       Recipe newRecipe = Recipe.recipe(text);
-      RecipeDatabase.db.newRecipe(newRecipe, categoryIds, ingredientIds);
+      RecipeDatabase.db
+          .newRecipe(newRecipe, categoryIds, ingredientIds, imagePath);
     }
+  }
+
+  void _getImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final PickedFile _pickedImage =
+        await _picker.getImage(source: ImageSource.gallery);
+    if (_pickedImage == null) return;
+    var image = File(_pickedImage.path);
+    setState(() {
+      _image = image;
+    });
   }
 }

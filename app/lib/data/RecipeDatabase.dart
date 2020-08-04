@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:foodplan/model/Category.dart';
 import 'package:foodplan/model/Ingredient.dart';
+import 'package:foodplan/model/RecipeImage.dart';
 import 'package:foodplan/model/Slot.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -162,7 +163,10 @@ class RecipeDatabase {
       await db.execute("CREATE TABLE recipe ("
           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
           "name TEXT,"
-          "backgroundColor INTEGER"
+          "description TEXT,"
+          "imageId INTEGER,"
+          "backgroundColor INTEGER,"
+          "FOREIGN KEY (imageId) REFERENCES image(id)"
           ")");
       // slot table
       await db.execute("CREATE TABLE slot ("
@@ -195,14 +199,10 @@ class RecipeDatabase {
           ")");
       // image table
       await db.execute("CREATE TABLE image ("
-          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-          "path TEXT"
-          ")");
-      await db.execute("CREATE TABLE recipe_image ("
-          "recipeId INTEGER,"
-          "imageId INTEGER,"
-          "FOREIGN KEY (recipeId) REFERENCES recipe(id),"
-          "FOREIGN KEY (imageId) REFERENCES image(id)"
+          "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+          "path TEXT, "
+          "recipeId INTEGER, "
+          "FOREIGN KEY (recipeId) REFERENCES recipe(id)"
           ")");
 
       // Insert dummies
@@ -238,35 +238,57 @@ class RecipeDatabase {
     });
   }
 
-  Future<int> newRecipe(Recipe newRecipe, List<int> categoryIds, List<int> ingredientIds) async {
+  Future<int> newRecipe(Recipe newRecipe, List<int> categoryIds,
+      List<int> ingredientIds, String imagePath) async {
     int rndColorInt = (Random().nextDouble() * 0xFFFFFF).toInt();
+    var res;
     final db = await database;
-    var res = await db.rawInsert(
-        "INSERT INTO recipe (name, backgroundColor)"
-        "VALUES (?, ?)",
-        [newRecipe.name, rndColorInt]);
-    var lastInsertedRecipeIdQuery =
-        await db.rawQuery("SELECT last_insert_rowid()");
-    var lastInsertedRecipeId = lastInsertedRecipeIdQuery.first.values.first;
-    categoryIds.forEach((categoryId) async {
+    if (imagePath.isNotEmpty) {
       res = await db.rawInsert(
-          "INSERT INTO recipe_category (recipeId, categoryId)"
+          "INSERT INTO recipe (name, backgroundColor)"
           "VALUES (?, ?)",
-          [lastInsertedRecipeId, categoryId]);
-    });
-    ingredientIds.forEach((ingredientId) async {
+          [newRecipe.name, rndColorInt]);
+
+      var lastInsertedRecipeIdQuery =
+          await db.rawQuery("SELECT last_insert_rowid()");
+      var lastInsertedRecipeId = lastInsertedRecipeIdQuery.first.values.first;
+
       res = await db.rawInsert(
-          "INSERT INTO recipe_ingredient (recipeId, ingredientId)"
+          "INSERT INTO image (path, recipeId)"
           "VALUES (?, ?)",
-          [lastInsertedRecipeId, ingredientId]);
-    });
+          [imagePath, lastInsertedRecipeId]);
+
+      var lastInsertedImageIdQuery =
+          await db.rawQuery("SELECT last_insert_rowid()");
+      var lastInsertedImageId = lastInsertedImageIdQuery.first.values.first;
+
+      res = await db.rawUpdate("UPDATE recipe SET imageId = ? WHERE id = ?",
+          [lastInsertedImageId, lastInsertedRecipeId]);
+
+      categoryIds.forEach((categoryId) async {
+        res = await db.rawInsert(
+            "INSERT INTO recipe_category (recipeId, categoryId)"
+            "VALUES (?, ?)",
+            [lastInsertedRecipeId, categoryId]);
+      });
+
+      ingredientIds.forEach((ingredientId) async {
+        res = await db.rawInsert(
+            "INSERT INTO recipe_ingredient (recipeId, ingredientId)"
+            "VALUES (?, ?)",
+            [lastInsertedRecipeId, ingredientId]);
+      });
+    } else {
+      res = null;
+    }
     return res;
   }
 
   Future<List<dynamic>> getRecipe(int id) async {
     final db = await database;
     var res = await db.rawQuery(
-        "SELECT id, name, backgroundColor FROM recipe WHERE id = ?", [id]);
+        "SELECT id, name, backgroundColor, imageId FROM recipe WHERE id = ?",
+        [id]);
     List<Recipe> list =
         res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
     list.forEach((element) {
@@ -298,10 +320,11 @@ class RecipeDatabase {
     }
     if (searchPhrase.isNotEmpty && categoryIds.isNotEmpty) {
       String query =
-          "SELECT DISTINCT id, name, backgroundColor FROM (" +
+          "SELECT DISTINCT intersecTable.id, intersecTable.name, intersecTable.backgroundColor FROM (" +
               _generateQueryConditionIntersection(categoryIds) +
-              ") AS intersecTable WHERE name LIKE ? ORDER BY name ASC";
-      print(query);
+              ") AS intersecTable, recipe, recipe_ingredient, ingredient WHERE "
+                  "recipe.id = recipe_ingredient.recipeId AND recipe_ingredient.ingredientId = ingredient.id AND "
+                  "ingredient.name LIKE ? ORDER BY recipe.name ASC";
       res = await db.rawQuery(query, ["$searchPhrase%"]);
     }
     List<Recipe> list =
@@ -379,10 +402,31 @@ class RecipeDatabase {
 
   Future<List<dynamic>> getIngredientsOfRecipe(int recipeId) async {
     final db = await database;
-    var res =
-        await db.rawQuery("SELECT id, name FROM ingredient INNER JOIN recipe_ingredient ON recipe_ingredient.ingredientId = ingredient.id WHERE recipe_ingredient.recipeId = ? ORDER BY name ASC LIMIT 3", [recipeId]);
+    var res = await db.rawQuery(
+        "SELECT id, name FROM ingredient INNER JOIN recipe_ingredient ON recipe_ingredient.ingredientId = ingredient.id WHERE recipe_ingredient.recipeId = ? ORDER BY name ASC LIMIT 3",
+        [recipeId]);
     List<Ingredient> list =
         res.isNotEmpty ? res.map((c) => Ingredient.fromMap(c)).toList() : [];
+    return list;
+  }
+
+  Future<List<dynamic>> getImagePathOfRecipe(int recipeId) async {
+    List<RecipeImage> list;
+    final db = await database;
+    // Get imageId of corresponding recipe
+    var imageIdQuery = await db
+        .rawQuery("SELECT imageID FROM recipe WHERE id = ?", [recipeId]);
+    var imageId = imageIdQuery.first.values.first;
+    // Get imagePath of corresponding recipe
+    if (imageId != null) {
+      var res = await db
+          .rawQuery("SELECT id, path FROM image WHERE id = ?", [imageId]);
+      list =
+          res.isNotEmpty ? res.map((c) => RecipeImage.fromMap(c)).toList() : [];
+    } else {
+      list = [];
+    }
+    print(list);
     return list;
   }
 }
