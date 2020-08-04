@@ -1,0 +1,8 @@
+- 0.0.3
+    - new UI
+    - Category filter
+
+- 0.0.4
+    - ingredients and image table added to db
+    - list ingredients in recipe tile in recipeview
+    - WIP: search for category, recipe name and ingredient name
