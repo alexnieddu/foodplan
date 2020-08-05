@@ -162,8 +162,18 @@ class RecipeViewState extends State<RecipeView> {
                               margin: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
                               decoration: BoxDecoration(
-                                  color: Color(snapshot.data[i].backgroundColor)
-                                      .withOpacity(.4),
+                                  // color: Color(snapshot.data[i].backgroundColor)
+                                  //     .withOpacity(.4),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: [
+                                        Color(snapshot.data[i].backgroundColor)
+                                            .withOpacity(.4),
+                                        Color(snapshot.data[i].backgroundColor +
+                                                colorOffset)
+                                            .withOpacity(.4)
+                                      ]),
                                   borderRadius:
                                       BorderRadius.circular(borderradius),
                                   boxShadow: [constShadowDarkLight]),

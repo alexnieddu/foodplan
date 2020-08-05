@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:foodplan/constants.dart';
 import 'package:foodplan/data/RecipeDatabase.dart';
+import 'package:foodplan/model/Recipe.dart';
 import 'package:path/path.dart';
 
 List rndPix = [
@@ -20,12 +21,20 @@ List rndPix = [
 
 class DetailRecipeView extends StatefulWidget {
   final int recipeId;
+  Recipe recipe;
   DetailRecipeView({Key key, int this.recipeId}) : super(key: key);
   DetailRecipeViewState createState() => DetailRecipeViewState();
 }
 
 class DetailRecipeViewState extends State<DetailRecipeView> {
   // widget.recipeId
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +43,11 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               int rndIndex = Random().nextInt(rndPix.length);
+              print(snapshot.data.name);
+              print(snapshot.data.id);
+              print(snapshot.data.imageId);
+              print(snapshot.data.imagePath);
+              print(snapshot.data.categories);
               return Container(
                 child: Column(
                   children: <Widget>[
@@ -41,17 +55,18 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
                               bottomRight: Radius.circular(70)),
-                          // gradient: LinearGradient(
-                          //     begin: Alignment.topLeft,
-                          //     end: Alignment.bottomRight,
-                          //     colors: [
-                          //       Color(snapshot.data.first.backgroundColor)
-                          //           .withOpacity(.3),
-                          //       Color(snapshot.data.first.backgroundColor)
-                          //           .withOpacity(.9)
-                          //     ]),
-                          color: Color(snapshot.data.first.backgroundColor)
-                              .withOpacity(.4),
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Color(snapshot.data.backgroundColor)
+                                    .withOpacity(.4),
+                                Color(snapshot.data.backgroundColor +
+                                        colorOffset)
+                                    .withOpacity(.4)
+                              ]),
+                          // color: Color(snapshot.data.backgroundColor)
+                          //     .withOpacity(.4),
                           boxShadow: [constShadowDarkLight]),
                       height: 300,
                       child: Center(
@@ -94,7 +109,7 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                                 )),
                             RichText(
                               text: TextSpan(
-                                  text: snapshot.data.first.name,
+                                  text: snapshot.data.name,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -109,7 +124,7 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                     Container(
                       child: FutureBuilder(
                         future: RecipeDatabase.db
-                            .getIngredientsOfRecipe(snapshot.data.first.id),
+                            .getIngredientsOfRecipe(snapshot.data.id),
                         builder: (context, ingredients) {
                           if (ingredients.hasData) {
                             if (ingredients.data.length > 0) {

@@ -284,17 +284,27 @@ class RecipeDatabase {
     return res;
   }
 
-  Future<List<dynamic>> getRecipe(int id) async {
+  Future<Recipe> getRecipe(int id) async {
     final db = await database;
     var res = await db.rawQuery(
         "SELECT id, name, backgroundColor, imageId FROM recipe WHERE id = ?",
         [id]);
-    List<Recipe> list =
-        res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
-    list.forEach((element) {
-      print(element.name);
-    });
-    return list;
+
+    var recipe = Recipe.fromMap(res.first);
+
+    res = await db.rawQuery(
+        "SELECT path FROM image WHERE id = ?",
+        [recipe.imageId]);
+    recipe.imagePath = res.first.values.first;
+
+    // res = await db.rawQuery(
+    //     "SELECT id, name FROM ingredient "
+    //     "INNER JOIN recipe_ingredient ON recipe_ingredient.ingredientId = ingredient.id "
+    //     "WHERE recipe_ingredient.recipeId = ? "
+    //     "ORDER BY name ASC",
+    //     [id]);
+
+    return recipe;
   }
 
   Future<List<dynamic>> getRecipesForSearch(

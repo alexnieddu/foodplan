@@ -1,13 +1,16 @@
+import 'package:foodplan/model/RecipeImage.dart';
+
 class Recipe {
   int id;
   String name;
   int backgroundColor;
   int imageId;
+  String imagePath;
+  List<String> categories;
+  List<String> ingredients;
 
   Recipe.recipe(name) {
     this.name = name;
-    this.backgroundColor = backgroundColor;
-    this.imageId = imageId;
   }
 
   Recipe({this.id, this.name, this.backgroundColor, this.imageId});

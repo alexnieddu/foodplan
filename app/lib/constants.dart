@@ -31,4 +31,6 @@ BoxShadow constShadowDarkLight = BoxShadow(
 );
 const double borderradius = 15.0;
 
+const int colorOffset = 30000;
+
 List rndColors = [];

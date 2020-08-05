@@ -1,6 +1,10 @@
 # Custom
 ios/Flutter/Debug.xcconfig
 ios/Flutter/Release.xcconfig
+playground/
+.vscode
+.metadata
+ios/Podfile
 
 # Miscellaneous
 *.class
