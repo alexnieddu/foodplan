@@ -43,11 +43,6 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               int rndIndex = Random().nextInt(rndPix.length);
-              print(snapshot.data.name);
-              print(snapshot.data.id);
-              print(snapshot.data.imageId);
-              print(snapshot.data.imagePath);
-              print(snapshot.data.categories);
               return Container(
                 child: Column(
                   children: <Widget>[
@@ -81,30 +76,16 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                                 margin: EdgeInsets.only(
                                     right: 15, top: 15, bottom: 15),
                                 child: ClipRRect(
-                                  child: Image.network(rndPix[rndIndex],
-                                      width: 160,
-                                      height: 160,
-                                      fit: BoxFit.cover),
-                                  // FutureBuilder(
-                                  //     future: RecipeDatabase.db
-                                  //         .getImagePathOfRecipe(
-                                  //             snapshot.data.first.id),
-                                  //     builder: (context, imagePath) {
-                                  //       if (imagePath.hasData) {
-                                  //         if (imagePath.data != null) {
-                                  //           return Image.file(
-                                  //               File(imagePath.data.first.path),
-                                  //               width: 160,
-                                  //               height: 160,
-                                  //               fit: BoxFit.cover);
-                                  //         } else {
-                                  //           return Image.network(rndPix[rndIndex],
-                                  //               width: 160,
-                                  //               height: 160,
-                                  //               fit: BoxFit.cover);
-                                  //         }
-                                  //       }
-                                  //     }),
+                                  child: snapshot.data.image.path != null
+                                      ? Image.file(
+                                          File(snapshot.data.image.path),
+                                          width: 160,
+                                          height: 160,
+                                          fit: BoxFit.cover)
+                                      : Image.network(rndPix[rndIndex],
+                                          width: 160,
+                                          height: 160,
+                                          fit: BoxFit.cover),
                                   borderRadius: BorderRadius.circular(100),
                                 )),
                             RichText(

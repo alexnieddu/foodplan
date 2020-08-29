@@ -14,7 +14,6 @@ List rndPix = [
   "https://i2.wp.com/harrysding.ch/wp-content/uploads/2020/03/Food-Delivery-und-Takeaway-zuerich-2-scaled.jpg?fit=2560%2C1913&ssl=1",
   "https://images.happycow.net/venues/1024/10/58/hcmp105847_838346.jpeg",
   "https://worldfoodtrip.de/wp-content/uploads/2019/06/IMG_4134-1140x620.jpg",
-  "https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg",
   "https://x5w3j9u7.stackpathcdn.com/wp-content/uploads/2020/06/tuerkischer-bulgur-salat-rezept-kisir-680x900.jpg",
   "https://www.coolibri.de/wp-content/uploads/2019/08/toa-heftiba-MrmWoU9QDjs-unsplash-e1565696964443.jpg",
   "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/slideshows/great_food_combos_for_losing_weight_slideshow/650x350_great_food_combos_for_losing_weight_slideshow.jpg",
@@ -201,33 +200,18 @@ class RecipeViewState extends State<RecipeView> {
                                         margin: EdgeInsets.only(
                                             right: 15, top: 15, bottom: 15),
                                         child: ClipRRect(
-                                          child: Image.network(rndPix[rndIndex],
-                                              width: 60,
-                                              height: 60,
-                                              fit: BoxFit.cover),
-
-                                          // snapshot.data[i].imageId == null
-                                          //     ? Image.network(rndPix[rndIndex],
-                                          //         width: 60,
-                                          //         height: 60,
-                                          //         fit: BoxFit.cover)
-                                          //     // TODO: problems width search cat AND text
-                                          //     : FutureBuilder(
-                                          //       future: RecipeDatabase.db.getImagePathOfRecipe(snapshot.data[i].id),
-                                          //       builder: (context, imagePath) {
-                                          //         if(imagePath.hasData) {
-                                          //           return Image.file(
-                                          //             File(imagePath.data.first.path),
-                                          //             width: 60,
-                                          //             height: 60,
-                                          //             fit: BoxFit.cover);
-                                          //         }
-                                          //         else {
-                                          //           print("Error in loading RecipeImage.");
-                                          //           return null;
-                                          //         }
-                                          //       },
-                                          //     ),
+                                          child: snapshot.data[i].image.path !=
+                                                  null
+                                              ? Image.file(
+                                                  File(snapshot
+                                                      .data[i].image.path),
+                                                  width: 60,
+                                                  height: 60,
+                                                  fit: BoxFit.cover)
+                                              : Image.network(rndPix[rndIndex],
+                                                  width: 60,
+                                                  height: 60,
+                                                  fit: BoxFit.cover),
                                           borderRadius:
                                               BorderRadius.circular(100),
                                         )),

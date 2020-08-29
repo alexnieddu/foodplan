@@ -238,7 +238,7 @@ class RecipeDatabase {
     });
   }
 
-  Future<int> newRecipe(Recipe newRecipe, List<int> categoryIds,
+  Future<int> newRecipe(String name, List<int> categoryIds,
       List<int> ingredientIds, String imagePath) async {
     int rndColorInt = (Random().nextDouble() * 0xFFFFFF).toInt();
     var res;
@@ -247,7 +247,7 @@ class RecipeDatabase {
       res = await db.rawInsert(
           "INSERT INTO recipe (name, backgroundColor)"
           "VALUES (?, ?)",
-          [newRecipe.name, rndColorInt]);
+          [name, rndColorInt]);
 
       var lastInsertedRecipeIdQuery =
           await db.rawQuery("SELECT last_insert_rowid()");
@@ -292,10 +292,11 @@ class RecipeDatabase {
 
     var recipe = Recipe.fromMap(res.first);
 
-    res = await db.rawQuery(
-        "SELECT path FROM image WHERE id = ?",
-        [recipe.imageId]);
-    recipe.imagePath = res.first.values.first;
+    if (recipe.image.id != null) {
+      res = await db
+          .rawQuery("SELECT path FROM image WHERE id = ?", [recipe.image.id]);
+      recipe.image.path = res.first.values.first;
+    }
 
     // res = await db.rawQuery(
     //     "SELECT id, name FROM ingredient "
@@ -311,7 +312,7 @@ class RecipeDatabase {
       String searchPhrase, List<int> categoryIds) async {
     final db = await database;
     var res = await db.rawQuery(
-        "SELECT id, name, backgroundColor FROM recipe ORDER BY name ASC");
+        "SELECT id, name, backgroundColor, imageId FROM recipe ORDER BY name ASC");
     if (searchPhrase.isNotEmpty) {
       res = await db.rawQuery(
           "SELECT id, name, backgroundColor FROM recipe WHERE name LIKE ? "
@@ -339,12 +340,19 @@ class RecipeDatabase {
     }
     List<Recipe> list =
         res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
-    list.forEach((element) {
+    list.forEach((element) async {
       print(element.name);
+      if (element.image.id != null) {
+        var pathToImage = await db.rawQuery(
+            "SELECT path FROM image WHERE id = ?", [element.image.id]);
+        element.image.path = pathToImage.first.values.first;
+        print(element.image.path);
+      }
     });
     return list;
   }
 
+// NOT IN USE
   Future<List<dynamic>> getAllRecipes() async {
     final db = await database;
     var res =

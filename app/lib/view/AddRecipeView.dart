@@ -169,9 +169,8 @@ class AddRecipeViewState extends State<AddRecipeView> {
 
   void _saveRecipe(String text, List<int> categoryIds, String imagePath) {
     if (text.isNotEmpty) {
-      Recipe newRecipe = Recipe.recipe(text);
       RecipeDatabase.db
-          .newRecipe(newRecipe, categoryIds, ingredientIds, imagePath);
+          .newRecipe(text, categoryIds, ingredientIds, imagePath);
     }
   }
 

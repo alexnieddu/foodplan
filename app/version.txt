@@ -7,12 +7,14 @@
     - list ingredients in recipe tile in recipeview
     - WIP: search for category, recipe name and ingredient name
 
-- 0.0.5 (coming soon)
+- 0.0.5
     - recipe tile gradient color added
-    - improved Recipe with new variables
+    - improved Recipe with new variables, List<Category>, ...
+    - RecipeImages in RecipeView
+    
 
     - improve search in SQLite
     - manage SQLite for images for recipes. how to load data? seperately from db : one time
     - UI in AddRecipeView, margins
     - UI in PlanView for slots
-    - delete slot on deleting correspodning recipe
+    - delete slot on deleting correspodning recipe (FOREIGN KEY in SQLite)

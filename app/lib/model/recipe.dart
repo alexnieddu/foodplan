@@ -1,31 +1,27 @@
+import 'package:foodplan/model/Category.dart';
+import 'package:foodplan/model/Ingredient.dart';
 import 'package:foodplan/model/RecipeImage.dart';
 
 class Recipe {
   int id;
   String name;
   int backgroundColor;
-  int imageId;
-  String imagePath;
-  List<String> categories;
-  List<String> ingredients;
+  RecipeImage image;
+  List<Category> categories;
+  List<Ingredient> ingredients;
 
-  Recipe.recipe(name) {
-    this.name = name;
-  }
-
-  Recipe({this.id, this.name, this.backgroundColor, this.imageId});
+  Recipe({this.id, this.name, this.backgroundColor, this.image});
 
   factory Recipe.fromMap(Map<String, dynamic> map) => new Recipe(
-        id: map["id"],
-        name: map["name"],
-        backgroundColor: map["backgroundColor"],
-        imageId: map["imageId"],
-      );
+      id: map["id"],
+      name: map["name"],
+      backgroundColor: map["backgroundColor"],
+      image: RecipeImage(id: map["imageId"], path: null));
 
   Map<String, dynamic> toMap() => {
         "id": id,
         "name": name,
         "backgroundColor": backgroundColor,
-        "imageId": imageId,
+        "image": {"id": image.id, "path": image.path},
       };
 }
