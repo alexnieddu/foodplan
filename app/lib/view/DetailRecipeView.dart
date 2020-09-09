@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:foodplan/constants.dart';
 import 'package:foodplan/data/RecipeDatabase.dart';
 import 'package:foodplan/model/Recipe.dart';
+import 'package:foodplan/widgets/TaggedBox.dart';
 import 'package:path/path.dart';
 
 List rndPix = [
@@ -129,7 +130,7 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                             // Instruction
                             RichText(
                               text: TextSpan(
-                                  text: "Zubereitung",
+                                  text: "Beschreibung",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -137,8 +138,7 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                                   )),
                             ),
                             SizedBox(height: 15),
-                            Text(
-                                "Lorem ipsum dolor sit met. Lorem ipsum dolor sit met ipsum dolor sit met. Lorem ipsum dolor sit met. Lorem ipsum dolor sit met."),
+                            snapshot.data.description != null ? Text(snapshot.data.description) : Text(""),
                             SizedBox(height: 20),
                             // Ingredients
                             RichText(
@@ -153,12 +153,7 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                             SizedBox(height: 15),
                             Row(
                               children: <Widget>[
-                                Text("Zutat 1"),
-                                Text("Zutat 1"),
-                                Text("Zutat 1"),
-                                Text("Zutat 1"),
-                                Text("Zutat 1"),
-                                Text("Zutat 1"),
+                                for(var i = 0; i < snapshot.data.ingredients.length; i++) TaggedBox(text: snapshot.data.ingredients[i].name)
                               ],
                             ),
                             SizedBox(height: 20),
@@ -171,6 +166,12 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                                     color: Colors.black,
                                     fontSize: 20,
                                   )),
+                            ),
+                            SizedBox(height: 15),
+                            Row(
+                              children: <Widget>[
+                                for(var i = 0; i < snapshot.data.categories.length; i++) TaggedBox(text: snapshot.data.categories[i].name)
+                              ],
                             ),
                           ],
                         )),

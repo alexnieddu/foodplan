@@ -238,16 +238,16 @@ class RecipeDatabase {
     });
   }
 
-  Future<int> newRecipe(String name, List<int> categoryIds,
+  Future<int> newRecipe(String name, String description, List<int> categoryIds,
       List<int> ingredientIds, String imagePath) async {
     int rndColorInt = (Random().nextDouble() * 0xFFFFFF).toInt();
     var res;
     final db = await database;
     if (imagePath.isNotEmpty) {
       res = await db.rawInsert(
-          "INSERT INTO recipe (name, backgroundColor)"
-          "VALUES (?, ?)",
-          [name, rndColorInt]);
+          "INSERT INTO recipe (name, description, backgroundColor)"
+          "VALUES (?, ?, ?)",
+          [name, description, rndColorInt]);
 
       var lastInsertedRecipeIdQuery =
           await db.rawQuery("SELECT last_insert_rowid()");
@@ -287,23 +287,43 @@ class RecipeDatabase {
   Future<Recipe> getRecipe(int id) async {
     final db = await database;
     var res = await db.rawQuery(
-        "SELECT id, name, backgroundColor, imageId FROM recipe WHERE id = ?",
+        "SELECT id, name, description, backgroundColor, imageId FROM recipe WHERE id = ?",
         [id]);
 
     var recipe = Recipe.fromMap(res.first);
 
+    // Fetch RECIPEIMAGE from db and add path to recipe
     if (recipe.image.id != null) {
       res = await db
           .rawQuery("SELECT path FROM image WHERE id = ?", [recipe.image.id]);
       recipe.image.path = res.first.values.first;
     }
 
-    // res = await db.rawQuery(
-    //     "SELECT id, name FROM ingredient "
-    //     "INNER JOIN recipe_ingredient ON recipe_ingredient.ingredientId = ingredient.id "
-    //     "WHERE recipe_ingredient.recipeId = ? "
-    //     "ORDER BY name ASC",
-    //     [id]);
+    // Fetch INGREDIENTS from db and add them to recipe
+    res = await db.rawQuery(
+        "SELECT id, name FROM ingredient "
+        "INNER JOIN recipe_ingredient ON recipe_ingredient.ingredientId = ingredient.id "
+        "WHERE recipe_ingredient.recipeId = ? "
+        "ORDER BY name ASC",
+        [id]);
+    
+    res.forEach((ingredient) {
+      var ingredientDb = Ingredient.fromMap(ingredient);
+      recipe.ingredients.add(ingredientDb);
+    });
+
+    // Fetch CATEGORIES from db and add them to recipe
+    res = await db.rawQuery(
+        "SELECT id, name FROM category "
+        "INNER JOIN recipe_category ON recipe_category.categoryId = category.id "
+        "WHERE recipe_category.recipeId = ? "
+        "ORDER BY name ASC",
+        [id]);
+    
+    res.forEach((category) {
+      var categoryDb = Category.fromMap(category);
+      recipe.categories.add(categoryDb);
+    });
 
     return recipe;
   }

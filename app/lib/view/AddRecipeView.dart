@@ -11,6 +11,7 @@ class AddRecipeView extends StatefulWidget {
 
 class AddRecipeViewState extends State<AddRecipeView> {
   final recipeNameController = TextEditingController();
+  final recipeDescriptionController = TextEditingController();
   List<int> categoryIds = [];
   List<int> ingredientIds = [];
   File _image;
@@ -42,9 +43,14 @@ class AddRecipeViewState extends State<AddRecipeView> {
                       )),
               TextField(
                   decoration: InputDecoration(
-                    hintText: "Rezepte",
+                    hintText: "Rezept",
                   ),
                   controller: recipeNameController),
+              TextField(
+                  decoration: InputDecoration(
+                    hintText: "Beschreibung",
+                  ),
+                  controller: recipeDescriptionController),
               // Categories
               Container(
                 height: 70,
@@ -157,7 +163,7 @@ class AddRecipeViewState extends State<AddRecipeView> {
                     borderRadius: BorderRadius.circular(borderradius)),
                 onPressed: () {
                   _saveRecipe(
-                      recipeNameController.text, categoryIds, _image.path);
+                      recipeNameController.text, recipeDescriptionController.text, categoryIds, _image.path);
                   Navigator.pop(context);
                 },
                 child: Text("Rezept hinzufügen"),
@@ -167,10 +173,10 @@ class AddRecipeViewState extends State<AddRecipeView> {
         ));
   }
 
-  void _saveRecipe(String text, List<int> categoryIds, String imagePath) {
+  void _saveRecipe(String text, String description, List<int> categoryIds, String imagePath) {
     if (text.isNotEmpty) {
       RecipeDatabase.db
-          .newRecipe(text, categoryIds, ingredientIds, imagePath);
+          .newRecipe(text, description, categoryIds, ingredientIds, imagePath);
     }
   }
 
