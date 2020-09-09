@@ -11,7 +11,8 @@
     - recipe tile gradient color added
     - improved Recipe with new variables, List<Category>, ...
     - RecipeImages in RecipeView if exist
-    - DetailRecipeView add Instruction
+    - DetailRecipeView add Instruction, Back Button, Options
+    - TaggedBox widget
     
 
     - improve search in SQLite
