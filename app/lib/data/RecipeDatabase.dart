@@ -12,6 +12,50 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
+List<Recipe> dummyRecipes = [
+  Recipe(
+      id: 1,
+      name: "Pfannkuchen",
+      description: "Lorem ipsum dolor sit ...",
+      image: RecipeImage(id: 1, path: ""),
+      categories: [
+        Category(id: 1, name: "Bayerisch"),
+        Category(id: 2, name: "Vegetarisch")
+      ],
+      ingredients: [
+        Ingredient(id: 1, name: "Eier"),
+        Ingredient(id: 2, name: "Wasser"),
+        Ingredient(id: 3, name: "Mehl")
+      ]),
+  Recipe(
+      id: 2,
+      name: "Schinkennudeln",
+      description: "Lorem ipsum dolor sit ...",
+      image: RecipeImage(id: 1, path: ""),
+      categories: [
+        Category(id: 3, name: "Schnell")
+      ],
+      ingredients: [
+        Ingredient(id: 4, name: "Schinken"),
+        Ingredient(id: 5, name: "Nudeln"),
+        Ingredient(id: 6, name: "Zwiebeln")
+      ]),
+  Recipe(
+      id: 3,
+      name: "Pizza",
+      description: "Lorem ipsum dolor sit ...",
+      image: RecipeImage(id: 1, path: ""),
+      categories: [
+        Category(id: 3, name: "Schnell"),
+        Category(id: 4, name: "Kulinarisch")
+      ],
+      ingredients: [
+        Ingredient(id: 3, name: "Mehl"),
+        Ingredient(id: 2, name: "Wasser"),
+        Ingredient(id: 4, name: "Schinken")
+      ])
+];
+
 List<String> baseRecipes = [
   "Pfannkuchen",
   "Schinkennudeln",
@@ -206,14 +250,19 @@ class RecipeDatabase {
           ")");
 
       // Insert dummies
+
+      // for (var dummyRecipe in dummyRecipes) {
+      //   await insert(dummyRecipe);
+      // }
+
       // recipes
-      for (String recipe in baseRecipes) {
-        int rndColorInt = (Random().nextDouble() * 0xFFFFFF).toInt();
-        await db.rawInsert(
-            "INSERT INTO recipe (name, backgroundColor)"
-            " VALUES (?, ?)",
-            [recipe, rndColorInt]);
-      }
+      // for (String recipe in baseRecipes) {
+      //   int rndColorInt = (Random().nextDouble() * 0xFFFFFF).toInt();
+      //   await db.rawInsert(
+      //       "INSERT INTO recipe (name, backgroundColor)"
+      //       " VALUES (?, ?)",
+      //       [recipe, rndColorInt]);
+      // }
       // slots
       for (String slot in baseSlots) {
         await db.rawInsert(
@@ -228,7 +277,7 @@ class RecipeDatabase {
             " VALUES (?)",
             [category]);
       }
-      // categories
+      // ingredients
       for (String ingredient in baseIngredients) {
         await db.rawInsert(
             "INSERT INTO ingredient (name)"
@@ -238,49 +287,85 @@ class RecipeDatabase {
     });
   }
 
-  Future<int> newRecipe(String name, String description, List<int> categoryIds,
-      List<int> ingredientIds, String imagePath) async {
-    int rndColorInt = (Random().nextDouble() * 0xFFFFFF).toInt();
+  Future<int> insert(Recipe recipe) async {
     var res;
     final db = await database;
-    if (imagePath.isNotEmpty) {
-      res = await db.rawInsert(
-          "INSERT INTO recipe (name, description, backgroundColor)"
-          "VALUES (?, ?, ?)",
-          [name, description, rndColorInt]);
 
-      var lastInsertedRecipeIdQuery =
-          await db.rawQuery("SELECT last_insert_rowid()");
-      var lastInsertedRecipeId = lastInsertedRecipeIdQuery.first.values.first;
+    // Recipe
+    res = await db.rawInsert(
+        "INSERT INTO recipe (name, description, backgroundColor)"
+        "VALUES (?, ?, ?)",
+        [recipe.name, recipe.description, Recipe.randomBackgroundColor()]);
 
-      res = await db.rawInsert(
-          "INSERT INTO image (path, recipeId)"
-          "VALUES (?, ?)",
-          [imagePath, lastInsertedRecipeId]);
+    var lastInsertedRecipeId = await lastInsertedId();
 
-      var lastInsertedImageIdQuery =
-          await db.rawQuery("SELECT last_insert_rowid()");
-      var lastInsertedImageId = lastInsertedImageIdQuery.first.values.first;
+    // Image
+    res = await db.rawInsert(
+        "INSERT INTO image (path, recipeId)"
+        "VALUES (?, ?)",
+        [recipe.image.path, lastInsertedRecipeId]);
 
-      res = await db.rawUpdate("UPDATE recipe SET imageId = ? WHERE id = ?",
-          [lastInsertedImageId, lastInsertedRecipeId]);
+    var lastInsertedImageId = await lastInsertedId();
 
-      categoryIds.forEach((categoryId) async {
+    res = await db.rawUpdate("UPDATE recipe SET imageId = ? WHERE id = ?",
+        [lastInsertedImageId, lastInsertedRecipeId]);
+
+    // Categories
+    for (var category in recipe.categories) {
+      print(recipe.name + ": " + category.name);
+      // look for existing entry
+      var categoryId = await db
+          .rawQuery("SELECT id FROM category WHERE name = ?", [category.name]);
+
+      if (categoryId.isEmpty) {
+        // create new category entry
+        res = await db.rawInsert(
+            "INSERT INTO category (name)"
+            "VALUES (?)",
+            [category.name]);
+
+        var lastInsertedCategoryId = await lastInsertedId();
+
         res = await db.rawInsert(
             "INSERT INTO recipe_category (recipeId, categoryId)"
             "VALUES (?, ?)",
-            [lastInsertedRecipeId, categoryId]);
-      });
+            [lastInsertedRecipeId, lastInsertedCategoryId]);
+      } else {
+        res = await db.rawInsert(
+            "INSERT INTO recipe_category (recipeId, categoryId)"
+            "VALUES (?, ?)",
+            [lastInsertedRecipeId, categoryId.first.values.first]);
+      }
+    }
 
-      ingredientIds.forEach((ingredientId) async {
+    // Ingredients
+    for (var ingredient in recipe.ingredients) {
+      print(recipe.name + ": " + ingredient.name);
+      // look for existing entry
+      var ingredientId = await db.rawQuery(
+          "SELECT id FROM ingredient WHERE name = ?", [ingredient.name]);
+
+      if (ingredientId.isEmpty) {
+        // create new ingredient entry
+        res = await db.rawInsert(
+            "INSERT INTO ingredient (name)"
+            "VALUES (?)",
+            [ingredient.name]);
+
+        var lastInsertedIngredientId = await lastInsertedId();
+
         res = await db.rawInsert(
             "INSERT INTO recipe_ingredient (recipeId, ingredientId)"
             "VALUES (?, ?)",
-            [lastInsertedRecipeId, ingredientId]);
-      });
-    } else {
-      res = null;
+            [lastInsertedRecipeId, lastInsertedIngredientId]);
+      } else {
+        res = await db.rawInsert(
+            "INSERT INTO recipe_ingredient (recipeId, ingredientId)"
+            "VALUES (?, ?)",
+            [lastInsertedRecipeId, ingredientId.first.values.first]);
+      }
     }
+
     return res;
   }
 
@@ -306,7 +391,7 @@ class RecipeDatabase {
         "WHERE recipe_ingredient.recipeId = ? "
         "ORDER BY name ASC",
         [id]);
-    
+
     res.forEach((ingredient) {
       var ingredientDb = Ingredient.fromMap(ingredient);
       recipe.ingredients.add(ingredientDb);
@@ -319,7 +404,7 @@ class RecipeDatabase {
         "WHERE recipe_category.recipeId = ? "
         "ORDER BY name ASC",
         [id]);
-    
+
     res.forEach((category) {
       var categoryDb = Category.fromMap(category);
       recipe.categories.add(categoryDb);
@@ -328,58 +413,49 @@ class RecipeDatabase {
     return recipe;
   }
 
-  Future<List<dynamic>> getRecipesForSearch(
+  Future<List<Recipe>> getRecipesForSearch(
       String searchPhrase, List<int> categoryIds) async {
-    final db = await database;
-    var res = await db.rawQuery(
-        "SELECT id, name, backgroundColor, imageId FROM recipe ORDER BY name ASC");
+    final recipes = await getAllRecipes();
+    var searchResults = recipes;
+    // Works only for 1 search word
+    bool nameOrIngredientFound(Recipe recipe) {
+      var found = false;
+      var ingredientsName = false;
+      var recipeName =
+          recipe.name.toUpperCase().contains(searchPhrase.toUpperCase());
+      recipe.ingredients.forEach((ingredient) {
+        ingredientsName |=
+            ingredient.name.toUpperCase().contains(searchPhrase.toUpperCase());
+      });
+      found = recipeName || ingredientsName;
+      return found;
+    }
+
     if (searchPhrase.isNotEmpty) {
-      res = await db.rawQuery(
-          "SELECT id, name, backgroundColor FROM recipe WHERE name LIKE ? "
-          "UNION "
-          "SELECT recipe.id, recipe.name, recipe.backgroundColor FROM recipe, recipe_ingredient, ingredient WHERE "
-          "recipe.id = recipe_ingredient.recipeId AND recipe_ingredient.ingredientId = ingredient.id AND "
-          "ingredient.name LIKE ? ORDER BY recipe.name ASC",
-          ["$searchPhrase%", "$searchPhrase%"]);
+      searchResults = recipes.where(nameOrIngredientFound).toList();
     }
     if (categoryIds.isNotEmpty) {
-      // String query = "SELECT DISTINCT id, name, backgroundColor "
-      //     "FROM recipe INNER JOIN recipe_category ON recipe.id = recipe_category.recipeId "
-      //     "WHERE " + _generateQueryConditionIn(categoryIds) + " ORDER BY name ASC";
-      String query = _generateQueryConditionIntersection(categoryIds);
-      res = await db.rawQuery(query);
+      searchResults = recipes
+          .where((recipe) => recipe.categories.contains(categoryIds))
+          .toList();
     }
-    if (searchPhrase.isNotEmpty && categoryIds.isNotEmpty) {
-      String query =
-          "SELECT DISTINCT intersecTable.id, intersecTable.name, intersecTable.backgroundColor FROM (" +
-              _generateQueryConditionIntersection(categoryIds) +
-              ") AS intersecTable, recipe, recipe_ingredient, ingredient WHERE "
-                  "recipe.id = recipe_ingredient.recipeId AND recipe_ingredient.ingredientId = ingredient.id AND "
-                  "ingredient.name LIKE ? ORDER BY recipe.name ASC";
-      res = await db.rawQuery(query, ["$searchPhrase%"]);
-    }
-    List<Recipe> list =
-        res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
-    list.forEach((element) async {
-      print(element.name);
-      if (element.image.id != null) {
-        var pathToImage = await db.rawQuery(
-            "SELECT path FROM image WHERE id = ?", [element.image.id]);
-        element.image.path = pathToImage.first.values.first;
-        print(element.image.path);
-      }
-    });
-    return list;
+    return searchResults;
   }
 
-// NOT IN USE
-  Future<List<dynamic>> getAllRecipes() async {
+  Future<List<Recipe>> getAllRecipes() async {
     final db = await database;
-    var res =
-        await db.rawQuery("SELECT id, name FROM recipe ORDER BY name ASC");
+    var res = await db.rawQuery("SELECT id FROM recipe ORDER BY name ASC");
+    List<Recipe> recipes = [];
+
     List<Recipe> list =
         res.isNotEmpty ? res.map((c) => Recipe.fromMap(c)).toList() : [];
-    return list;
+
+    for (var item in list) {
+      var recipe = await RecipeDatabase.db.getRecipe(item.id);
+      recipes.add(recipe);
+    }
+
+    return recipes;
   }
 
   Future<List<dynamic>> getRnd(int recipeID) async {
@@ -467,61 +543,11 @@ class RecipeDatabase {
     print(list);
     return list;
   }
-}
 
-String _generateQueryConditionIntersection(List<int> categoryIds) {
-  String catQuery = "";
-  if (categoryIds.isNotEmpty) {
-    int n = 1;
-    categoryIds.forEach((element) {
-      catQuery +=
-          "SELECT DISTINCT recipeId AS id, recipe.name, recipe.backgroundColor FROM recipe_category, recipe WHERE categoryId = ";
-      catQuery += element.toString();
-      catQuery += " AND recipe.id = recipe_category.recipeId";
-      if (n < categoryIds.length) {
-        catQuery += " INTERSECT ";
-      }
-      n++;
-    });
-  } else {
-    catQuery = "";
+  Future<int> lastInsertedId() async {
+    final db = await database;
+    var lastInsertedIdQuery = await db.rawQuery("SELECT last_insert_rowid()");
+    var lastInsertedId = lastInsertedIdQuery.first.values.first;
+    return lastInsertedId;
   }
-  return catQuery;
-}
-
-String _generateQueryCondition(List<int> categoryIds) {
-  String catQuery;
-  if (categoryIds.isNotEmpty) {
-    catQuery = " recipe_category.categoryId = ";
-    int n = 1;
-    categoryIds.forEach((element) {
-      catQuery += element.toString();
-      if (n < categoryIds.length) {
-        catQuery += " AND recipe_category.categoryId = ";
-      }
-      n++;
-    });
-  } else {
-    catQuery = "";
-  }
-  return catQuery;
-}
-
-String _generateQueryConditionIn(List<int> categoryIds) {
-  String catQuery;
-  if (categoryIds.isNotEmpty) {
-    catQuery = "recipe_category.categoryId IN (";
-    int n = 1;
-    categoryIds.forEach((element) {
-      catQuery += element.toString();
-      if (n < categoryIds.length) {
-        catQuery += ", ";
-      }
-      n++;
-    });
-    catQuery += ")";
-  } else {
-    catQuery = "";
-  }
-  return catQuery;
 }

@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:foodplan/model/Category.dart';
+import 'package:foodplan/model/Ingredient.dart';
+import 'package:foodplan/model/RecipeImage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:foodplan/constants.dart';
@@ -12,6 +15,8 @@ class AddRecipeView extends StatefulWidget {
 class AddRecipeViewState extends State<AddRecipeView> {
   final recipeNameController = TextEditingController();
   final recipeDescriptionController = TextEditingController();
+  List<Category> categories = [];
+  List<Ingredient> ingredients = [];
   List<int> categoryIds = [];
   List<int> ingredientIds = [];
   File _image;
@@ -63,13 +68,18 @@ class AddRecipeViewState extends State<AddRecipeView> {
                           scrollDirection: Axis.horizontal,
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
+                            var category = Category(
+                                id: snapshot.data[index].id,
+                                name: snapshot.data[index].name);
                             return Container(
                               padding: EdgeInsets.symmetric(horizontal: 5),
                               child: FilterChip(
                                 label: Text(snapshot.data[index].name),
                                 labelStyle: TextStyle(
-                                    color: categoryIds
-                                            .contains(snapshot.data[index].id)
+                                    color: categories
+                                            .where((cat) =>
+                                                cat.name == category.name)
+                                            .isNotEmpty
                                         ? Colors.white
                                         : Colors.black),
                                 selectedColor: mainColor,
@@ -77,17 +87,18 @@ class AddRecipeViewState extends State<AddRecipeView> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.circular(borderradius)),
-                                selected: categoryIds
-                                    .contains(snapshot.data[index].id),
+                                selected: categories
+                                    .where((cat) => cat.name == category.name)
+                                    .isNotEmpty,
                                 onSelected: (bool value) {
                                   setState(() {
                                     if (value) {
-                                      categoryIds.add(snapshot.data[index].id);
+                                      categories.add(category);
                                     } else {
-                                      categoryIds
-                                          .remove(snapshot.data[index].id);
+                                      categories.removeWhere(
+                                          (cat) => cat.id == category.id);
                                     }
-                                    print(categoryIds);
+                                    print(categories.toString());
                                   });
                                 },
                               ),
@@ -111,13 +122,18 @@ class AddRecipeViewState extends State<AddRecipeView> {
                           scrollDirection: Axis.horizontal,
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
+                            var ingredient = Ingredient(
+                                id: snapshot.data[index].id,
+                                name: snapshot.data[index].name);
                             return Container(
                               padding: EdgeInsets.symmetric(horizontal: 5),
                               child: FilterChip(
                                 label: Text(snapshot.data[index].name),
                                 labelStyle: TextStyle(
-                                    color: ingredientIds
-                                            .contains(snapshot.data[index].id)
+                                    color: ingredients
+                                            .where((ing) =>
+                                                ing.name == ingredient.name)
+                                            .isNotEmpty
                                         ? Colors.white
                                         : Colors.black),
                                 selectedColor: mainColor,
@@ -125,18 +141,18 @@ class AddRecipeViewState extends State<AddRecipeView> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.circular(borderradius)),
-                                selected: ingredientIds
-                                    .contains(snapshot.data[index].id),
+                                selected: ingredients
+                                    .where((ing) => ing.name == ingredient.name)
+                                    .isNotEmpty,
                                 onSelected: (bool value) {
                                   setState(() {
                                     if (value) {
-                                      ingredientIds
-                                          .add(snapshot.data[index].id);
+                                      ingredients.add(ingredient);
                                     } else {
-                                      ingredientIds
-                                          .remove(snapshot.data[index].id);
+                                      ingredients.removeWhere(
+                                          (ing) => ing.id == ingredient.id);
                                     }
-                                    print(ingredientIds);
+                                    print(ingredients.toString());
                                   });
                                 },
                               ),
@@ -163,7 +179,11 @@ class AddRecipeViewState extends State<AddRecipeView> {
                     borderRadius: BorderRadius.circular(borderradius)),
                 onPressed: () {
                   _saveRecipe(
-                      recipeNameController.text, recipeDescriptionController.text, categoryIds, _image.path);
+                      recipeNameController.text,
+                      recipeDescriptionController.text,
+                      categories,
+                      ingredients,
+                      _image.path);
                   Navigator.pop(context);
                 },
                 child: Text("Rezept hinzufügen"),
@@ -173,10 +193,17 @@ class AddRecipeViewState extends State<AddRecipeView> {
         ));
   }
 
-  void _saveRecipe(String text, String description, List<int> categoryIds, String imagePath) {
+  void _saveRecipe(String text, String description, List<Category> cats,
+      List<Ingredient> ings, String imagePath) {
     if (text.isNotEmpty) {
-      RecipeDatabase.db
-          .newRecipe(text, description, categoryIds, ingredientIds, imagePath);
+      final img = RecipeImage(id: 1, path: imagePath);
+      final recipe = Recipe(
+          name: text,
+          description: description,
+          categories: cats,
+          ingredients: ings,
+          image: img);
+      RecipeDatabase.db.insert(recipe);
     }
   }
 

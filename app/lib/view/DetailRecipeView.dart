@@ -138,7 +138,9 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                                   )),
                             ),
                             SizedBox(height: 15),
-                            snapshot.data.description != null ? Text(snapshot.data.description) : Text(""),
+                            snapshot.data.description != null
+                                ? Text(snapshot.data.description)
+                                : Text(""),
                             SizedBox(height: 20),
                             // Ingredients
                             RichText(
@@ -153,7 +155,11 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                             SizedBox(height: 15),
                             Row(
                               children: <Widget>[
-                                for(var i = 0; i < snapshot.data.ingredients.length; i++) TaggedBox(text: snapshot.data.ingredients[i].name)
+                                for (var i = 0;
+                                    i < snapshot.data.ingredients.length;
+                                    i++)
+                                  TaggedBox(
+                                      text: snapshot.data.ingredients[i].name)
                               ],
                             ),
                             SizedBox(height: 20),
@@ -170,7 +176,11 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                             SizedBox(height: 15),
                             Row(
                               children: <Widget>[
-                                for(var i = 0; i < snapshot.data.categories.length; i++) TaggedBox(text: snapshot.data.categories[i].name)
+                                for (var i = 0;
+                                    i < snapshot.data.categories.length;
+                                    i++)
+                                  TaggedBox(
+                                      text: snapshot.data.categories[i].name)
                               ],
                             ),
                           ],

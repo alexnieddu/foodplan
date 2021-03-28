@@ -8,7 +8,7 @@ class Category {
 
   Category({this.id, this.name});
 
-  factory Category.fromMap(Map<String, dynamic> map) => new Category(
+  factory Category.fromMap(Map<String, dynamic> map) => Category(
         id: map["id"],
         name: map["name"],
       );
