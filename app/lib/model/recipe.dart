@@ -39,6 +39,35 @@ class Recipe {
         "image": {"id": image.id, "path": image.path},
       };
 
+  List<int> getCategoryIds() {
+    List<int> categoryIds = [];
+
+    for (var category in this.categories) {
+      categoryIds.add(category.id);
+    }
+
+    return categoryIds;
+  }
+
+  String printIngredients() {
+    var ingredientsText = "";
+    if (this.ingredients.isNotEmpty) {
+      if (this.ingredients.length > 0) {
+        ingredientsText = "";
+        for (var i = 0; i < this.ingredients.length; i++) {
+          (i + 1) < this.ingredients.length
+              ? ingredientsText += this.ingredients[i].name + ", "
+              : ingredientsText += this.ingredients[i].name + ", ...";
+        }
+        return ingredientsText;
+      } else {
+        return "Bisher keine Zutaten.";
+      }
+    } else {
+      return "Zutatenliste konnte nicht gelesen werden.";
+    }
+  }
+
   static int randomBackgroundColor() {
     return (Random().nextDouble() * 0xFFFFFF).toInt();
   }

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:foodplan/model/Category.dart';
 import 'package:foodplan/model/Ingredient.dart';
 import 'package:foodplan/model/RecipeImage.dart';
@@ -12,49 +10,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
-List<Recipe> dummyRecipes = [
-  Recipe(
-      id: 1,
-      name: "Pfannkuchen",
-      description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: ""),
-      categories: [
-        Category(id: 1, name: "Bayerisch"),
-        Category(id: 2, name: "Vegetarisch")
-      ],
-      ingredients: [
-        Ingredient(id: 1, name: "Eier"),
-        Ingredient(id: 2, name: "Wasser"),
-        Ingredient(id: 3, name: "Mehl")
-      ]),
-  Recipe(
-      id: 2,
-      name: "Schinkennudeln",
-      description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: ""),
-      categories: [
-        Category(id: 3, name: "Schnell")
-      ],
-      ingredients: [
-        Ingredient(id: 4, name: "Schinken"),
-        Ingredient(id: 5, name: "Nudeln"),
-        Ingredient(id: 6, name: "Zwiebeln")
-      ]),
-  Recipe(
-      id: 3,
-      name: "Pizza",
-      description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: ""),
-      categories: [
-        Category(id: 3, name: "Schnell"),
-        Category(id: 4, name: "Kulinarisch")
-      ],
-      ingredients: [
-        Ingredient(id: 3, name: "Mehl"),
-        Ingredient(id: 2, name: "Wasser"),
-        Ingredient(id: 4, name: "Schinken")
-      ])
-];
+import 'DummyRecipeData.dart';
 
 List<String> baseRecipes = [
   "Pfannkuchen",
@@ -251,10 +207,6 @@ class RecipeDatabase {
 
       // Insert dummies
 
-      // for (var dummyRecipe in dummyRecipes) {
-      //   await insert(dummyRecipe);
-      // }
-
       // recipes
       // for (String recipe in baseRecipes) {
       //   int rndColorInt = (Random().nextDouble() * 0xFFFFFF).toInt();
@@ -264,12 +216,12 @@ class RecipeDatabase {
       //       [recipe, rndColorInt]);
       // }
       // slots
-      for (String slot in baseSlots) {
-        await db.rawInsert(
-            "INSERT INTO slot (name, recipeId)"
-            " VALUES (?, (SELECT id FROM recipe ORDER BY RANDOM() LIMIT 1))",
-            [slot]);
-      }
+      // for (String slot in baseSlots) {
+      //   await db.rawInsert(
+      //       "INSERT INTO slot (name, recipeId)"
+      //       " VALUES (?, (SELECT id FROM recipe ORDER BY RANDOM() LIMIT 1))",
+      //       [slot]);
+      // }
       // categories
       for (String category in baseCategories) {
         await db.rawInsert(
@@ -284,6 +236,8 @@ class RecipeDatabase {
             " VALUES (?)",
             [ingredient]);
       }
+
+      await insertDummyRecipes(dummyRecipes, db);
     });
   }
 
@@ -416,7 +370,8 @@ class RecipeDatabase {
   Future<List<Recipe>> getRecipesForSearch(
       String searchPhrase, List<int> categoryIds) async {
     final recipes = await getAllRecipes();
-    var searchResults = recipes;
+    var searchResultsText = recipes;
+    List<Recipe> searchResults;
     // Works only for 1 search word
     bool nameOrIngredientFound(Recipe recipe) {
       var found = false;
@@ -432,12 +387,17 @@ class RecipeDatabase {
     }
 
     if (searchPhrase.isNotEmpty) {
-      searchResults = recipes.where(nameOrIngredientFound).toList();
+      searchResultsText = recipes.where(nameOrIngredientFound).toList();
     }
+
+    // TODO: Make AND logic for selected categories
     if (categoryIds.isNotEmpty) {
-      searchResults = recipes
-          .where((recipe) => recipe.categories.contains(categoryIds))
+      searchResults = searchResultsText
+          .where((recipe) =>
+              categoryIds.any((id) => recipe.getCategoryIds().contains(id)))
           .toList();
+    } else {
+      searchResults = searchResultsText;
     }
     return searchResults;
   }
