@@ -10,14 +10,7 @@ import 'package:foodplan/view/DetailRecipeView.dart';
 import 'package:path/path.dart';
 
 List rndPix = [
-  "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&w=1000&q=80",
-  "https://i2.wp.com/harrysding.ch/wp-content/uploads/2020/03/Food-Delivery-und-Takeaway-zuerich-2-scaled.jpg?fit=2560%2C1913&ssl=1",
-  "https://images.happycow.net/venues/1024/10/58/hcmp105847_838346.jpeg",
-  "https://worldfoodtrip.de/wp-content/uploads/2019/06/IMG_4134-1140x620.jpg",
-  "https://x5w3j9u7.stackpathcdn.com/wp-content/uploads/2020/06/tuerkischer-bulgur-salat-rezept-kisir-680x900.jpg",
-  "https://www.coolibri.de/wp-content/uploads/2019/08/toa-heftiba-MrmWoU9QDjs-unsplash-e1565696964443.jpg",
-  "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/slideshows/great_food_combos_for_losing_weight_slideshow/650x350_great_food_combos_for_losing_weight_slideshow.jpg",
-  "https://cdn.hellofresh.com/au/cms/pdp-slider/veggie-3.jpg"
+  "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&w=1000&q=80"
 ];
 
 class RecipeView extends StatefulWidget {
@@ -154,6 +147,7 @@ class RecipeViewState extends State<RecipeView> {
                         child: ListView.builder(
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, i) {
+                            Recipe recipe = snapshot.data[i];
                             int rndIndex = Random().nextInt(rndPix.length);
                             // ListItem
                             return Container(
@@ -228,8 +222,7 @@ class RecipeViewState extends State<RecipeView> {
                                           // Title
                                           RichText(
                                             text: TextSpan(
-                                                text:
-                                                    "${snapshot.data[i].name}",
+                                                text: "${recipe.name}",
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black,
@@ -237,46 +230,7 @@ class RecipeViewState extends State<RecipeView> {
                                                 )),
                                           ),
                                           // Ingredients
-                                          FutureBuilder(
-                                              future: RecipeDatabase.db
-                                                  .getIngredientsOfRecipe(
-                                                      snapshot.data[i].id),
-                                              builder: (context, ingredients) {
-                                                if (ingredients.hasData) {
-                                                  if (ingredients.data.length >
-                                                      0) {
-                                                    var ingredientsListString =
-                                                        "";
-                                                    for (var i = 0;
-                                                        i <
-                                                            ingredients
-                                                                .data.length;
-                                                        i++) {
-                                                      (i + 1) <
-                                                              ingredients
-                                                                  .data.length
-                                                          ? ingredientsListString +=
-                                                              ingredients
-                                                                      .data[i]
-                                                                      .name +
-                                                                  ", "
-                                                          : ingredientsListString +=
-                                                              ingredients
-                                                                      .data[i]
-                                                                      .name +
-                                                                  ", ...";
-                                                    }
-                                                    return Text(
-                                                        ingredientsListString);
-                                                  } else {
-                                                    return Text(
-                                                        "Bisher keine Zutaten.");
-                                                  }
-                                                } else {
-                                                  return Text(
-                                                      "Zutatenliste konnte nicht gelesen werden.");
-                                                }
-                                              })
+                                          // Text(recipe.printIngredients())
                                         ],
                                       ),
                                     ),
