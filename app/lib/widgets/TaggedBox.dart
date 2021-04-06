@@ -8,7 +8,6 @@ class TaggedBox extends StatefulWidget {
 }
 
 class TaggedBoxState extends State<TaggedBox> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,9 +16,9 @@ class TaggedBoxState extends State<TaggedBox> {
         child: Text(widget.text),
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderradius),
-          color: mainColor
-        ),
+            borderRadius: BorderRadius.circular(borderradius),
+            boxShadow: [constShadowDarkLight],
+            color: Colors.white),
       ),
     );
   }

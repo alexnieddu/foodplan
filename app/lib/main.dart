@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Widget> screenStates = [PlanView(), RecipeView()];
-  static int currentScreenIndex = 0;
+  static int currentScreenIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_today), title: Text("Plan")),
+                  icon: Icon(Icons.calendar_today), label: "Plan"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.fastfood), title: Text("Rezepte"))
+                  icon: Icon(Icons.fastfood), label: "Rezepte")
             ],
             onTap: _setScreenState,
             currentIndex: currentScreenIndex,

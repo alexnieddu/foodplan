@@ -372,6 +372,7 @@ class RecipeDatabase {
     final recipes = await getAllRecipes();
     var searchResultsText = recipes;
     List<Recipe> searchResults;
+
     // Works only for 1 search word
     bool nameOrIngredientFound(Recipe recipe) {
       var found = false;
@@ -386,16 +387,22 @@ class RecipeDatabase {
       return found;
     }
 
+    bool categoryFound(Recipe recipe) {
+      var found = true;
+      final currentRecipeCategoryIds = recipe.getCategoryIds();
+      categoryIds.forEach((id) {
+        found &= currentRecipeCategoryIds.contains(id);
+      });
+      return found;
+    }
+
     if (searchPhrase.isNotEmpty) {
       searchResultsText = recipes.where(nameOrIngredientFound).toList();
     }
 
     // TODO: Make AND logic for selected categories
     if (categoryIds.isNotEmpty) {
-      searchResults = searchResultsText
-          .where((recipe) =>
-              categoryIds.any((id) => recipe.getCategoryIds().contains(id)))
-          .toList();
+      searchResults = searchResultsText.where(categoryFound).toList();
     } else {
       searchResults = searchResultsText;
     }
