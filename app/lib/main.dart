@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'package:foodplan/view/RecipeView.dart';
 import 'package:foodplan/view/PlanView.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 final String appName = "FoodPlan";
 
@@ -16,7 +17,8 @@ class FoodPlan extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
         primaryTextTheme: TextTheme(headline6: TextStyle(color: Colors.teal)),
-        appBarTheme: AppBarTheme(color: Colors.white.withOpacity(0), elevation: 0),
+        appBarTheme:
+            AppBarTheme(color: Colors.white.withOpacity(0), elevation: 0),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(),
@@ -39,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("FoodPlan"),
+        title: Text("Foodplan", style: GoogleFonts.pacifico()),
         centerTitle: true,
       ),
       body: screenStates.elementAt(currentScreenIndex),
