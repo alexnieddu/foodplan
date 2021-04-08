@@ -440,7 +440,6 @@ class RecipeDatabase {
 
       for (var recipe in recipeMap) {
         Recipe rec = Recipe.fromMapApi(recipe);
-        rec.backgroundColor = Recipe.randomBackgroundColor();
         recipes.add(rec);
       }
     } else {
