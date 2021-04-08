@@ -3,7 +3,7 @@
         "id": 1,
         "name": "Pilz-Rahmsauce",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 2514980,
         "image": {
             "id": 1,
             "path": null
@@ -49,7 +49,7 @@
         "id": 1,
         "name": "Gemüsetarte",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 4503188,
         "image": {
             "id": 1,
             "path": null
@@ -115,7 +115,7 @@
         "id": 1,
         "name": "Bayerische Schinkenudeln",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 4503188,
         "image": {
             "id": 1,
             "path": null
@@ -149,7 +149,7 @@
         "id": 1,
         "name": "Vegetarischer Nudelauflauf",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 7816123,
         "image": {
             "id": 1,
             "path": null
@@ -195,7 +195,7 @@
         "id": 1,
         "name": "Gefüllte Paprika",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 6057978,
         "image": {
             "id": 1,
             "path": null
@@ -237,7 +237,7 @@
         "id": 1,
         "name": "Gulasch",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 8844894,
         "image": {
             "id": 1,
             "path": null
@@ -283,7 +283,7 @@
         "id": 1,
         "name": "Asia Pfanne süß sauer",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 8694374,
         "image": {
             "id": 1,
             "path": null
@@ -329,7 +329,7 @@
         "id": 1,
         "name": "Chilli Sahne Schnitzel",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 4031914,
         "image": {
             "id": 1,
             "path": null
@@ -371,7 +371,7 @@
         "id": 1,
         "name": "Überbackenes Putenfilet mit Frischkäse",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 8880189,
         "image": {
             "id": 1,
             "path": null
@@ -405,7 +405,7 @@
         "id": 1,
         "name": "Überbackenes Gnocchi mit Paprika Tomaten Sauce",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 9082122,
         "image": {
             "id": 1,
             "path": null
@@ -455,7 +455,7 @@
         "id": 1,
         "name": "Bauerntopf",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 12832201,
         "image": {
             "id": 1,
             "path": null
@@ -505,7 +505,7 @@
         "id": 1,
         "name": "Winterpfanne mit gebratenen Wallnüssen",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 8934267,
         "image": {
             "id": 1,
             "path": null
@@ -543,7 +543,7 @@
         "id": 1,
         "name": "Rosmarin Balsamico Schweinefilet",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 9898826,
         "image": {
             "id": 1,
             "path": null
@@ -581,7 +581,7 @@
         "id": 1,
         "name": "Brezenknödel",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 3466288,
         "image": {
             "id": 1,
             "path": null
@@ -615,7 +615,7 @@
         "id": 1,
         "name": "Süßkartoffel Kokos Suppe",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 8434141,
         "image": {
             "id": 1,
             "path": null
@@ -657,7 +657,7 @@
         "id": 1,
         "name": "Paprikasuppe",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 880230,
         "image": {
             "id": 1,
             "path": null
@@ -699,7 +699,7 @@
         "id": 1,
         "name": "Kalte Radiserlsuppe mit Ziegenfrischkäse",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 4513231,
         "image": {
             "id": 1,
             "path": null
@@ -745,7 +745,7 @@
         "id": 1,
         "name": "Sour Creme",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 442451,
         "image": {
             "id": 1,
             "path": null
@@ -795,7 +795,7 @@
         "id": 1,
         "name": "Birnen Obazda",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 15271102,
         "image": {
             "id": 1,
             "path": null
@@ -837,7 +837,7 @@
         "id": 1,
         "name": "Schoko Tiramisu",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 13313479,
         "image": {
             "id": 1,
             "path": null
@@ -879,7 +879,7 @@
         "id": 1,
         "name": "Tiramisu alla Silvio",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 3636255,
         "image": {
             "id": 1,
             "path": null
@@ -917,7 +917,7 @@
         "id": 1,
         "name": "Hannahs Best Muffins Ever",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 15988791,
         "image": {
             "id": 1,
             "path": null
@@ -951,7 +951,7 @@
         "id": 1,
         "name": "Überbackene Brezen",
         "description": "Lorem ipsum dolor sit ...",
-        "backgroundColor": null,
+        "backgroundColor": 3426667,
         "image": {
             "id": 1,
             "path": null
