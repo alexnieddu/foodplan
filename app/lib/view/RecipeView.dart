@@ -20,7 +20,7 @@ class RecipeView extends StatefulWidget {
 class RecipeViewState extends State<RecipeView> {
   final searchPhraseController = TextEditingController();
   String searchPhrase = "";
-  List selectedCats = [];
+  List<String> selectedCats = [];
   List<int> selectedCatsIds = [];
 
   var _searchBoxShadow = constShadowDarkLight;
@@ -135,7 +135,7 @@ class RecipeViewState extends State<RecipeView> {
             child: Container(
               child: FutureBuilder(
                 future: RecipeDatabase.db.getRecipesForSearch(
-                    searchPhraseController.text, selectedCatsIds),
+                    searchPhraseController.text, selectedCats),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());
@@ -276,6 +276,7 @@ class RecipeViewState extends State<RecipeView> {
   _pushDetailRevipeView(BuildContext context, int recipeId) {
     Navigator.push(
             context,
+            // TODO: Pass Recipe object, NOT recipeID !!!
             MaterialPageRoute(
                 builder: (context) => DetailRecipeView(recipeId: recipeId)))
         .then((value) {

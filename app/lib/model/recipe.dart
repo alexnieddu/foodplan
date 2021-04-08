@@ -23,20 +23,33 @@ class Recipe {
       this.ingredients});
 
   factory Recipe.fromMap(Map<String, dynamic> map) => Recipe(
-        id: map["id"],
-        name: map["name"],
-        description: map["description"],
-        backgroundColor: map["backgroundColor"],
-        image: RecipeImage(id: map["imageId"], path: null),
-        categories: [],
-        ingredients: [],
-      );
+      id: map["id"],
+      name: map["name"],
+      description: map["description"],
+      backgroundColor: map["backgroundColor"],
+      image: RecipeImage(id: map["imageId"], path: null),
+      categories: [],
+      ingredients: []);
+
+  factory Recipe.fromMapApi(Map<String, dynamic> map) => Recipe(
+      id: map["id"],
+      name: map["name"],
+      description: map["description"],
+      backgroundColor: map["backgroundColor"],
+      image: RecipeImage(id: map["image"]["id"], path: map["image"]["path"]),
+      categories: List<Category>.from(
+          map["categories"].map((category) => Category.fromMap(category))),
+      ingredients: List<Ingredient>.from(map["ingredients"]
+          .map((ingredient) => Ingredient.fromMap(ingredient))));
 
   Map<String, dynamic> toMap() => {
         "id": id,
         "name": name,
+        "description": description,
         "backgroundColor": backgroundColor,
         "image": {"id": image.id, "path": image.path},
+        "categories": List<dynamic>.from(categories.map((category) => category.toMap())),
+        "ingredients": List<dynamic>.from(ingredients.map((ingredient) => ingredient.toMap()))
       };
 
   List<int> getCategoryIds() {
@@ -47,6 +60,16 @@ class Recipe {
     }
 
     return categoryIds;
+  }
+
+  List<String> getCategories() {
+    List<String> categoryString = [];
+
+    for (var category in this.categories) {
+      categoryString.add(category.name);
+    }
+
+    return categoryString;
   }
 
   String printIngredients() {

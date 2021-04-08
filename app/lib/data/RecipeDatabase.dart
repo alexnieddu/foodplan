@@ -9,6 +9,8 @@ import 'package:foodplan/model/Slot.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'DummyRecipeData.dart';
 
@@ -237,7 +239,7 @@ class RecipeDatabase {
             [ingredient]);
       }
 
-      await insertDummyRecipes(dummyRecipes, db);
+      // await insertDummyRecipes(dummyRecipes, db);
     });
   }
 
@@ -368,8 +370,8 @@ class RecipeDatabase {
   }
 
   Future<List<Recipe>> getRecipesForSearch(
-      String searchPhrase, List<int> categoryIds) async {
-    final recipes = await getAllRecipes();
+      String searchPhrase, List<String> categories) async {
+    final List<Recipe> recipes = await getAllRecipes();
     var searchResultsText = recipes;
     List<Recipe> searchResults;
 
@@ -389,9 +391,9 @@ class RecipeDatabase {
 
     bool categoryFound(Recipe recipe) {
       var found = true;
-      final currentRecipeCategoryIds = recipe.getCategoryIds();
-      categoryIds.forEach((id) {
-        found &= currentRecipeCategoryIds.contains(id);
+      final currentRecipeCategoryIds = recipe.getCategories();
+      categories.forEach((name) {
+        found &= currentRecipeCategoryIds.contains(name);
       });
       return found;
     }
@@ -400,8 +402,7 @@ class RecipeDatabase {
       searchResultsText = recipes.where(nameOrIngredientFound).toList();
     }
 
-    // TODO: Make AND logic for selected categories
-    if (categoryIds.isNotEmpty) {
+    if (categories.isNotEmpty) {
       searchResults = searchResultsText.where(categoryFound).toList();
     } else {
       searchResults = searchResultsText;
@@ -409,8 +410,8 @@ class RecipeDatabase {
     return searchResults;
   }
 
-  Future<List<Recipe>> getAllRecipes() async {
-    final db = await database;
+  Future<List<Recipe>> getLocalRecipes() async {
+    final Database db = await database;
     var res = await db.rawQuery("SELECT id FROM recipe ORDER BY name ASC");
     List<Recipe> recipes = [];
 
@@ -423,6 +424,39 @@ class RecipeDatabase {
     }
 
     return recipes;
+  }
+
+  Future<List<Recipe>> getRemoteRecipes() async {
+    const int httpStatusOk = 200;
+    List<Recipe> recipes = [];
+    final String serverRecipeUrl = "https://kinu-app.com/foodplan/dummy.json";
+    final Map<String, String> headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json'
+    };
+    var response = await http.get(serverRecipeUrl, headers: headers);
+    if (response.statusCode == httpStatusOk) {
+      var recipeMap = jsonDecode(utf8.decode(response.bodyBytes));
+
+      for (var recipe in recipeMap) {
+        Recipe rec = Recipe.fromMapApi(recipe);
+        rec.backgroundColor = Recipe.randomBackgroundColor();
+        recipes.add(rec);
+      }
+    } else {
+      print("ERROR: Cannot retrieve remote recipes. Status: " +
+          response.statusCode.toString());
+    }
+
+    return recipes;
+  }
+
+  Future<List<Recipe>> getAllRecipes() async {
+    List<Recipe> localRecipes = await getLocalRecipes();
+    List<Recipe> remoteRecipes = await getRemoteRecipes();
+    List<Recipe> allRecipes = localRecipes + remoteRecipes;
+    allRecipes.sort((a, b) => a.name.compareTo(b.name));
+    return allRecipes;
   }
 
   Future<List<dynamic>> getRnd(int recipeID) async {
