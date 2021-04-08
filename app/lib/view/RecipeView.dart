@@ -144,108 +144,24 @@ class RecipeViewState extends State<RecipeView> {
                       return Center(child: Text("Keine Rezepte gefunden."));
                     } else {
                       return Scrollbar(
-                        child: ListView.builder(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, i) {
-                            Recipe recipe = snapshot.data[i];
-                            int rndIndex = Random().nextInt(rndPix.length);
-                            // ListItem
-                            return Container(
-                              // height: 100,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              decoration: BoxDecoration(
-                                  color: Color(snapshot.data[i].backgroundColor)
-                                      .withOpacity(.4),
-                                  gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      colors: [
-                                        Color(snapshot.data[i].backgroundColor)
-                                            .withOpacity(.4),
-                                        Color(snapshot.data[i].backgroundColor +
-                                                colorOffset)
-                                            .withOpacity(.4)
-                                      ]),
-                                  borderRadius:
-                                      BorderRadius.circular(borderradius),
-                                  boxShadow: [constShadowDarkLight]),
-                              child: FlatButton(
-                                onPressed: () async {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailRecipeView(recipe: recipe)),
-                                  ).then((value) {
-                                    setState(() {});
-                                  });
-                                },
-                                onLongPress: () {
-                                  RecipeDatabase.db
-                                      .deleteRecipe(snapshot.data[i].id);
-                                  setState(() {});
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    // Image
-                                    Container(
-                                        margin: EdgeInsets.only(
-                                            right: 15, top: 15, bottom: 15),
-                                        child: ClipRRect(
-                                          child: snapshot.data[i].image.path !=
-                                                  null
-                                              ? Image.file(
-                                                  File(snapshot
-                                                      .data[i].image.path),
-                                                  width: 60,
-                                                  height: 60,
-                                                  fit: BoxFit.cover)
-                                              : Image.network(rndPix[rndIndex],
-                                                  width: 60,
-                                                  height: 60,
-                                                  fit: BoxFit.cover),
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                        )),
-                                    // Description
-                                    ConstrainedBox(
-                                      constraints:
-                                          BoxConstraints(maxWidth: 165),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          // Title
-                                          RichText(
-                                            text: TextSpan(
-                                                text: "${recipe.name}",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                )),
-                                          ),
-                                          // Ingredients
-                                          // Text(recipe.printIngredients())
-                                        ],
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    // Icon
-                                    IconButton(
-                                        icon: Icon(Icons.more_vert),
-                                        onPressed: () {
-                                          print("h");
-                                        })
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 20),
+                          child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 20,
+                                    crossAxisSpacing: 20),
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, i) {
+                              Recipe recipe = snapshot.data[i];
+                              int rndIndex = Random().nextInt(rndPix.length);
+                              // ListItem
+                              return recipeGridTile(
+                                  snapshot, i, context, recipe, rndIndex);
+                            },
+                          ),
                         ),
                       );
                     }
@@ -266,6 +182,72 @@ class RecipeViewState extends State<RecipeView> {
             });
           },
           child: Icon(Icons.add)),
+    );
+  }
+
+  Container recipeGridTile(AsyncSnapshot snapshot, int i, BuildContext context,
+      Recipe recipe, int rndIndex) {
+    return Container(
+      // height: 100,
+      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+      decoration: BoxDecoration(
+          color: Color(snapshot.data[i].backgroundColor).withOpacity(0.4),
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(snapshot.data[i].backgroundColor).withOpacity(.4),
+                Color(snapshot.data[i].backgroundColor + colorOffset)
+                    .withOpacity(.4)
+              ]),
+          borderRadius: BorderRadius.circular(borderradius),
+          boxShadow: [constShadowDarkLight]),
+      child: FlatButton(
+        onPressed: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailRecipeView(recipe: recipe)),
+          ).then((value) {
+            setState(() {});
+          });
+        },
+        onLongPress: () {
+          RecipeDatabase.db.deleteRecipe(snapshot.data[i].id);
+          setState(() {});
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            // Image
+            Container(
+                margin: EdgeInsets.only(bottom: 15),
+                child: ClipRRect(
+                  child: snapshot.data[i].image.path != null
+                      ? Image.file(File(snapshot.data[i].image.path),
+                          width: 80, height: 80, fit: BoxFit.cover)
+                      : Image.network(rndPix[rndIndex],
+                          width: 80, height: 80, fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(100),
+                )),
+            // Description
+            Center(
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                    text: recipe.name.length >= 18
+                        ? recipe.name.substring(0, 18) + "..."
+                        : recipe.name,
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        color: Colors.black,
+                        fontSize: 16)),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
