@@ -175,8 +175,8 @@ class RecipeViewState extends State<RecipeView> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => DetailRecipeView(
-                                            recipeId: snapshot.data[i].id)),
+                                        builder: (context) =>
+                                            DetailRecipeView(recipe: recipe)),
                                   ).then((value) {
                                     setState(() {});
                                   });
@@ -273,12 +273,11 @@ class RecipeViewState extends State<RecipeView> {
     setState(() {});
   }
 
-  _pushDetailRevipeView(BuildContext context, int recipeId) {
+  _pushDetailRevipeView(BuildContext context, Recipe recipe) {
     Navigator.push(
             context,
-            // TODO: Pass Recipe object, NOT recipeID !!!
             MaterialPageRoute(
-                builder: (context) => DetailRecipeView(recipeId: recipeId)))
+                builder: (context) => DetailRecipeView(recipe: recipe)))
         .then((value) {
       setState(() {});
     });
