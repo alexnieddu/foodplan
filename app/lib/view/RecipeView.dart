@@ -7,11 +7,8 @@ import 'package:foodplan/data/RecipeDatabase.dart';
 import 'package:foodplan/model/Recipe.dart';
 import 'package:foodplan/view/AddRecipeView.dart';
 import 'package:foodplan/view/DetailRecipeView.dart';
-import 'package:path/path.dart';
 
-List rndPix = [
-  "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&w=1000&q=80"
-];
+const int titleLengthForGridTile = 11;
 
 class RecipeView extends StatefulWidget {
   RecipeViewState createState() => RecipeViewState();
@@ -145,8 +142,8 @@ class RecipeViewState extends State<RecipeView> {
                     } else {
                       return Scrollbar(
                         child: Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 20),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0),
                           child: GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -224,10 +221,10 @@ class RecipeViewState extends State<RecipeView> {
             Container(
                 margin: EdgeInsets.only(bottom: 15),
                 child: ClipRRect(
-                  child: snapshot.data[i].image.path != null
-                      ? Image.file(File(snapshot.data[i].image.path),
+                  child: snapshot.data[i].image.isRemote
+                      ? Image.network(snapshot.data[i].image.path,
                           width: 80, height: 80, fit: BoxFit.cover)
-                      : Image.network(rndPix[rndIndex],
+                      : Image.file(File(snapshot.data[i].image.path),
                           width: 80, height: 80, fit: BoxFit.cover),
                   borderRadius: BorderRadius.circular(100),
                 )),
@@ -236,8 +233,9 @@ class RecipeViewState extends State<RecipeView> {
               child: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                    text: recipe.name.length >= 18
-                        ? recipe.name.substring(0, 18) + "..."
+                    text: recipe.name.length >= titleLengthForGridTile
+                        ? recipe.name.substring(0, titleLengthForGridTile) +
+                            "..."
                         : recipe.name,
                     style: TextStyle(
                         fontWeight: FontWeight.normal,

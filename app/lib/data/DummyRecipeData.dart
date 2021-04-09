@@ -100,7 +100,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Pilz-Rahmsauce",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise"),
         Category(id: 2, name: "Sauce"),
@@ -117,7 +118,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Gemüsetarte",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise"),
         Category(id: 2, name: "Vegetarisch")
@@ -139,7 +141,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Bayerische Schinkenudeln",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise"),
         Category(id: 2, name: "Bayerisch")
@@ -153,7 +156,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Vegetarischer Nudelauflauf",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise"),
         Category(id: 2, name: "Vegetarisch")
@@ -170,7 +174,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Gefüllte Paprika",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise")
       ],
@@ -186,7 +191,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Gulasch",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise"),
         Category(id: 1, name: "Deftig")
@@ -203,7 +209,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Asia Pfanne süß sauer",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise"),
         Category(id: 1, name: "Asiatisch")
@@ -220,7 +227,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Chilli Sahne Schnitzel",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise"),
         Category(id: 1, name: "Feurig")
@@ -236,7 +244,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Überbackenes Putenfilet mit Frischkäse",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise")
       ],
@@ -250,7 +259,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Überbackenes Gnocchi mit Paprika Tomaten Sauce",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise"),
         Category(id: 1, name: "Vegetarisch")
@@ -268,7 +278,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Bauerntopf",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise"),
         Category(id: 1, name: "Deftig")
@@ -286,7 +297,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Winterpfanne mit gebratenen Wallnüssen",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise"),
         Category(id: 1, name: "Vegan")
@@ -301,7 +313,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Rosmarin Balsamico Schweinefilet",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Hauptspeise"),
         Category(id: 1, name: "Festlich")
@@ -316,7 +329,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Brezenknödel",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Beilage"),
         Category(id: 1, name: "Vegetarisch")
@@ -330,7 +344,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Süßkartoffel Kokos Suppe",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Suppe"),
         Category(id: 1, name: "Vegetarisch")
@@ -346,7 +361,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Paprikasuppe",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Suppe"),
         Category(id: 1, name: "Vegetarisch")
@@ -362,7 +378,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Kalte Radiserlsuppe mit Ziegenfrischkäse",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Suppe"),
         Category(id: 1, name: "Bayerisch"),
@@ -379,7 +396,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Sour Creme",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Soße"),
         Category(id: 1, name: "Dip"),
@@ -397,7 +415,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Birnen Obazda",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Aufstrich"),
         Category(id: 1, name: "Bayerisch"),
@@ -413,7 +432,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Schoko Tiramisu",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Dessert")
       ],
@@ -429,7 +449,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Tiramisu alla Silvio",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Dessert")
       ],
@@ -444,7 +465,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Hannahs Best Muffins Ever",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Dessert")
       ],
@@ -458,7 +480,8 @@ List<Recipe> dummyRecipes = [
       id: 1,
       name: "Überbackene Brezen",
       description: "Lorem ipsum dolor sit ...",
-      image: RecipeImage(id: 1, path: null),
+      image: RecipeImage(
+          id: 1, path: null, isDescriptionImage: null, isRemote: true),
       categories: [
         Category(id: 1, name: "Brotzeit")
       ],
@@ -475,7 +498,8 @@ List<Recipe> dummyRecipes = [
   //     id: 1,
   //     name: "Pfannkuchen",
   //     description: "Lorem ipsum dolor sit ...",
-  //     image: RecipeImage(id: 1, path: null),
+  //     image: RecipeImage(
+  //        id: 1, path: null, isDescriptionImage: null, isRemote: true),
   //     categories: [
   //       Category(id: 1, name: "Bayerisch"),
   //       Category(id: 2, name: "Vegetarisch")
@@ -489,7 +513,8 @@ List<Recipe> dummyRecipes = [
   //     id: 2,
   //     name: "Schinkennudeln",
   //     description: "Lorem ipsum dolor sit ...",
-  //     image: RecipeImage(id: 1, path: null),
+  //     image: RecipeImage(
+  //        id: 1, path: null, isDescriptionImage: null, isRemote: true),
   //     categories: [
   //       Category(id: 3, name: "Schnell")
   //     ],
@@ -502,7 +527,8 @@ List<Recipe> dummyRecipes = [
   //     id: 3,
   //     name: "Pizza",
   //     description: "Lorem ipsum dolor sit ...",
-  //     image: RecipeImage(id: 1, path: null),
+  //     image: RecipeImage(
+  //        id: 1, path: null, isDescriptionImage: null, isRemote: true),
   //     categories: [
   //       Category(id: 3, name: "Schnell"),
   //       Category(id: 4, name: "Kulinarisch")

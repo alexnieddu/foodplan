@@ -27,7 +27,7 @@ class Recipe {
       name: map["name"],
       description: map["description"],
       backgroundColor: map["backgroundColor"],
-      image: RecipeImage(id: map["imageId"], path: null),
+      image: RecipeImage(id: map["imageId"], path: null, isRemote: false),
       categories: [],
       ingredients: []);
 
@@ -36,7 +36,8 @@ class Recipe {
       name: map["name"],
       description: map["description"],
       backgroundColor: map["backgroundColor"],
-      image: RecipeImage(id: map["image"]["id"], path: map["image"]["path"]),
+      image: RecipeImage(
+          id: map["image"]["id"], path: map["image"]["path"], isRemote: true),
       categories: List<Category>.from(
           map["categories"].map((category) => Category.fromMap(category))),
       ingredients: List<Ingredient>.from(map["ingredients"]
@@ -47,9 +48,16 @@ class Recipe {
         "name": name,
         "description": description,
         "backgroundColor": backgroundColor,
-        "image": {"id": image.id, "path": image.path},
-        "categories": List<dynamic>.from(categories.map((category) => category.toMap())),
-        "ingredients": List<dynamic>.from(ingredients.map((ingredient) => ingredient.toMap()))
+        "image": {
+          "id": image.id,
+          "path": image.path,
+          "isDescriptionImage": image.isDescriptionImage,
+          "isRemote": image.isRemote
+        },
+        "categories":
+            List<dynamic>.from(categories.map((category) => category.toMap())),
+        "ingredients": List<dynamic>.from(
+            ingredients.map((ingredient) => ingredient.toMap()))
       };
 
   List<int> getCategoryIds() {

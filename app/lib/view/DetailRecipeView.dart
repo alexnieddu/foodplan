@@ -75,12 +75,12 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                             margin:
                                 EdgeInsets.only(right: 15, top: 0, bottom: 15),
                             child: ClipRRect(
-                              child: widget.recipe.image.path != null
-                                  ? Image.file(File(widget.recipe.image.path),
+                              child: widget.recipe.image.isRemote
+                                  ? Image.network(widget.recipe.image.path,
                                       width: 160,
                                       height: 160,
                                       fit: BoxFit.cover)
-                                  : Image.network(rndPix[0],
+                                  : Image.file(File(widget.recipe.image.path),
                                       width: 160,
                                       height: 160,
                                       fit: BoxFit.cover),
