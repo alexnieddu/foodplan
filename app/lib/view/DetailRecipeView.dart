@@ -38,8 +38,8 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                   borderRadius:
                       BorderRadius.only(bottomRight: Radius.circular(70)),
                   gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                       colors: [
                         Color(widget.recipe.backgroundColor).withOpacity(.4),
                         Color(widget.recipe.backgroundColor + colorOffset)
