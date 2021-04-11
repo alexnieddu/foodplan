@@ -19,7 +19,8 @@ class AddRecipeViewState extends State<AddRecipeView> {
   List<Ingredient> ingredients = [];
   List<int> categoryIds = [];
   List<int> ingredientIds = [];
-  File _image;
+  File _imageFood;
+  File _imageRecipe;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class AddRecipeViewState extends State<AddRecipeView> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              _image == null
+              _imageFood == null
                   ? Text("Kein Bild")
                   : Container(
                       decoration: BoxDecoration(
@@ -42,18 +43,18 @@ class AddRecipeViewState extends State<AddRecipeView> {
                           borderRadius: BorderRadius.circular(100)),
                       margin: EdgeInsets.only(right: 15, top: 15, bottom: 15),
                       child: ClipRRect(
-                        child: Image.file(_image,
+                        child: Image.file(_imageFood,
                             width: 160, height: 160, fit: BoxFit.cover),
                         borderRadius: BorderRadius.circular(100),
                       )),
               TextField(
                   decoration: InputDecoration(
-                    hintText: "Rezept",
+                    hintText: "Rezeptname",
                   ),
                   controller: recipeNameController),
               TextField(
                   decoration: InputDecoration(
-                    hintText: "Beschreibung",
+                    hintText: "Bemerkung",
                   ),
                   controller: recipeDescriptionController),
               // Categories
@@ -169,8 +170,16 @@ class AddRecipeViewState extends State<AddRecipeView> {
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(borderradius)),
-                onPressed: _getImage,
-                child: Text("Foto hinzufügen"),
+                onPressed: _getImageFood,
+                child: Text("Essensbild hinzufügen"),
+              ),
+              MaterialButton(
+                color: mainColor,
+                textColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(borderradius)),
+                onPressed: _getImageRecipe,
+                child: Text("Rezeptbild hinzufügen"),
               ),
               MaterialButton(
                 color: mainColor,
@@ -183,10 +192,10 @@ class AddRecipeViewState extends State<AddRecipeView> {
                       recipeDescriptionController.text,
                       categories,
                       ingredients,
-                      _image.path);
+                      _imageFood.path);
                   Navigator.pop(context);
                 },
-                child: Text("Rezept hinzufügen"),
+                child: Text("Fertig"),
               ),
             ],
           ),
@@ -207,14 +216,25 @@ class AddRecipeViewState extends State<AddRecipeView> {
     }
   }
 
-  void _getImage() async {
+  void _getImageFood() async {
     final ImagePicker _picker = ImagePicker();
     final PickedFile _pickedImage =
         await _picker.getImage(source: ImageSource.gallery);
     if (_pickedImage == null) return;
     var image = File(_pickedImage.path);
     setState(() {
-      _image = image;
+      _imageFood = image;
+    });
+  }
+
+  void _getImageRecipe() async {
+    final ImagePicker _picker = ImagePicker();
+    final PickedFile _pickedImage =
+        await _picker.getImage(source: ImageSource.gallery);
+    if (_pickedImage == null) return;
+    var image = File(_pickedImage.path);
+    setState(() {
+      _imageRecipe = image;
     });
   }
 }
