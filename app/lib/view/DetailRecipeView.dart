@@ -6,6 +6,7 @@ import 'package:foodplan/constants.dart';
 import 'package:foodplan/data/RecipeDatabase.dart';
 import 'package:foodplan/model/Recipe.dart';
 import 'package:foodplan/widgets/TaggedBox.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path/path.dart';
 
 List rndPix = [
@@ -87,12 +88,14 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                               borderRadius: BorderRadius.circular(100),
                             )),
                         RichText(
+                          textAlign: TextAlign.center,
                           text: TextSpan(
                               text: widget.recipe.name,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                                 fontSize: 25,
+                                // fontFamily: GoogleFonts.pacifico().fontFamily
                               )),
                         ),
                       ],
