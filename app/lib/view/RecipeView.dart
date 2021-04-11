@@ -8,8 +8,6 @@ import 'package:foodplan/model/Recipe.dart';
 import 'package:foodplan/view/AddRecipeView.dart';
 import 'package:foodplan/view/DetailRecipeView.dart';
 
-const int titleLengthForGridTile = 11;
-
 class RecipeView extends StatefulWidget {
   RecipeViewState createState() => RecipeViewState();
 }
@@ -142,8 +140,8 @@ class RecipeViewState extends State<RecipeView> {
                     } else {
                       return Scrollbar(
                         child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                           child: GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -233,14 +231,12 @@ class RecipeViewState extends State<RecipeView> {
               child: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                    text: recipe.name.length >= titleLengthForGridTile
-                        ? recipe.name.substring(0, titleLengthForGridTile) +
-                            "..."
-                        : recipe.name,
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        color: Colors.black,
-                        fontSize: 16)),
+                  text: shortenRecipeName(recipe.name),
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black,
+                      fontSize: 16),
+                ),
               ),
             )
           ],
@@ -269,5 +265,12 @@ class RecipeViewState extends State<RecipeView> {
         ? _searchBoxShadow = constShadow
         : _searchBoxShadow = constShadowDarkLight;
     setState(() {});
+  }
+
+  String shortenRecipeName(String recipeName) {
+    const int titleLengthForGridTile = 19;
+    return recipeName.length >= titleLengthForGridTile
+        ? recipeName.substring(0, titleLengthForGridTile) + "..."
+        : recipeName;
   }
 }
