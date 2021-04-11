@@ -21,6 +21,8 @@ class DetailRecipeView extends StatefulWidget {
 
 class DetailRecipeViewState extends State<DetailRecipeView> {
   // widget.recipeId
+  bool isFavorite = false;
+  Color _favoriteButtonColor = Colors.grey.shade600;
 
   @override
   void initState() {
@@ -61,6 +63,10 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                             Navigator.pop(context);
                           }),
                       Spacer(),
+                      IconButton(
+                          icon: Icon(Icons.favorite),
+                          color: _favoriteButtonColor,
+                          onPressed: _favorite),
                       IconButton(icon: Icon(Icons.more_vert), onPressed: null)
                     ],
                   ),
@@ -92,11 +98,11 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                           text: TextSpan(
                               text: widget.recipe.name,
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 25,
-                                // fontFamily: GoogleFonts.pacifico().fontFamily
-                              )),
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black,
+                                  fontSize: 25,
+                                  fontFamily:
+                                      GoogleFonts.pacifico().fontFamily)),
                         ),
                       ],
                     ),
@@ -113,12 +119,12 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                   // Instruction
                   RichText(
                     text: TextSpan(
-                        text: "Beschreibung",
+                        text: "Bemerkung",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20,
-                        )),
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontFamily: GoogleFonts.pacifico().fontFamily)),
                   ),
                   SizedBox(height: 15),
                   widget.recipe.description != null
@@ -130,10 +136,10 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                     text: TextSpan(
                         text: "Zutaten",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20,
-                        )),
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontFamily: GoogleFonts.pacifico().fontFamily)),
                   ),
                   SizedBox(height: 15),
                   Row(
@@ -148,10 +154,10 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                     text: TextSpan(
                         text: "Kategorien",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20,
-                        )),
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontFamily: GoogleFonts.pacifico().fontFamily)),
                   ),
                   SizedBox(height: 15),
                   Row(
@@ -165,5 +171,13 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
         ],
       ),
     ));
+  }
+
+  void _favorite() {
+    setState(() {
+      _favoriteButtonColor == mainColor
+          ? _favoriteButtonColor = Colors.grey.shade600
+          : _favoriteButtonColor = mainColor;
+    });
   }
 }
