@@ -10,6 +10,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -56,6 +62,12 @@
             "id": 1,
             "path": "https://kinu-app.com/foodplan/Gemüsetarte-2.jpg",
             "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
             "isRemote": true
         },
         "categories": [
@@ -126,6 +138,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -160,6 +178,12 @@
             "id": 1,
             "path": "https://kinu-app.com/foodplan/Vegetarischer-Nudelauflauf.jpg",
             "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
             "isRemote": true
         },
         "categories": [
@@ -210,6 +234,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -252,6 +282,12 @@
             "id": 1,
             "path": "https://kinu-app.com/foodplan/dummy.jpg",
             "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
             "isRemote": true
         },
         "categories": [
@@ -302,6 +338,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -350,6 +392,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -394,6 +442,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -428,6 +482,12 @@
             "id": 1,
             "path": "https://kinu-app.com/foodplan/dummy.jpg",
             "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
             "isRemote": true
         },
         "categories": [
@@ -482,6 +542,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -534,6 +600,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -572,6 +644,12 @@
             "id": 1,
             "path": "https://kinu-app.com/foodplan/dummy.jpg",
             "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
             "isRemote": true
         },
         "categories": [
@@ -614,6 +692,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -648,6 +732,12 @@
             "id": 1,
             "path": "https://kinu-app.com/foodplan/Süßkartoffeln-Kokos-Suppe.jpg",
             "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
             "isRemote": true
         },
         "categories": [
@@ -694,6 +784,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -736,6 +832,12 @@
             "id": 1,
             "path": "https://kinu-app.com/foodplan/dummy.jpg",
             "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
             "isRemote": true
         },
         "categories": [
@@ -784,6 +886,12 @@
             "id": 1,
             "path": "https://kinu-app.com/foodplan/dummy.jpg",
             "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
             "isRemote": true
         },
         "categories": [
@@ -838,6 +946,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -880,6 +994,12 @@
             "id": 1,
             "path": "https://kinu-app.com/foodplan/dummy.jpg",
             "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
             "isRemote": true
         },
         "categories": [
@@ -926,6 +1046,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -966,6 +1092,12 @@
             "isDescriptionImage": null,
             "isRemote": true
         },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
         "categories": [
             {
                 "id": 1,
@@ -1000,6 +1132,12 @@
             "id": 1,
             "path": "https://kinu-app.com/foodplan/dummy.jpg",
             "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
             "isRemote": true
         },
         "categories": [

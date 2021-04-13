@@ -10,6 +10,7 @@ class Recipe {
   String description;
   int backgroundColor;
   RecipeImage image;
+  RecipeImage descriptionImage;
   List<Category> categories;
   List<Ingredient> ingredients;
 
@@ -19,6 +20,7 @@ class Recipe {
       this.description,
       this.backgroundColor,
       this.image,
+      this.descriptionImage,
       this.categories,
       this.ingredients});
 
@@ -27,7 +29,10 @@ class Recipe {
       name: map["name"],
       description: map["description"],
       backgroundColor: map["backgroundColor"],
+      // NEED REWORK
       image: RecipeImage(id: map["imageId"], path: null, isRemote: false),
+      descriptionImage:
+          RecipeImage(id: map["imageId"], path: null, isRemote: false),
       categories: [],
       ingredients: []);
 
@@ -38,6 +43,11 @@ class Recipe {
       backgroundColor: map["backgroundColor"],
       image: RecipeImage(
           id: map["image"]["id"], path: map["image"]["path"], isRemote: true),
+      // descriptionImage: RecipeImage(
+      //     id: map["descriptionImage"]["id"],
+      //     path: map["descriptionImage"]["path"],
+      //     isRemote: true,
+      //     isDescriptionImage: true),
       categories: List<Category>.from(
           map["categories"].map((category) => Category.fromMap(category))),
       ingredients: List<Ingredient>.from(map["ingredients"]
@@ -49,6 +59,12 @@ class Recipe {
         "description": description,
         "backgroundColor": backgroundColor,
         "image": {
+          "id": image.id,
+          "path": image.path,
+          "isDescriptionImage": image.isDescriptionImage,
+          "isRemote": image.isRemote
+        },
+        "descriptionImage": {
           "id": image.id,
           "path": image.path,
           "isDescriptionImage": image.isDescriptionImage,

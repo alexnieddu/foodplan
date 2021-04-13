@@ -192,7 +192,8 @@ class AddRecipeViewState extends State<AddRecipeView> {
                       recipeDescriptionController.text,
                       categories,
                       ingredients,
-                      _imageFood.path);
+                      _imageFood.path,
+                      _imageRecipe.path);
                   Navigator.pop(context);
                 },
                 child: Text("Fertig"),
@@ -203,15 +204,17 @@ class AddRecipeViewState extends State<AddRecipeView> {
   }
 
   void _saveRecipe(String text, String description, List<Category> cats,
-      List<Ingredient> ings, String imagePath) {
+      List<Ingredient> ings, String imagePath, String descImgPath) {
     if (text.isNotEmpty) {
-      final img = RecipeImage(id: 1, path: imagePath);
+      final img = RecipeImage(path: imagePath);
+      final descImg = RecipeImage(path: descImgPath);
       final recipe = Recipe(
           name: text,
           description: description,
           categories: cats,
           ingredients: ings,
-          image: img);
+          image: img,
+          descriptionImage: descImg);
       RecipeDatabase.db.insert(recipe);
     }
   }

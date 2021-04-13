@@ -203,6 +203,7 @@ class RecipeDatabase {
       await db.execute("CREATE TABLE image ("
           "id INTEGER PRIMARY KEY AUTOINCREMENT, "
           "path TEXT, "
+          "isDescriptionImage INTEGER, "
           "recipeId INTEGER, "
           "FOREIGN KEY (recipeId) REFERENCES recipe(id)"
           ")");
@@ -255,16 +256,22 @@ class RecipeDatabase {
 
     var lastInsertedRecipeId = await lastInsertedId();
 
-    // Image
+    // Image food
     res = await db.rawInsert(
-        "INSERT INTO image (path, recipeId)"
-        "VALUES (?, ?)",
+        "INSERT INTO image (path, recipeId, isDescriptionImage)"
+        "VALUES (?, ?, 0)",
         [recipe.image.path, lastInsertedRecipeId]);
 
     var lastInsertedImageId = await lastInsertedId();
 
     res = await db.rawUpdate("UPDATE recipe SET imageId = ? WHERE id = ?",
         [lastInsertedImageId, lastInsertedRecipeId]);
+
+    // Image recipe
+    res = await db.rawInsert(
+        "INSERT INTO image (path, recipeId, isDescriptionImage)"
+        "VALUES (?, ?, 1)",
+        [recipe.descriptionImage.path, lastInsertedRecipeId]);
 
     // Categories
     for (var category in recipe.categories) {
@@ -333,12 +340,25 @@ class RecipeDatabase {
 
     var recipe = Recipe.fromMap(res.first);
 
-    // Fetch RECIPEIMAGE from db and add path to recipe
+    // Fetch FOOD IMAGE from db and add path to recipe
     if (recipe.image.id != null) {
-      res = await db
-          .rawQuery("SELECT path FROM image WHERE id = ?", [recipe.image.id]);
+      res = await db.rawQuery(
+          "SELECT path FROM image WHERE recipeId = ? AND isDescriptionImage = 0",
+          [id]);
       recipe.image.path = res.first.values.first;
+      recipe.image.isDescriptionImage = false;
     }
+
+    // Fetch RECIPE IMAGE from db and add path to recipe
+    if (recipe.image.id != null) {
+      res = await db.rawQuery(
+          "SELECT path FROM image WHERE recipeId = ? AND isDescriptionImage = 1",
+          [id]);
+      recipe.descriptionImage.path = res.first.values.first;
+      recipe.descriptionImage.isDescriptionImage = true;
+    }
+
+    recipe.descriptionImage.isRemote = false;
 
     // Fetch INGREDIENTS from db and add them to recipe
     res = await db.rawQuery(
@@ -514,6 +534,7 @@ class RecipeDatabase {
     return list;
   }
 
+// START DEPRECATED ----------------------------------------------------
   Future<List<dynamic>> getIngredientsOfRecipe(int recipeId) async {
     final db = await database;
     var res = await db.rawQuery(
@@ -543,6 +564,7 @@ class RecipeDatabase {
     print(list);
     return list;
   }
+  // END DEPRECATED ----------------------------------------------------
 
   Future<int> lastInsertedId() async {
     final db = await database;
