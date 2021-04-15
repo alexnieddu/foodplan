@@ -175,9 +175,9 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
 
   void _favorite() {
     setState(() {
-      _favoriteButtonColor == mainColor
+      _favoriteButtonColor == Colors.red
           ? _favoriteButtonColor = Colors.grey.shade600
-          : _favoriteButtonColor = mainColor;
+          : _favoriteButtonColor = Colors.red;
     });
   }
 }
