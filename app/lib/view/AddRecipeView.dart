@@ -65,6 +65,7 @@ class AddRecipeViewState extends State<AddRecipeView> {
                     ),
                     controller: recipeDescriptionController),
                 // Categories
+                Text("Kategorien:"),
                 Container(
                   height: 70,
                   child: FutureBuilder(
@@ -119,6 +120,7 @@ class AddRecipeViewState extends State<AddRecipeView> {
                       }),
                 ),
                 // Ingredients
+                Text("Zutaten:"),
                 Container(
                   height: 70,
                   child: FutureBuilder(
@@ -173,6 +175,8 @@ class AddRecipeViewState extends State<AddRecipeView> {
                         }
                       }),
                 ),
+                // Color selection
+                Text("Farbe:"),
                 Column(
                   children: <Widget>[
                     ListTile(
@@ -302,7 +306,7 @@ class AddRecipeViewState extends State<AddRecipeView> {
           ingredients: ings,
           image: img,
           descriptionImage: descImg);
-      RecipeDatabase.db.insert(recipe);
+      RecipeDatabase.db.create(recipe);
     }
   }
 

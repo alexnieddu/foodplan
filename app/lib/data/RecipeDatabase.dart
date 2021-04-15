@@ -119,23 +119,90 @@ List<String> baseSlots = [
   "Sonntag"
 ];
 List<String> baseCategories = [
-  "Fleisch",
-  "Suppe",
+  "Favorit",
+  "Hauptspeise",
+  "Sauce",
   "Vegetarisch",
+  "Bayerisch",
   "Deftig",
-  "Low Carb",
-  "Sonntagsessen",
-  "Traditionell"
+  "AsiaTisch",
+  "Feurig",
+  "Vegan",
+  "Festlich",
+  "Beilage",
+  "Suppe",
+  "Soße",
+  "Dip",
+  "Aufstrich",
+  "Dessert",
+  "Brotzeit"
 ];
 List<String> baseIngredients = [
-  "Zwiebeln",
-  "Olivenöl",
+  "Pilze",
+  "Knoblauchzehe",
+  "Tomatenmark",
+  "Sojasauce",
+  "Sahne",
+  "Joghurt",
+  "Butter",
+  "Zucchini",
+  "Paprika",
+  "Frühlingszwiebeln",
+  "Karotte",
+  "Tomate",
+  "Eier",
+  "Käse",
+  "Creme Fraiche",
+  "Nudeln",
+  "Schinken",
   "Knoblauch",
+  "Tomaten",
   "Reis",
   "Hackfleisch",
+  "Rindfleisch",
+  "Schweinefleisch",
   "Putenfleisch",
-  "Mehl",
-  "Milch"
+  "Ananas",
+  "Essig",
+  "Chilli",
+  "Frischkäse",
+  "Gnocchi",
+  "passierte Tomaten",
+  "Mozzarella",
+  "Parmesan",
+  "Dosentomaten",
+  "Kartoffeln",
+  "Wallnüsse",
+  "Wirsing",
+  "Rosmarin",
+  "Weißwein",
+  "Balsamicoessig",
+  "Brezen",
+  "Milch",
+  "Ingwer",
+  "Kokosmilch",
+  "Zitrone",
+  "Süßkartoffeln",
+  "Radieschen",
+  "Avocado",
+  "Spinat",
+  "Ziegenfrischkäse",
+  "Schnittlauch",
+  "Mayonnaise",
+  "Saure Sahne",
+  "Magerquark",
+  "Wallnuss",
+  "Birne",
+  "Blauschimmelkäse",
+  "Vanillinzucker",
+  "Paradiscreme",
+  "Kakao",
+  "Kekse",
+  "Mascarpone",
+  "Amaretto",
+  "Espresso",
+  "Zartbitterschokolade",
+  "Rohrzucker"
 ];
 
 class RecipeDatabase {
@@ -225,6 +292,7 @@ class RecipeDatabase {
       //       " VALUES (?, (SELECT id FROM recipe ORDER BY RANDOM() LIMIT 1))",
       //       [slot]);
       // }
+
       // categories
       for (String category in baseCategories) {
         await db.rawInsert(
@@ -244,7 +312,7 @@ class RecipeDatabase {
     });
   }
 
-  Future<int> insert(Recipe recipe) async {
+  Future<int> create(Recipe recipe) async {
     var res;
     final db = await database;
 
