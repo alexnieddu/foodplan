@@ -252,7 +252,7 @@ class RecipeDatabase {
     res = await db.rawInsert(
         "INSERT INTO recipe (name, description, backgroundColor)"
         "VALUES (?, ?, ?)",
-        [recipe.name, recipe.description, Recipe.randomBackgroundColor()]);
+        [recipe.name, recipe.description, recipe.backgroundColor]);
 
     var lastInsertedRecipeId = await lastInsertedId();
 

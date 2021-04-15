@@ -15,12 +15,18 @@ class AddRecipeView extends StatefulWidget {
 class AddRecipeViewState extends State<AddRecipeView> {
   final recipeNameController = TextEditingController();
   final recipeDescriptionController = TextEditingController();
+  int _recipeColor;
   List<Category> categories = [];
   List<Ingredient> ingredients = [];
   List<int> categoryIds = [];
   List<int> ingredientIds = [];
   File _imageFood;
   File _imageRecipe;
+  int blue = 255;
+  int green = 65280;
+  int red = 16711680;
+  int yellow = 16776960;
+  int violet = 8651007;
 
   @override
   Widget build(BuildContext context) {
@@ -31,174 +37,253 @@ class AddRecipeViewState extends State<AddRecipeView> {
         ),
         body: Container(
           padding: EdgeInsets.all(15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              _imageFood == null
-                  ? Text("Kein Bild")
-                  : Container(
-                      decoration: BoxDecoration(
-                          boxShadow: [],
-                          borderRadius: BorderRadius.circular(100)),
-                      margin: EdgeInsets.only(right: 15, top: 15, bottom: 15),
-                      child: ClipRRect(
-                        child: Image.file(_imageFood,
-                            width: 160, height: 160, fit: BoxFit.cover),
-                        borderRadius: BorderRadius.circular(100),
-                      )),
-              TextField(
-                  decoration: InputDecoration(
-                    hintText: "Rezeptname",
-                  ),
-                  controller: recipeNameController),
-              TextField(
-                  decoration: InputDecoration(
-                    hintText: "Bemerkung",
-                  ),
-                  controller: recipeDescriptionController),
-              // Categories
-              Container(
-                height: 70,
-                child: FutureBuilder(
-                    future: RecipeDatabase.db.getAllCategories(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, index) {
-                            var category = Category(
-                                id: snapshot.data[index].id,
-                                name: snapshot.data[index].name);
-                            return Container(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              child: FilterChip(
-                                label: Text(snapshot.data[index].name),
-                                labelStyle: TextStyle(
-                                    color: categories
-                                            .where((cat) =>
-                                                cat.name == category.name)
-                                            .isNotEmpty
-                                        ? Colors.white
-                                        : Colors.black),
-                                selectedColor: mainColor,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(borderradius)),
-                                selected: categories
-                                    .where((cat) => cat.name == category.name)
-                                    .isNotEmpty,
-                                onSelected: (bool value) {
-                                  setState(() {
-                                    if (value) {
-                                      categories.add(category);
-                                    } else {
-                                      categories.removeWhere(
-                                          (cat) => cat.id == category.id);
-                                    }
-                                    print(categories.toString());
-                                  });
-                                },
-                              ),
-                            );
-                          },
-                        );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    }),
-              ),
-              // Ingredients
-              Container(
-                height: 70,
-                child: FutureBuilder(
-                    future: RecipeDatabase.db.getAllIngredients(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, index) {
-                            var ingredient = Ingredient(
-                                id: snapshot.data[index].id,
-                                name: snapshot.data[index].name);
-                            return Container(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              child: FilterChip(
-                                label: Text(snapshot.data[index].name),
-                                labelStyle: TextStyle(
-                                    color: ingredients
-                                            .where((ing) =>
-                                                ing.name == ingredient.name)
-                                            .isNotEmpty
-                                        ? Colors.white
-                                        : Colors.black),
-                                selectedColor: mainColor,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(borderradius)),
-                                selected: ingredients
-                                    .where((ing) => ing.name == ingredient.name)
-                                    .isNotEmpty,
-                                onSelected: (bool value) {
-                                  setState(() {
-                                    if (value) {
-                                      ingredients.add(ingredient);
-                                    } else {
-                                      ingredients.removeWhere(
-                                          (ing) => ing.id == ingredient.id);
-                                    }
-                                    print(ingredients.toString());
-                                  });
-                                },
-                              ),
-                            );
-                          },
-                        );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    }),
-              ),
-              MaterialButton(
-                color: mainColor,
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(borderradius)),
-                onPressed: _getImageFood,
-                child: Text("Essensbild hinzufügen"),
-              ),
-              MaterialButton(
-                color: mainColor,
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(borderradius)),
-                onPressed: _getImageRecipe,
-                child: Text("Rezeptbild hinzufügen"),
-              ),
-              MaterialButton(
-                color: mainColor,
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(borderradius)),
-                onPressed: () {
-                  _saveRecipe(
-                      recipeNameController.text,
-                      recipeDescriptionController.text,
-                      categories,
-                      ingredients,
-                      _imageFood.path,
-                      _imageRecipe.path);
-                  Navigator.pop(context);
-                },
-                child: Text("Fertig"),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                _imageFood == null
+                    ? Text("Kein Bild")
+                    : Container(
+                        decoration: BoxDecoration(
+                            boxShadow: [],
+                            borderRadius: BorderRadius.circular(100)),
+                        margin: EdgeInsets.only(right: 15, top: 15, bottom: 15),
+                        child: ClipRRect(
+                          child: Image.file(_imageFood,
+                              width: 160, height: 160, fit: BoxFit.cover),
+                          borderRadius: BorderRadius.circular(100),
+                        )),
+                TextField(
+                    decoration: InputDecoration(
+                      hintText: "Rezeptname",
+                    ),
+                    controller: recipeNameController),
+                TextField(
+                    decoration: InputDecoration(
+                      hintText: "Bemerkung",
+                    ),
+                    controller: recipeDescriptionController),
+                // Categories
+                Container(
+                  height: 70,
+                  child: FutureBuilder(
+                      future: RecipeDatabase.db.getAllCategories(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              var category = Category(
+                                  id: snapshot.data[index].id,
+                                  name: snapshot.data[index].name);
+                              return Container(
+                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                child: FilterChip(
+                                  label: Text(snapshot.data[index].name),
+                                  labelStyle: TextStyle(
+                                      color: categories
+                                              .where((cat) =>
+                                                  cat.name == category.name)
+                                              .isNotEmpty
+                                          ? Colors.white
+                                          : Colors.black),
+                                  selectedColor: mainColor,
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(borderradius)),
+                                  selected: categories
+                                      .where((cat) => cat.name == category.name)
+                                      .isNotEmpty,
+                                  onSelected: (bool value) {
+                                    setState(() {
+                                      if (value) {
+                                        categories.add(category);
+                                      } else {
+                                        categories.removeWhere(
+                                            (cat) => cat.id == category.id);
+                                      }
+                                      print(categories.toString());
+                                    });
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }),
+                ),
+                // Ingredients
+                Container(
+                  height: 70,
+                  child: FutureBuilder(
+                      future: RecipeDatabase.db.getAllIngredients(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              var ingredient = Ingredient(
+                                  id: snapshot.data[index].id,
+                                  name: snapshot.data[index].name);
+                              return Container(
+                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                child: FilterChip(
+                                  label: Text(snapshot.data[index].name),
+                                  labelStyle: TextStyle(
+                                      color: ingredients
+                                              .where((ing) =>
+                                                  ing.name == ingredient.name)
+                                              .isNotEmpty
+                                          ? Colors.white
+                                          : Colors.black),
+                                  selectedColor: mainColor,
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(borderradius)),
+                                  selected: ingredients
+                                      .where(
+                                          (ing) => ing.name == ingredient.name)
+                                      .isNotEmpty,
+                                  onSelected: (bool value) {
+                                    setState(() {
+                                      if (value) {
+                                        ingredients.add(ingredient);
+                                      } else {
+                                        ingredients.removeWhere(
+                                            (ing) => ing.id == ingredient.id);
+                                      }
+                                      print(ingredients.toString());
+                                    });
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }),
+                ),
+                Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text("zufällig"),
+                      leading: Radio(
+                        value: -1,
+                        groupValue: _recipeColor,
+                        onChanged: (int value) {
+                          setState(() {
+                            _recipeColor = -1;
+                          });
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("blau"),
+                      leading: Radio(
+                        value: blue,
+                        groupValue: _recipeColor,
+                        onChanged: (int value) {
+                          setState(() {
+                            _recipeColor = value;
+                          });
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("rot"),
+                      leading: Radio(
+                        value: red,
+                        groupValue: _recipeColor,
+                        onChanged: (int value) {
+                          setState(() {
+                            _recipeColor = value;
+                          });
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("grün"),
+                      leading: Radio(
+                        value: green,
+                        groupValue: _recipeColor,
+                        onChanged: (int value) {
+                          setState(() {
+                            _recipeColor = value;
+                          });
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("gelb"),
+                      leading: Radio(
+                        value: yellow,
+                        groupValue: _recipeColor,
+                        onChanged: (int value) {
+                          setState(() {
+                            _recipeColor = value;
+                          });
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("lila"),
+                      leading: Radio(
+                        value: violet,
+                        groupValue: _recipeColor,
+                        onChanged: (int value) {
+                          setState(() {
+                            _recipeColor = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                MaterialButton(
+                  color: mainColor,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(borderradius)),
+                  onPressed: _getImageFood,
+                  child: Text("Essensbild hinzufügen"),
+                ),
+                MaterialButton(
+                  color: mainColor,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(borderradius)),
+                  onPressed: _getImageRecipe,
+                  child: Text("Rezeptbild hinzufügen"),
+                ),
+                MaterialButton(
+                  color: mainColor,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(borderradius)),
+                  onPressed: () {
+                    _saveRecipe(
+                        recipeNameController.text,
+                        recipeDescriptionController.text,
+                        categories,
+                        ingredients,
+                        _imageFood.path,
+                        _imageRecipe.path);
+                    Navigator.pop(context);
+                  },
+                  child: Text("Fertig"),
+                ),
+              ],
+            ),
           ),
         ));
   }
@@ -208,9 +293,11 @@ class AddRecipeViewState extends State<AddRecipeView> {
     if (text.isNotEmpty) {
       final img = RecipeImage(path: imagePath);
       final descImg = RecipeImage(path: descImgPath);
+      _recipeColor == -1 ?? Recipe.randomBackgroundColor();
       final recipe = Recipe(
           name: text,
           description: description,
+          backgroundColor: _recipeColor,
           categories: cats,
           ingredients: ings,
           image: img,
