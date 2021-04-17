@@ -5,14 +5,11 @@ import 'package:foodplan/model/Slot.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:foodplan/model/Recipe.dart';
-import 'package:foodplan/model/Slot.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'DummyRecipeData.dart';
 
 List<String> baseRecipes = [
   "Pfannkuchen",
@@ -125,7 +122,7 @@ List<String> baseCategories = [
   "Vegetarisch",
   "Bayerisch",
   "Deftig",
-  "AsiaTisch",
+  "Asiatisch",
   "Feurig",
   "Vegan",
   "Festlich",
@@ -400,6 +397,38 @@ class RecipeDatabase {
     return res;
   }
 
+  Future<int> createCategory(Category category) async {
+    var res;
+    final db = await database;
+
+    // Category
+    res = await db.rawInsert(
+        "INSERT INTO category (name)"
+        "VALUES (?)",
+        [category.name]);
+
+    return res;
+  }
+
+  Future<int> createIngredient(Ingredient ingredient) async {
+    var res;
+    final db = await database;
+
+    // Category
+    res = await db.rawInsert(
+        "INSERT INTO ingredient (name)"
+        "VALUES (?)",
+        [ingredient.name]);
+
+    return res;
+  }
+
+  // TODO: implement this
+  Future<bool> update(Recipe recipe) {
+    Future.delayed(Duration(seconds: 5));
+    return Future.value(true);
+  }
+
   Future<Recipe> getRecipe(int id) async {
     final db = await database;
     var res = await db.rawQuery(
@@ -583,7 +612,7 @@ class RecipeDatabase {
   }
 
   // Category
-  Future<List<dynamic>> getAllCategories() async {
+  Future<List<Category>> getAllCategories() async {
     final db = await database;
     var res =
         await db.rawQuery("SELECT id, name FROM category ORDER BY name ASC");
