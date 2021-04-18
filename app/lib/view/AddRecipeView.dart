@@ -2,9 +2,11 @@ import 'dart:io';
 import 'package:foodplan/model/Category.dart';
 import 'package:foodplan/model/Ingredient.dart';
 import 'package:foodplan/model/RecipeImage.dart';
-import 'package:foodplan/view/AddPropertyView.dart';
+import 'package:foodplan/view/AddCategoryView.dart';
+import 'package:foodplan/view/AddIngredientView.dart';
+import 'package:foodplan/view/selectColorView.dart';
 import 'package:foodplan/widgets/FancyText.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:foodplan/widgets/TaggedBox.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:foodplan/constants.dart';
@@ -18,19 +20,15 @@ class AddRecipeView extends StatefulWidget {
 class AddRecipeViewState extends State<AddRecipeView> {
   final recipeNameController = TextEditingController();
   final recipeDescriptionController = TextEditingController();
-  int _recipeColor;
   List<Category> categories = [];
-  List<String> categoriesString = [];
+  List<String> categoriesString;
+  List<String> ingredientsString;
   List<Ingredient> ingredients = [];
   List<int> categoryIds = [];
   List<int> ingredientIds = [];
   File _imageFood;
   File _imageRecipe;
-  // int blue = 255;
-  // int green = 65280;
-  // int red = 16711680;
-  // int yellow = 16776960;
-  // int violet = 8651007;
+  int _recipeColor = -1;
   int red = 0xFFFF0000;
   int green = 0xFF00FF00;
   int blue = 0xFF0000FF;
@@ -39,6 +37,13 @@ class AddRecipeViewState extends State<AddRecipeView> {
   String propertyType;
 
   double _imageSize = 160.0;
+
+  @override
+  void initState() {
+    super.initState();
+    categoriesString = [];
+    ingredientsString = [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,271 +102,90 @@ class AddRecipeViewState extends State<AddRecipeView> {
                 // Category
                 Row(
                   children: [
-                    IconButton(
-                        color: mainColor,
-                        iconSize: 35.0,
-                        icon: Icon(Icons.add_circle_rounded),
-                        onPressed: addCategory),
-                    Text("Kategorien")
+                    Text("Kategorien:"),
+                    Spacer(),
+                    IconButton(icon: Icon(Icons.add), onPressed: addCategory),
                   ],
+                ),
+                Container(
+                  height: 33.0,
+                  child: categoriesString.isEmpty
+                      ? Center(child: Text("Noch leer..."))
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categoriesString == null
+                              ? 0
+                              : categoriesString.length,
+                          itemBuilder: (context, i) {
+                            return TaggedBox(text: categoriesString[i]);
+                          }),
                 ),
                 // Ingredient
                 Row(
                   children: [
-                    IconButton(
-                        color: mainColor,
-                        iconSize: 35.0,
-                        icon: Icon(Icons.add_circle_rounded),
-                        onPressed: addIngredient),
-                    Text("Zutaten")
+                    Text("Zutaten:"),
+                    Spacer(),
+                    IconButton(icon: Icon(Icons.add), onPressed: addIngredient),
                   ],
                 ),
-                // Color
+                Container(
+                  height: 33.0,
+                  child: ingredientsString.isEmpty
+                      ? Center(child: Text("Noch leer..."))
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: ingredientsString == null
+                              ? 0
+                              : ingredientsString.length,
+                          itemBuilder: (context, i) {
+                            return TaggedBox(text: ingredientsString[i]);
+                          }),
+                ),
+                // Color selection
                 Row(
                   children: [
+                    Text("Farbe:"),
                     IconButton(
-                        color: mainColor,
-                        iconSize: 35.0,
-                        icon: Icon(Icons.add_circle_rounded),
-                        onPressed: addIngredient),
-                    Text("Farbe")
+                        icon: Icon(Icons.circle),
+                        onPressed: () {},
+                        color: Color(_recipeColor)),
+                    Spacer(),
+                    IconButton(icon: Icon(Icons.add), onPressed: addColor),
                   ],
                 ),
-                // Categories
-                // Text("Kategorien:"),
-                // Container(
-                //   height: 70,
-                //   child: FutureBuilder(
-                //       future: RecipeDatabase.db.getAllCategories(),
-                //       builder: (context, snapshot) {
-                //         if (snapshot.hasData) {
-                //           return ListView.builder(
-                //             padding: EdgeInsets.symmetric(horizontal: 20),
-                //             scrollDirection: Axis.horizontal,
-                //             itemCount: snapshot.data.length + 1,
-                //             itemBuilder: (context, index) {
-                //               if (index == 0) {
-                //                 return TextButton(
-                //                   onPressed: addCategory,
-                //                   child: Icon(Icons.add),
-                //                   style: ButtonStyle(
-                //                       shape: MaterialStateProperty.all<
-                //                               RoundedRectangleBorder>(
-                //                           RoundedRectangleBorder(
-                //                               borderRadius:
-                //                                   BorderRadius.circular(18.0),
-                //                               side: BorderSide(
-                //                                   color: mainColor)))),
-                //                 );
-                //               } else {
-                //                 var category = Category(
-                //                     id: snapshot.data[index - 1].id,
-                //                     name: snapshot.data[index - 1].name);
-                //                 return Container(
-                //                   padding: EdgeInsets.symmetric(horizontal: 5),
-                //                   child: FilterChip(
-                //                     label: Text(snapshot.data[index - 1].name),
-                //                     labelStyle: TextStyle(
-                //                         color: categories
-                //                                 .where((cat) =>
-                //                                     cat.name == category.name)
-                //                                 .isNotEmpty
-                //                             ? Colors.white
-                //                             : Colors.black),
-                //                     selectedColor: mainColor,
-                //                     backgroundColor: Colors.white,
-                //                     shape: RoundedRectangleBorder(
-                //                         borderRadius: BorderRadius.circular(
-                //                             borderradius)),
-                //                     selected: categories
-                //                         .where(
-                //                             (cat) => cat.name == category.name)
-                //                         .isNotEmpty,
-                //                     onSelected: (bool value) {
-                //                       setState(() {
-                //                         if (value) {
-                //                           categories.add(category);
-                //                         } else {
-                //                           categories.removeWhere(
-                //                               (cat) => cat.id == category.id);
-                //                         }
-                //                         print(categories.toString());
-                //                       });
-                //                     },
-                //                   ),
-                //                 );
-                //               }
-                //             },
-                //           );
-                //         } else {
-                //           return Center(child: CircularProgressIndicator());
-                //         }
-                //       }),
-                // ),
-                // Ingredients
-                // Text("Zutaten:"),
-                // Container(
-                //   height: 70,
-                //   child: FutureBuilder(
-                //       future: RecipeDatabase.db.getAllIngredients(),
-                //       builder: (context, snapshot) {
-                //         if (snapshot.hasData) {
-                //           return ListView.builder(
-                //             padding: EdgeInsets.symmetric(horizontal: 20),
-                //             scrollDirection: Axis.horizontal,
-                //             itemCount: snapshot.data.length + 1,
-                //             itemBuilder: (context, index) {
-                //               if (index == 0) {
-                //                 return TextButton(
-                //                   onPressed: addIngredient,
-                //                   child: Icon(Icons.add),
-                //                   style: ButtonStyle(
-                //                       shape: MaterialStateProperty.all<
-                //                               RoundedRectangleBorder>(
-                //                           RoundedRectangleBorder(
-                //                               borderRadius:
-                //                                   BorderRadius.circular(18.0),
-                //                               side: BorderSide(
-                //                                   color: mainColor)))),
-                //                 );
-                //               } else {
-                //                 var ingredient = Ingredient(
-                //                     id: snapshot.data[index - 1].id,
-                //                     name: snapshot.data[index - 1].name);
-                //                 return Container(
-                //                   padding: EdgeInsets.symmetric(horizontal: 5),
-                //                   child: FilterChip(
-                //                     label: Text(snapshot.data[index - 1].name),
-                //                     labelStyle: TextStyle(
-                //                         color: ingredients
-                //                                 .where((ing) =>
-                //                                     ing.name == ingredient.name)
-                //                                 .isNotEmpty
-                //                             ? Colors.white
-                //                             : Colors.black),
-                //                     selectedColor: mainColor,
-                //                     backgroundColor: Colors.white,
-                //                     shape: RoundedRectangleBorder(
-                //                         borderRadius: BorderRadius.circular(
-                //                             borderradius)),
-                //                     selected: ingredients
-                //                         .where((ing) =>
-                //                             ing.name == ingredient.name)
-                //                         .isNotEmpty,
-                //                     onSelected: (bool value) {
-                //                       setState(() {
-                //                         if (value) {
-                //                           ingredients.add(ingredient);
-                //                         } else {
-                //                           ingredients.removeWhere(
-                //                               (ing) => ing.id == ingredient.id);
-                //                         }
-                //                         print(ingredients.toString());
-                //                       });
-                //                     },
-                //                   ),
-                //                 );
-                //               }
-                //             },
-                //           );
-                //         } else {
-                //           return Center(child: CircularProgressIndicator());
-                //         }
-                //       }),
-                // ),
-                // Color selection
-                // Text("Farbe:"),
-                // Column(
-                //   children: <Widget>[
-                //     ListTile(
-                //       title: Text("zufällig"),
-                //       leading: Radio(
-                //         value: -1,
-                //         groupValue: _recipeColor,
-                //         onChanged: (int value) {
-                //           setState(() {
-                //             _recipeColor = -1;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //     ListTile(
-                //       title: Text("blau"),
-                //       leading: Radio(
-                //         value: blue,
-                //         groupValue: _recipeColor,
-                //         onChanged: (int value) {
-                //           setState(() {
-                //             _recipeColor = value;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //     ListTile(
-                //       title: Text("rot"),
-                //       leading: Radio(
-                //         value: red,
-                //         groupValue: _recipeColor,
-                //         onChanged: (int value) {
-                //           setState(() {
-                //             _recipeColor = value;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //     ListTile(
-                //       title: Text("grün"),
-                //       leading: Radio(
-                //         value: green,
-                //         groupValue: _recipeColor,
-                //         onChanged: (int value) {
-                //           setState(() {
-                //             _recipeColor = value;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //     ListTile(
-                //       title: Text("gelb"),
-                //       leading: Radio(
-                //         value: yellow,
-                //         groupValue: _recipeColor,
-                //         onChanged: (int value) {
-                //           setState(() {
-                //             _recipeColor = value;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //     ListTile(
-                //       title: Text("lila"),
-                //       leading: Radio(
-                //         value: violet,
-                //         groupValue: _recipeColor,
-                //         onChanged: (int value) {
-                //           setState(() {
-                //             _recipeColor = value;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                // FINISH
                 MaterialButton(
                   color: mainColor,
                   textColor: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(borderradius)),
                   onPressed: () {
-                    print("DSADSADSA: " + categoriesString.toString());
-                    // _saveRecipe(
-                    //     recipeNameController.text,
-                    //     recipeDescriptionController.text,
-                    //     categories,
-                    //     ingredients,
-                    //     _imageFood.path,
-                    //     _imageRecipe.path);
-                    // Navigator.pop(context);
+                    List<Category> cats = [];
+                    categoriesString.forEach((element) {
+                      cats.add(Category(name: element));
+                    });
+
+                    List<Ingredient> ings = [];
+                    ingredientsString.forEach((element) {
+                      ings.add(Ingredient(name: element));
+                    });
+
+                    print(recipeNameController.text);
+                    print(recipeDescriptionController.text);
+                    print(cats.toString());
+                    print(ings.toString());
+                    print(_imageFood.path);
+                    print(_imageRecipe.path);
+                    print(_recipeColor);
+
+                    _saveRecipe(
+                        recipeNameController.text,
+                        recipeDescriptionController.text,
+                        cats,
+                        ings,
+                        _imageFood.path,
+                        _imageRecipe.path);
+                    Navigator.pop(context);
                   },
                   child: Text("Fertig"),
                 ),
@@ -413,22 +237,48 @@ class AddRecipeViewState extends State<AddRecipeView> {
 
   void addCategory() {
     propertyType = "Kategorien";
-    _pushView(context);
+    _pushViewCategory(context);
   }
 
   void addIngredient() {
     propertyType = "Zutaten";
-    _pushView(context);
+    _pushViewIngredient(context);
   }
 
-  _pushView(BuildContext context) async {
+  void addColor() {
+    propertyType = "Zutaten";
+    _pushViewColor(context);
+  }
+
+  _pushViewCategory(BuildContext context) async {
     final retreiveData = await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                AddPropertyView(propertyTypeName: propertyType)));
+            builder: (context) => AddCategoryView(
+                propertyTypeName: propertyType,
+                selectedCatsFrom: categoriesString)));
 
     categoriesString = retreiveData;
-    // print(retreiveData.toString());
+    setState(() {});
+  }
+
+  _pushViewIngredient(BuildContext context) async {
+    final retreiveData = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AddIngredientView(
+                propertyTypeName: propertyType,
+                selectedCatsFrom: ingredientsString)));
+
+    ingredientsString = retreiveData;
+    setState(() {});
+  }
+
+  _pushViewColor(BuildContext context) async {
+    final retreiveData = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SelectColorView()));
+
+    _recipeColor = retreiveData;
+    setState(() {});
   }
 }
