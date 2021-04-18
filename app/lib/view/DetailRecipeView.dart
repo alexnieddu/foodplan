@@ -141,12 +141,15 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                             fontSize: 20,
                             fontFamily: GoogleFonts.pacifico().fontFamily)),
                   ),
-                  SizedBox(height: 15),
-                  Row(
-                    children: <Widget>[
-                      for (var i = 0; i < widget.recipe.ingredients.length; i++)
-                        TaggedBox(text: widget.recipe.ingredients[i].name)
-                    ],
+                  Container(
+                    height: 33.0,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.recipe.ingredients.length,
+                        itemBuilder: (context, i) {
+                          return TaggedBox(
+                              text: widget.recipe.ingredients[i].name);
+                        }),
                   ),
                   SizedBox(height: 20),
                   // Categories
@@ -159,12 +162,15 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                             fontSize: 20,
                             fontFamily: GoogleFonts.pacifico().fontFamily)),
                   ),
-                  SizedBox(height: 15),
-                  Row(
-                    children: <Widget>[
-                      for (var i = 0; i < widget.recipe.categories.length; i++)
-                        TaggedBox(text: widget.recipe.categories[i].name)
-                    ],
+                  Container(
+                    height: 33.0,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.recipe.categories.length,
+                        itemBuilder: (context, i) {
+                          return TaggedBox(
+                              text: widget.recipe.categories[i].name);
+                        }),
                   ),
                 ],
               )),
