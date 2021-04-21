@@ -1,13 +1,11 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:foodplan/constants.dart';
-import 'package:foodplan/data/RecipeDatabase.dart';
 import 'package:foodplan/model/Recipe.dart';
+import 'package:foodplan/view/FullScreenImageView.dart';
 import 'package:foodplan/widgets/TaggedBox.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path/path.dart';
 
 List rndPix = [
   "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&w=1000&q=80"
@@ -83,14 +81,30 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                                 EdgeInsets.only(right: 15, top: 0, bottom: 15),
                             child: ClipRRect(
                               child: widget.recipe.image.isRemote
-                                  ? Image.network(widget.recipe.image.path,
-                                      width: 160,
-                                      height: 160,
-                                      fit: BoxFit.cover)
-                                  : Image.file(File(widget.recipe.image.path),
-                                      width: 160,
-                                      height: 160,
-                                      fit: BoxFit.cover),
+                                  ? FlatButton(
+                                      padding: EdgeInsets.all(0),
+                                      onPressed: _pushFullScreenRemote,
+                                      child: Hero(
+                                        tag: "fullscreenImage",
+                                        child: Image.network(
+                                            widget.recipe.image.path,
+                                            width: 160,
+                                            height: 160,
+                                            fit: BoxFit.cover),
+                                      ),
+                                    )
+                                  : FlatButton(
+                                      padding: EdgeInsets.all(0),
+                                      onPressed: _pushFullScreen,
+                                      child: Hero(
+                                        tag: "fullscreenImage",
+                                        child: Image.file(
+                                            File(widget.recipe.image.path),
+                                            width: 160,
+                                            height: 160,
+                                            fit: BoxFit.cover),
+                                      ),
+                                    ),
                               borderRadius: BorderRadius.circular(100),
                             )),
                         RichText(
@@ -185,5 +199,21 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
           ? _favoriteButtonColor = Colors.grey.shade600
           : _favoriteButtonColor = Colors.red;
     });
+  }
+
+  void _pushFullScreenRemote() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => FullScreenImageView(
+                isRemote: true, src: widget.recipe.image.path)));
+  }
+
+  void _pushFullScreen() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => FullScreenImageView(
+                isRemote: false, src: widget.recipe.image.path)));
   }
 }
