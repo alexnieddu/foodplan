@@ -66,7 +66,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/GemüsetarteR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -140,7 +140,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Bayerische_SchinkennudelnR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -182,7 +182,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Vegetarischer_NudelauflaufR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -236,7 +236,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Gefüllte_PaprikaR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -286,7 +286,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/GulaschR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -340,7 +340,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Asiapfanne_Süß_SauerR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -383,7 +383,7 @@
     },
     {
         "id": 1,
-        "name": "Chilli Sahne Schnitzel",
+        "name": "Chili Sahne Schnitzel",
         "description": "Lorem ipsum dolor sit ...",
         "backgroundColor": 4031914,
         "image": {
@@ -394,7 +394,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Chili_Sahne_SchnitzelR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -444,7 +444,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Überbackenes_PutenfiletR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -486,7 +486,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Überbackene_Gnocchi_Paprika_Tomate.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -544,7 +544,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/BauerntopfR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -602,7 +602,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/WinterpfanneR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -648,7 +648,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Rosmarin_Balsamico_SchweinefiletR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -694,7 +694,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/BrezenknödelR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -736,7 +736,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Süßkartoffeln_Kokos_SuppeR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -786,7 +786,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/PaprikasuppeR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -998,7 +998,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Schoko_TiramisuR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -1037,7 +1037,7 @@
     },
     {
         "id": 1,
-        "name": "Tiramisu alla Silvio",
+        "name": "Tiramisu a la Silvio",
         "description": "Lorem ipsum dolor sit ...",
         "backgroundColor": 3636255,
         "image": {
@@ -1048,7 +1048,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Tiramisu_a_la_Silvio.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -1094,7 +1094,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Hannahs_Best_Muffins_EverR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -1136,7 +1136,7 @@
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "path": "https://kinu-app.com/foodplan/Überbackene_BrezenR.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
