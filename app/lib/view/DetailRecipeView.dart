@@ -130,6 +130,14 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  MaterialButton(
+                    color: mainColor,
+                    textColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(borderradius)),
+                    onPressed: _getRecipeImage,
+                    child: Text("Rezept"),
+                  ),
                   // Instruction
                   RichText(
                     text: TextSpan(
@@ -215,5 +223,23 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
         MaterialPageRoute(
             builder: (context) => FullScreenImageView(
                 isRemote: false, src: widget.recipe.image.path)));
+  }
+
+  void _getRecipeImage() {
+    if (widget.recipe.descriptionImage.isRemote) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => FullScreenImageView(
+                  isRemote: widget.recipe.descriptionImage.isRemote,
+                  src: widget.recipe.descriptionImage.path)));
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => FullScreenImageView(
+                  isRemote: widget.recipe.descriptionImage.isRemote,
+                  src: widget.recipe.descriptionImage.path)));
+    }
   }
 }
