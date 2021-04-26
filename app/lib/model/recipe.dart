@@ -43,11 +43,11 @@ class Recipe {
       backgroundColor: map["backgroundColor"],
       image: RecipeImage(
           id: map["image"]["id"], path: map["image"]["path"], isRemote: true),
-      // descriptionImage: RecipeImage(
-      //     id: map["descriptionImage"]["id"],
-      //     path: map["descriptionImage"]["path"],
-      //     isRemote: true,
-      //     isDescriptionImage: true),
+      descriptionImage: RecipeImage(
+          id: map["descriptionImage"]["id"],
+          path: map["descriptionImage"]["path"],
+          isRemote: true,
+          isDescriptionImage: true),
       categories: List<Category>.from(
           map["categories"].map((category) => Category.fromMap(category))),
       ingredients: List<Ingredient>.from(map["ingredients"]
