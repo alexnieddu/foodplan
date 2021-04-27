@@ -551,17 +551,23 @@ class RecipeDatabase {
       'Content-type': 'application/json',
       'Accept': 'application/json'
     };
-    var response = await http.get(serverRecipeUrl, headers: headers);
-    if (response.statusCode == httpStatusOk) {
-      var recipeMap = jsonDecode(utf8.decode(response.bodyBytes));
+    try {
+      var response = await http.get(serverRecipeUrl, headers: headers);
+      if (response.statusCode == httpStatusOk) {
+        var recipeMap = jsonDecode(utf8.decode(response.bodyBytes));
 
-      for (var recipe in recipeMap) {
-        Recipe rec = Recipe.fromMapApi(recipe);
-        recipes.add(rec);
+        for (var recipe in recipeMap) {
+          Recipe rec = Recipe.fromMapApi(recipe);
+          if (rec.isPublic) {
+            recipes.add(rec);
+          }
+        }
+      } else {
+        print("ERROR: Cannot retrieve remote recipes. Status: " +
+            response.statusCode.toString());
       }
-    } else {
-      print("ERROR: Cannot retrieve remote recipes. Status: " +
-          response.statusCode.toString());
+    } on Exception catch (e) {
+      print("Network error: " + e.toString());
     }
 
     return recipes;
