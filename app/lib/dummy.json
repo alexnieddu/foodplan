@@ -16,6 +16,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -70,6 +71,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": true,
         "categories": [
             {
                 "id": 1,
@@ -144,6 +146,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -186,6 +189,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": true,
         "categories": [
             {
                 "id": 1,
@@ -240,6 +244,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": true,
         "categories": [
             {
                 "id": 1,
@@ -290,6 +295,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -344,6 +350,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": true,
         "categories": [
             {
                 "id": 1,
@@ -398,6 +405,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -454,6 +462,7 @@
                 "name": "Hauptspeise"
             }
         ],
+        "isPublic": true,
         "ingredients": [
             {
                 "id": 1,
@@ -490,6 +499,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -548,6 +558,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": true,
         "categories": [
             {
                 "id": 1,
@@ -606,6 +617,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": true,
         "categories": [
             {
                 "id": 1,
@@ -652,6 +664,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -698,6 +711,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": true,
         "categories": [
             {
                 "id": 1,
@@ -740,6 +754,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": true,
         "categories": [
             {
                 "id": 1,
@@ -790,6 +805,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": true,
         "categories": [
             {
                 "id": 1,
@@ -840,6 +856,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -894,6 +911,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -952,6 +970,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -1002,6 +1021,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -1052,6 +1072,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -1098,6 +1119,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -1140,6 +1162,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
