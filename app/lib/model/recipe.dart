@@ -13,6 +13,7 @@ class Recipe {
   RecipeImage descriptionImage;
   List<Category> categories;
   List<Ingredient> ingredients;
+  bool isPublic;
 
   Recipe(
       {this.id,
@@ -22,7 +23,8 @@ class Recipe {
       this.image,
       this.descriptionImage,
       this.categories,
-      this.ingredients});
+      this.ingredients,
+      this.isPublic});
 
   factory Recipe.fromMap(Map<String, dynamic> map) => Recipe(
       id: map["id"],
@@ -51,7 +53,8 @@ class Recipe {
       categories: List<Category>.from(
           map["categories"].map((category) => Category.fromMap(category))),
       ingredients: List<Ingredient>.from(map["ingredients"]
-          .map((ingredient) => Ingredient.fromMap(ingredient))));
+          .map((ingredient) => Ingredient.fromMap(ingredient))),
+      isPublic: map["isPublic"]);
 
   Map<String, dynamic> toMap() => {
         "id": id,
