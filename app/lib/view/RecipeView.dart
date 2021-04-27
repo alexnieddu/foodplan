@@ -203,13 +203,7 @@ class RecipeViewState extends State<RecipeView> {
             context,
             MaterialPageRoute(
                 builder: (context) => DetailRecipeView(recipe: recipe)),
-          ).then((value) {
-            setState(() {});
-          });
-        },
-        onLongPress: () {
-          RecipeDatabase.db.deleteRecipe(snapshot.data[i].id);
-          setState(() {});
+          );
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
