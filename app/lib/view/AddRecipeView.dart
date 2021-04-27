@@ -59,30 +59,43 @@ class AddRecipeViewState extends State<AddRecipeView> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Container(
-                    decoration: BoxDecoration(
-                        boxShadow: [],
-                        borderRadius: BorderRadius.circular(100)),
-                    margin: EdgeInsets.only(right: 15, top: 15, bottom: 15),
-                    child: Center(
-                      child: FlatButton(
-                        onPressed: _getImageFood,
-                        child: ClipRRect(
-                          child: _imageFood != null
-                              ? Image.file(_imageFood,
-                                  width: _imageSize,
-                                  height: _imageSize,
-                                  fit: BoxFit.cover)
-                              : Image(
-                                  width: _imageSize,
-                                  height: _imageSize,
-                                  image:
-                                      AssetImage("assets/workinprogress.jpg"),
-                                  fit: BoxFit.cover),
-                          borderRadius: BorderRadius.circular(100),
+                Stack(alignment: AlignmentDirectional.bottomCenter, children: [
+                  Container(
+                      decoration: BoxDecoration(
+                          boxShadow: [],
+                          borderRadius: BorderRadius.circular(100)),
+                      margin: EdgeInsets.only(right: 15, top: 15, bottom: 15),
+                      child: Center(
+                        child: FlatButton(
+                          onPressed: null,
+                          child: ClipRRect(
+                            child: _imageFood != null
+                                ? Image.file(_imageFood,
+                                    width: _imageSize,
+                                    height: _imageSize,
+                                    fit: BoxFit.cover)
+                                : Image(
+                                    width: _imageSize,
+                                    height: _imageSize,
+                                    image:
+                                        AssetImage("assets/workinprogress.jpg"),
+                                    fit: BoxFit.cover),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
                         ),
-                      ),
-                    )),
+                      )),
+                  Positioned(
+                    right: 80,
+                    child: IconButton(
+                      icon: _imageFood == null
+                          ? Icon(Icons.add_circle)
+                          : Icon(Icons.check_circle),
+                      onPressed: _getImageFood,
+                      color: mainColor,
+                      iconSize: 48.0,
+                    ),
+                  )
+                ]),
                 TextField(
                     decoration: InputDecoration(
                       hintText: "Rezeptname",
