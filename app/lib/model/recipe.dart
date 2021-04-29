@@ -14,6 +14,7 @@ class Recipe {
   List<Category> categories;
   List<Ingredient> ingredients;
   bool isPublic;
+  bool isFavorite;
 
   Recipe(
       {this.id,
@@ -24,7 +25,8 @@ class Recipe {
       this.descriptionImage,
       this.categories,
       this.ingredients,
-      this.isPublic});
+      this.isPublic,
+      this.isFavorite});
 
   factory Recipe.fromMap(Map<String, dynamic> map) => Recipe(
       id: map["id"],

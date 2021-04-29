@@ -1,7 +1,9 @@
+import 'package:foodplan/data/Favorites.dart';
 import 'package:foodplan/model/Category.dart';
 import 'package:foodplan/model/Ingredient.dart';
 import 'package:foodplan/model/RecipeImage.dart';
 import 'package:foodplan/model/Slot.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:foodplan/model/Recipe.dart';
@@ -10,6 +12,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+const String favorit = "Favorit";
 
 List<String> baseRecipes = [
   "Pfannkuchen",
@@ -116,7 +120,7 @@ List<String> baseSlots = [
   "Sonntag"
 ];
 List<String> baseCategories = [
-  "Favorit",
+  favorit,
   "Hauptspeise",
   "Sauce",
   "Vegetarisch",
@@ -574,10 +578,25 @@ class RecipeDatabase {
   }
 
   Future<List<Recipe>> getAllRecipes() async {
+    List<String> favoriteRecipes = await Favorites.getInstance();
+    Category favoriteCat = Category(name: favorit);
+
     List<Recipe> localRecipes = await getLocalRecipes();
     List<Recipe> remoteRecipes = await getRemoteRecipes();
     List<Recipe> allRecipes = localRecipes + remoteRecipes;
+
+    // Check favorite recipes
+    for (Recipe recipe in allRecipes) {
+      recipe.isFavorite = false;
+      if (favoriteRecipes.contains(recipe.name)) {
+        recipe.categories.add(favoriteCat);
+        recipe.isFavorite = true;
+      }
+    }
+
+    // Sort recipes
     allRecipes.sort((a, b) => a.name.compareTo(b.name));
+
     return allRecipes;
   }
 

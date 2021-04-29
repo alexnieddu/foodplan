@@ -2,14 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:foodplan/constants.dart';
+import 'package:foodplan/data/Favorites.dart';
+import 'package:foodplan/model/Category.dart';
 import 'package:foodplan/model/Recipe.dart';
 import 'package:foodplan/view/FullScreenImageView.dart';
 import 'package:foodplan/widgets/TaggedBox.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-List rndPix = [
-  "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&w=1000&q=80"
-];
+const String favorit = "Favorit";
 
 class DetailRecipeView extends StatefulWidget {
   final Recipe recipe;
@@ -19,13 +19,14 @@ class DetailRecipeView extends StatefulWidget {
 
 class DetailRecipeViewState extends State<DetailRecipeView> {
   // widget.recipeId
-  bool isFavorite = false;
   Color _favoriteButtonColor = Colors.grey.shade600;
+  bool _isFavorite;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _isFavorite = widget.recipe.isFavorite;
   }
 
   @override
@@ -63,7 +64,9 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                       Spacer(),
                       IconButton(
                           icon: Icon(Icons.favorite),
-                          color: _favoriteButtonColor,
+                          color: _isFavorite
+                              ? _favoriteButtonColor = Colors.red
+                              : _favoriteButtonColor = Colors.grey.shade600,
                           onPressed: _favorite),
                       IconButton(icon: Icon(Icons.more_vert), onPressed: null)
                     ],
@@ -201,7 +204,25 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
     ));
   }
 
-  void _favorite() {
+  void _favorite() async {
+    final favs = await Favorites.getInstance();
+    final favCat = Category(name: favorit);
+
+    if (widget.recipe.isFavorite) {
+      favs.removeWhere((element) => element == widget.recipe.name);
+      _isFavorite = false;
+
+      final snackBar = SnackBar(content: Text("Von Favoriten entfernt!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      favs.add(widget.recipe.name);
+      _isFavorite = true;
+
+      final snackBar = SnackBar(content: Text("Zu Favoriten hinzugefügt!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    Favorites.update(favs);
+
     setState(() {
       _favoriteButtonColor == Colors.red
           ? _favoriteButtonColor = Colors.grey.shade600
