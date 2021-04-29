@@ -151,10 +151,9 @@ class RecipeViewState extends State<RecipeView> {
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, i) {
                               Recipe recipe = snapshot.data[i];
-                              int rndIndex = Random().nextInt(rndPix.length);
                               // ListItem
                               return recipeGridTile(
-                                  snapshot, i, context, recipe, rndIndex);
+                                  snapshot, i, context, recipe);
                             },
                           ),
                         ),
@@ -180,8 +179,8 @@ class RecipeViewState extends State<RecipeView> {
     );
   }
 
-  Container recipeGridTile(AsyncSnapshot snapshot, int i, BuildContext context,
-      Recipe recipe, int rndIndex) {
+  Container recipeGridTile(
+      AsyncSnapshot snapshot, int i, BuildContext context, Recipe recipe) {
     return Container(
       // height: 100,
       margin: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
