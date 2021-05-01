@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:foodplan/constants.dart';
 import 'package:foodplan/data/Favorites.dart';
+import 'package:foodplan/data/RecipeDatabase.dart';
 import 'package:foodplan/model/Category.dart';
 import 'package:foodplan/model/Recipe.dart';
 import 'package:foodplan/view/FullScreenImageView.dart';
@@ -68,7 +69,8 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                               ? _favoriteButtonColor = Colors.red
                               : _favoriteButtonColor = Colors.grey.shade600,
                           onPressed: _favorite),
-                      IconButton(icon: Icon(Icons.more_vert), onPressed: null)
+                      IconButton(
+                          icon: Icon(Icons.delete), onPressed: _deleteRecipe())
                     ],
                   ),
                   Center(
@@ -209,17 +211,9 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
     final favCat = Category(name: favorit);
 
     if (widget.recipe.isFavorite) {
-      favs.removeWhere((element) => element == widget.recipe.name);
-      _isFavorite = false;
-
-      final snackBar = SnackBar(content: Text("Von Favoriten entfernt!"));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      _removeRecipeFromFavorites(favs);
     } else {
-      favs.add(widget.recipe.name);
-      _isFavorite = true;
-
-      final snackBar = SnackBar(content: Text("Zu Favoriten hinzugefügt!"));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      _addRecipeFromFavorites(favs);
     }
     Favorites.update(favs);
 
@@ -228,6 +222,22 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
           ? _favoriteButtonColor = Colors.grey.shade600
           : _favoriteButtonColor = Colors.red;
     });
+  }
+
+  _removeRecipeFromFavorites(List<String> favs) {
+    favs.removeWhere((element) => element == widget.recipe.name);
+    _isFavorite = false;
+
+    final snackBar = SnackBar(content: Text("Von Favoriten entfernt!"));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  _addRecipeFromFavorites(List<String> favs) {
+    favs.add(widget.recipe.name);
+    _isFavorite = true;
+
+    final snackBar = SnackBar(content: Text("Zu Favoriten hinzugefügt!"));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void _pushFullScreenRemote() {
@@ -262,5 +272,29 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                   isRemote: widget.recipe.descriptionImage.isRemote,
                   src: widget.recipe.descriptionImage.path)));
     }
+  }
+
+  _deleteRecipe() {
+    AlertDialog(
+      title: Text("Rezept löschen?"),
+      content: Text("Willst Du das Rezept wirklich löschen?"),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              RecipeDatabase.db.deleteRecipe(widget.recipe.id);
+
+              final snackBar = SnackBar(content: Text("Rezept gelöscht!"));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            },
+            child: Text("Löschen")),
+        TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Abbrechen"))
+      ],
+    );
+    RecipeDatabase.db.deleteRecipe(widget.recipe.id);
   }
 }
