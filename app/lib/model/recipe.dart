@@ -15,6 +15,7 @@ class Recipe {
   List<Ingredient> ingredients;
   bool isPublic;
   bool isFavorite;
+  bool isRemote;
 
   Recipe(
       {this.id,
@@ -26,7 +27,8 @@ class Recipe {
       this.categories,
       this.ingredients,
       this.isPublic,
-      this.isFavorite});
+      this.isFavorite,
+      this.isRemote});
 
   factory Recipe.fromMap(Map<String, dynamic> map) => Recipe(
       id: map["id"],
@@ -38,7 +40,8 @@ class Recipe {
       descriptionImage:
           RecipeImage(id: map["imageId"], path: null, isRemote: false),
       categories: [],
-      ingredients: []);
+      ingredients: [],
+      isRemote: false);
 
   factory Recipe.fromMapApi(Map<String, dynamic> map) => Recipe(
       id: map["id"],
@@ -56,7 +59,8 @@ class Recipe {
           map["categories"].map((category) => Category.fromMap(category))),
       ingredients: List<Ingredient>.from(map["ingredients"]
           .map((ingredient) => Ingredient.fromMap(ingredient))),
-      isPublic: map["isPublic"]);
+      isPublic: map["isPublic"],
+      isRemote: true);
 
   Map<String, dynamic> toMap() => {
         "id": id,

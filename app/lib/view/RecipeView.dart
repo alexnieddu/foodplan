@@ -198,11 +198,12 @@ class RecipeViewState extends State<RecipeView> {
           boxShadow: [constShadowDarkLight]),
       child: FlatButton(
         onPressed: () async {
-          Navigator.push(
+          await Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => DetailRecipeView(recipe: recipe)),
           );
+          setState(() {});
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -242,7 +243,7 @@ class RecipeViewState extends State<RecipeView> {
     setState(() {});
   }
 
-  _pushDetailRevipeView(BuildContext context, Recipe recipe) {
+  _pushDetailRecipeView(BuildContext context, Recipe recipe) {
     Navigator.push(
             context,
             MaterialPageRoute(

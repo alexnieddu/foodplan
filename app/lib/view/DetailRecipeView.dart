@@ -70,7 +70,9 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
                               : _favoriteButtonColor = Colors.grey.shade600,
                           onPressed: _favorite),
                       IconButton(
-                          icon: Icon(Icons.delete), onPressed: _deleteRecipe())
+                          icon: Icon(Icons.delete),
+                          onPressed:
+                              widget.recipe.isRemote ? null : _deleteRecipe)
                     ],
                   ),
                   Center(
@@ -274,27 +276,38 @@ class DetailRecipeViewState extends State<DetailRecipeView> {
     }
   }
 
-  _deleteRecipe() {
-    AlertDialog(
-      title: Text("Rezept löschen?"),
-      content: Text("Willst Du das Rezept wirklich löschen?"),
-      actions: [
-        TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              RecipeDatabase.db.deleteRecipe(widget.recipe.id);
+  void _deleteRecipe() async {
+    // delete from favorites
+    final favs = await Favorites.getInstance();
+    if (favs.contains(widget.recipe.name)) {
+      favs.removeWhere((element) => element == widget.recipe.name);
+      Favorites.update(favs);
+    }
 
-              final snackBar = SnackBar(content: Text("Rezept gelöscht!"));
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            },
-            child: Text("Löschen")),
-        TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text("Abbrechen"))
-      ],
-    );
-    RecipeDatabase.db.deleteRecipe(widget.recipe.id);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Rezept löschen?"),
+            content: Text("Willst Du das Rezept wirklich löschen?"),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    await RecipeDatabase.db.deleteRecipe(widget.recipe.id);
+
+                    final snackBar =
+                        SnackBar(content: Text("Rezept gelöscht!"));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  },
+                  child: Text("Löschen")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Abbrechen"))
+            ],
+          );
+        });
   }
 }

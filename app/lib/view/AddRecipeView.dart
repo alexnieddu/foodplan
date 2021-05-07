@@ -210,7 +210,8 @@ class AddRecipeViewState extends State<AddRecipeView> {
 
   void _saveRecipe(String text, String description, List<Category> cats,
       List<Ingredient> ings, String imagePath, String descImgPath) {
-    if (text.isNotEmpty) {
+    final bool readyToSave = text.isNotEmpty && imagePath.isNotEmpty && descImgPath.isNotEmpty;
+    if (readyToSave) {
       final img = RecipeImage(path: imagePath);
       final descImg = RecipeImage(path: descImgPath);
       _recipeColor == -1 ?? Recipe.randomBackgroundColor();

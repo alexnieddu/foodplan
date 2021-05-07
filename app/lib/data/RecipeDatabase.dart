@@ -317,6 +317,11 @@ class RecipeDatabase {
     var res;
     final db = await database;
 
+    // Handle description input
+    if (recipe.description == null) {
+      recipe.description = "";
+    }
+
     // Recipe
     res = await db.rawInsert(
         "INSERT INTO recipe (name, description, backgroundColor)"
@@ -442,22 +447,22 @@ class RecipeDatabase {
     var recipe = Recipe.fromMap(res.first);
 
     // Fetch FOOD IMAGE from db and add path to recipe
-    if (recipe.image.id != null) {
+    // if (recipe.image.id != null) {
       res = await db.rawQuery(
           "SELECT path FROM image WHERE recipeId = ? AND isDescriptionImage = 0",
           [id]);
       recipe.image.path = res.first.values.first;
       recipe.image.isDescriptionImage = false;
-    }
+    // }
 
     // Fetch RECIPE IMAGE from db and add path to recipe
-    if (recipe.image.id != null) {
+    // if (recipe.image.id != null) {
       res = await db.rawQuery(
           "SELECT path FROM image WHERE recipeId = ? AND isDescriptionImage = 1",
           [id]);
       recipe.descriptionImage.path = res.first.values.first;
       recipe.descriptionImage.isDescriptionImage = true;
-    }
+    // }
 
     recipe.descriptionImage.isRemote = false;
 
