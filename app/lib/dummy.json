@@ -2,7 +2,7 @@
     {
         "id": 1,
         "name": "Pilz-Rahmsauce",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 2514980,
         "image": {
             "id": 1,
@@ -57,17 +57,17 @@
     {
         "id": 1,
         "name": "Gemüsetarte",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 4503188,
         "image": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/Gemüsetarte-2.jpg",
+            "path": "https://kinu-app.com/foodplan/4B.jpg",
             "isDescriptionImage": null,
             "isRemote": true
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/GemüsetarteR.jpg",
+            "path": "https://kinu-app.com/foodplan/4R.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -132,21 +132,21 @@
     {
         "id": 1,
         "name": "Bayerische Schinkenudeln",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 4503188,
         "image": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/dummy.jpg",
+            "path": "https://kinu-app.com/foodplan/5B.jpg",
             "isDescriptionImage": null,
             "isRemote": true
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/Bayerische_SchinkennudelnR.jpg",
+            "path": "https://kinu-app.com/foodplan/5R.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
-        "isPublic": false,
+        "isPublic": true,
         "categories": [
             {
                 "id": 1,
@@ -175,7 +175,7 @@
     {
         "id": 1,
         "name": "Vegetarischer Nudelauflauf",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 7816123,
         "image": {
             "id": 1,
@@ -189,7 +189,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
-        "isPublic": true,
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -230,17 +230,17 @@
     {
         "id": 1,
         "name": "Gefüllte Paprika",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 6057978,
         "image": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/gefüllte-Paprika.jpg",
+            "path": "https://kinu-app.com/foodplan/6B.jpg",
             "isDescriptionImage": null,
             "isRemote": true
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/Gefüllte_PaprikaR.jpg",
+            "path": "https://kinu-app.com/foodplan/6R.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -281,7 +281,7 @@
     {
         "id": 1,
         "name": "Gulasch",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 8844894,
         "image": {
             "id": 1,
@@ -336,17 +336,17 @@
     {
         "id": 1,
         "name": "Asia Pfanne süß sauer",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 8694374,
         "image": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/Asiapfanne-Süß-Sauer.jpg",
+            "path": "https://kinu-app.com/foodplan/7B.jpg",
             "isDescriptionImage": null,
             "isRemote": true
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/Asiapfanne_Süß_SauerR.jpg",
+            "path": "https://kinu-app.com/foodplan/7R.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -391,7 +391,7 @@
     {
         "id": 1,
         "name": "Chili Sahne Schnitzel",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 4031914,
         "image": {
             "id": 1,
@@ -442,17 +442,17 @@
     {
         "id": 1,
         "name": "Überbackenes Putenfilet mit Frischkäse",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "Dazu passen Pommes gut :)",
         "backgroundColor": 8880189,
         "image": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/Überbackenes-Putenfilet.jpg",
+            "path": "https://kinu-app.com/foodplan/8B.jpg",
             "isDescriptionImage": null,
             "isRemote": true
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/Überbackenes_PutenfiletR.jpg",
+            "path": "https://kinu-app.com/foodplan/8R.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -485,7 +485,7 @@
     {
         "id": 1,
         "name": "Überbackenes Gnocchi mit Paprika Tomaten Sauce",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 9082122,
         "image": {
             "id": 1,
@@ -544,17 +544,17 @@
     {
         "id": 1,
         "name": "Bauerntopf",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "Dazu passt gut Baguette oder Brot :)",
         "backgroundColor": 12832201,
         "image": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/Bauerntopf.jpg",
+            "path": "https://kinu-app.com/foodplan/9B.jpg",
             "isDescriptionImage": null,
             "isRemote": true
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/BauerntopfR.jpg",
+            "path": "https://kinu-app.com/foodplan/9R.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -603,7 +603,7 @@
     {
         "id": 1,
         "name": "Winterpfanne mit gebratenen Wallnüssen",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 8934267,
         "image": {
             "id": 1,
@@ -617,7 +617,7 @@
             "isDescriptionImage": true,
             "isRemote": true
         },
-        "isPublic": true,
+        "isPublic": false,
         "categories": [
             {
                 "id": 1,
@@ -650,7 +650,7 @@
     {
         "id": 1,
         "name": "Rosmarin Balsamico Schweinefilet",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "Dazu passen Knödel gut :)",
         "backgroundColor": 9898826,
         "image": {
             "id": 1,
@@ -697,17 +697,17 @@
     {
         "id": 1,
         "name": "Brezenknödel",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "Müssen auch nicht zwingend alte Brezen sein :)",
         "backgroundColor": 3466288,
         "image": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/Brezenknödel1.jpg",
+            "path": "https://kinu-app.com/foodplan/14B.jpg",
             "isDescriptionImage": null,
             "isRemote": true
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/BrezenknödelR.jpg",
+            "path": "https://kinu-app.com/foodplan/14R.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -740,17 +740,17 @@
     {
         "id": 1,
         "name": "Süßkartoffel Kokos Suppe",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "Dazu passen gut angeröstete Brotwürfel :)",
         "backgroundColor": 8434141,
         "image": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/Süßkartoffeln-Kokos-Suppe.jpg",
+            "path": "https://kinu-app.com/foodplan/10B.jpg",
             "isDescriptionImage": null,
             "isRemote": true
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/Süßkartoffeln_Kokos_SuppeR.jpg",
+            "path": "https://kinu-app.com/foodplan/10R.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -791,17 +791,17 @@
     {
         "id": 1,
         "name": "Paprikasuppe",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "Dazu passt gut ein Klecks Creme Fraiche und Baguette",
         "backgroundColor": 880230,
         "image": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/Paprikasuppe.jpg",
+            "path": "https://kinu-app.com/foodplan/11B.jpg",
             "isDescriptionImage": null,
             "isRemote": true
         },
         "descriptionImage": {
             "id": 1,
-            "path": "https://kinu-app.com/foodplan/PaprikasuppeR.jpg",
+            "path": "https://kinu-app.com/foodplan/11R.jpg",
             "isDescriptionImage": true,
             "isRemote": true
         },
@@ -842,7 +842,7 @@
     {
         "id": 1,
         "name": "Kalte Radiserlsuppe mit Ziegenfrischkäse",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 4513231,
         "image": {
             "id": 1,
@@ -896,8 +896,8 @@
     },
     {
         "id": 1,
-        "name": "Sour Creme",
-        "description": "Lorem ipsum dolor sit ...",
+        "name": "Sour Cream",
+        "description": "",
         "backgroundColor": 442451,
         "image": {
             "id": 1,
@@ -956,7 +956,7 @@
     {
         "id": 1,
         "name": "Birnen Obazda",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 15271102,
         "image": {
             "id": 1,
@@ -1007,7 +1007,7 @@
     {
         "id": 1,
         "name": "Schoko Tiramisu",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 13313479,
         "image": {
             "id": 1,
@@ -1058,7 +1058,7 @@
     {
         "id": 1,
         "name": "Tiramisu a la Silvio",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "Hier würde ich zwingend Butterkekse statt Biskuits hernehmen!",
         "backgroundColor": 3636255,
         "image": {
             "id": 1,
@@ -1105,7 +1105,7 @@
     {
         "id": 1,
         "name": "Hannahs Best Muffins Ever",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "Hier die Backzeit gut im Auge behalten, damit der Kern noch flüssig bleibt!",
         "backgroundColor": 15988791,
         "image": {
             "id": 1,
@@ -1148,7 +1148,7 @@
     {
         "id": 1,
         "name": "Überbackene Brezen",
-        "description": "Lorem ipsum dolor sit ...",
+        "description": "",
         "backgroundColor": 3426667,
         "image": {
             "id": 1,
@@ -1193,6 +1193,222 @@
             {
                 "id": 2,
                 "name": "Eier"
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "name": "Asiapfanne Soja",
+        "description": "Dazu passt gut Reis :)",
+        "backgroundColor": 2514980,
+        "image": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/1B.jpg",
+            "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/1R.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
+        "isPublic": true,
+        "categories": [
+            {
+                "id": 1,
+                "name": "Hauptspeise"
+            },
+            {
+                "id": 2,
+                "name": "Asiatisch"
+            }
+        ],
+        "ingredients": [
+            {
+                "id": 1,
+                "name": "Pilze"
+            },
+            {
+                "id": 2,
+                "name": "Putenfleisch"
+            },
+            {
+                "id": 3,
+                "name": "Zucchini"
+            },
+            {
+                "id": 3,
+                "name": "Karotte"
+            },
+            {
+                "id": 3,
+                "name": "Sojasauce"
+            },
+            {
+                "id": 3,
+                "name": "Paprika"
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "name": "Mulans Asiapfanne",
+        "description": "",
+        "backgroundColor": 2514980,
+        "image": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/2B.jpg",
+            "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/2R.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
+        "isPublic": true,
+        "categories": [
+            {
+                "id": 1,
+                "name": "Hauptspeise"
+            },
+            {
+                "id": 2,
+                "name": "Asiatisch"
+            }
+        ],
+        "ingredients": [
+            {
+                "id": 1,
+                "name": "Putenfleisch"
+            },
+            {
+                "id": 2,
+                "name": "Paprika"
+            },
+            {
+                "id": 3,
+                "name": "Ingwer"
+            },
+            {
+                "id": 3,
+                "name": "Sojasauce"
+            },
+            {
+                "id": 3,
+                "name": "Cashewkerne"
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "name": "Cheeseburger Auflauf",
+        "description": "Deftig, aber leider geil :D",
+        "backgroundColor": 2514980,
+        "image": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/3B.jpg",
+            "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/3R.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
+        "isPublic": true,
+        "categories": [
+            {
+                "id": 1,
+                "name": "Hauptspeise"
+            },
+            {
+                "id": 2,
+                "name": "deftig"
+            }
+        ],
+        "ingredients": [
+            {
+                "id": 1,
+                "name": "Hackfleisch"
+            },
+            {
+                "id": 2,
+                "name": "Gurken"
+            },
+            {
+                "id": 3,
+                "name": "Käse"
+            },
+            {
+                "id": 3,
+                "name": "Tomatenmark"
+            },
+            {
+                "id": 3,
+                "name": "Burger Buns"
+            },
+            {
+                "id": 3,
+                "name": "Tomaten"
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "name": "Pilz-Rahmsauce",
+        "description": "",
+        "backgroundColor": 2514980,
+        "image": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/dummy.jpg",
+            "isDescriptionImage": null,
+            "isRemote": true
+        },
+        "descriptionImage": {
+            "id": 1,
+            "path": "https://kinu-app.com/foodplan/descriptionImage.jpg",
+            "isDescriptionImage": true,
+            "isRemote": true
+        },
+        "isPublic": false,
+        "categories": [
+            {
+                "id": 1,
+                "name": "Hauptspeise"
+            },
+            {
+                "id": 2,
+                "name": "Sauce"
+            },
+            {
+                "id": 2,
+                "name": "Vegetarisch"
+            }
+        ],
+        "ingredients": [
+            {
+                "id": 1,
+                "name": "Pilze"
+            },
+            {
+                "id": 2,
+                "name": "Knoblauchzehe"
+            },
+            {
+                "id": 3,
+                "name": "Tomatenmark"
+            },
+            {
+                "id": 3,
+                "name": "Sojasauce"
+            },
+            {
+                "id": 3,
+                "name": "Sahne"
             }
         ]
     }
